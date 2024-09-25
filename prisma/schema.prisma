@@ -12,3 +12,86 @@ datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
 }
+
+model Staff {
+  userid        Int     @id @default(autoincrement())
+  firstName     String
+  lastName      String
+  username      String  @unique
+  password      String
+  suspended_flg Boolean @default(false)
+  admin_flg     Boolean
+  circ_flg      Boolean
+  circ_mbr_flg  Boolean
+  catalog_flg   Boolean
+  reports_flg   Boolean
+  member_account MemberAccount[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+
+  @@map("staff")
+}
+
+model Member {
+  mbrid          Int              @id @default(autoincrement())
+  barcode_nmbr   Int              @unique
+  firstName      String
+  lastName       String
+  address        String
+  home_phone     Int
+  work_phone     Int
+  email          String           @unique
+  code           MemberClassifyDM @relation(fields: [classification], references: [code])
+  classification Int
+  member_account MemberAccount[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+
+  @@map("member")
+}
+
+model MemberClassifyDM {
+  code        Int      @id @default(autoincrement())
+  description String
+  default_flg Boolean
+  max_fines   String
+  member      Member[]
+
+  @@map("mbr_classify_dm")
+}
+
+model MemberFieldDM {
+  code          String        @id
+  description   String        @unique
+  default_flg   Boolean
+  member_fields MemberField[]
+
+  @@map("member_fields_dm")
+}
+
+model MemberField {
+  mbrid                Int           @id
+  code                 String
+  member_field_dm_code MemberFieldDM @relation(fields: [code], references: [code])
+  data                 String
+
+  @@map("member_fields")
+}
+
+model MemberAccount {
+  transid Int @id @default(autoincrement())
+  mbrid Int
+  create_userid Int
+  staff Staff @relation(fields: [create_userid], references: [userid])
+  member Member @relation(fields: [mbrid], references: [mbrid])
+  transaction_type String
+  amount Decimal
+  description String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+
+  @@map("member_account")
+}
