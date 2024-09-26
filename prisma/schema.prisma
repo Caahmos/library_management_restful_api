@@ -35,18 +35,20 @@ model Staff {
 }
 
 model Member {
-  mbrid          Int              @id @default(autoincrement())
-  barcode_nmbr   Int              @unique
-  rm             Int              @unique
-  firstName      String
-  lastName       String
-  address        String
-  home_phone     Int
-  work_phone     Int
-  email          String           @unique
-  code           MemberClassifyDM @relation(fields: [classification], references: [code])
-  classification Int
-  member_account MemberAccount[]
+  mbrid              Int                @id @default(autoincrement())
+  barcode_nmbr       Int                @unique
+  rm                 Int                @unique
+  firstName          String
+  lastName           String
+  address            String
+  home_phone         Int
+  work_phone         Int
+  email              String             @unique
+  code               MemberClassifyDM   @relation(fields: [classification], references: [code])
+  classification     Int
+  member_account     MemberAccount[]
+  biblio_copy        BiblioCopy[]
+  biblio_status_hist BiblioStatusHist[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
@@ -83,14 +85,15 @@ model MemberField {
 }
 
 model MemberAccount {
-  transid          Int     @id @default(autoincrement())
-  mbrid            Int
-  create_userid    Int
-  staff            Staff   @relation(fields: [create_userid], references: [userid])
-  member           Member  @relation(fields: [mbrid], references: [mbrid])
-  transaction_type String
-  amount           Decimal
-  description      String
+  transid             Int               @id @default(autoincrement())
+  mbrid               Int
+  create_userid       Int
+  transaction_type    String
+  amount              Decimal
+  description         String
+  staff               Staff             @relation(fields: [create_userid], references: [userid])
+  member              Member            @relation(fields: [mbrid], references: [mbrid], onDelete: Cascade)
+  transaction_type_dm TransactionTypeDM @relation(fields: [transaction_type], references: [code])
 
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
@@ -120,28 +123,99 @@ model MaterialTypeDM {
 }
 
 model Biblio {
-  bibid               Int            @id @default(autoincrement())
+  bibid               Int                @id @default(autoincrement())
   title               String
-  title_remainder     String
+  title_remainder     String?
   author              String
-  responsibility_stmt String
+  responsibility_stmt String?
   material_cd         Int
   collection_cd       Int
   call_nmbr1          String
-  call_nmbr2          String
-  call_nmbr3          String
-  topic1              String
-  topic2              String
-  topic3              String
-  topic4              String
-  topic5              String
+  call_nmbr2          String?
+  call_nmbr3          String?
+  topic1              String?
+  topic2              String?
+  topic3              String?
+  topic4              String?
+  topic5              String?
   last_change_userid  Int
-  user                Staff          @relation(fields: [last_change_userid], references: [userid])
-  collection          CollectionDM   @relation(fields: [collection_cd], references: [code])
-  material            MaterialTypeDM @relation(fields: [material_cd], references: [code])
+  opac_flg            Boolean            @default(true)
+  user                Staff              @relation(fields: [last_change_userid], references: [userid])
+  collection          CollectionDM       @relation(fields: [collection_cd], references: [code])
+  material            MaterialTypeDM     @relation(fields: [material_cd], references: [code])
+  biblio_field        BiblioField[]
+  biblio_copy         BiblioCopy[]
+  BiblioStatusHist    BiblioStatusHist[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
 
   @@map("biblio")
+}
+
+model BiblioField {
+  fieldid     Int    @id @default(autoincrement())
+  bibid       Int
+  biblio      Biblio @relation(fields: [bibid], references: [bibid], onDelete: Cascade)
+  tag         Int
+  ind1_cd     String @default("N")
+  ind2_cd     String @default("N")
+  subfield_cd String
+  field_data  String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+
+  @@map("biblio_field")
+}
+
+model BiblioStatusDM {
+  code        Int     @id @default(autoincrement())
+  description String
+  default_flg Boolean
+
+  @@map("biblio_status_dm")
+}
+
+model BiblioCopy {
+  id              Int       @id @default(autoincrement())
+  bidid           Int
+  copyid          Int
+  copy_desc       String?
+  barcode         Int       @unique
+  status_cd       String
+  status_begin_dt DateTime
+  due_back_dt     DateTime?
+  mbrid           Int?
+  renewal_count   Int       @default(0)
+
+  member Member? @relation(fields: [mbrid], references: [mbrid])
+  biblio Biblio  @relation(fields: [bidid], references: [bibid])
+
+  @@map("biblio_copy")
+}
+
+model BiblioStatusHist {
+  id              Int      @id @default(autoincrement())
+  bidid           Int
+  copyid          Int
+  status_cd       String
+  status_begin_dt DateTime
+  due_back_dt     DateTime
+  mbrid           Int
+  renewal_count   Int      @default(0)
+
+  member Member @relation(fields: [mbrid], references: [mbrid])
+  biblio Biblio @relation(fields: [bidid], references: [bibid])
+
+  @@map("biblio_status_hist")
+}
+
+model TransactionTypeDM {
+  code          String             @id 
+  description   String
+  default_flg   Boolean
+  member_account MemberAccount[]
+
+  @@map("transaction_type_dm")
 }
