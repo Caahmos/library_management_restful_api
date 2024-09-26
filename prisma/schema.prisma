@@ -177,6 +177,7 @@ model BiblioStatusDM {
   description String
   default_flg Boolean
   biblio_copy BiblioCopy[]
+  biblio_status_hist BiblioStatusHist[]
 
   @@map("biblio_status_dm")
 }
@@ -212,6 +213,7 @@ model BiblioStatusHist {
 
   member Member @relation(fields: [mbrid], references: [mbrid])
   biblio Biblio @relation(fields: [bidid], references: [bibid])
+  biblio_status_dm BiblioStatusDM @relation(fields: [status_cd], references: [code])
 
   @@map("biblio_status_hist")
 }
