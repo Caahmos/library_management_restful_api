@@ -49,6 +49,7 @@ model Member {
   member_account     MemberAccount[]
   biblio_copy        BiblioCopy[]
   biblio_status_hist BiblioStatusHist[]
+  member_field       MemberField[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
@@ -76,10 +77,12 @@ model MemberFieldDM {
 }
 
 model MemberField {
-  mbrid                Int           @id
+  id                   Int           @id @default(autoincrement())
+  mbrid                Int
   code                 String
-  member_field_dm_code MemberFieldDM @relation(fields: [code], references: [code])
   data                 String
+  member_field_dm_code MemberFieldDM @relation(fields: [code], references: [code])
+  member               Member        @relation(fields: [mbrid], references: [mbrid])
 
   @@map("member_fields")
 }
@@ -170,9 +173,10 @@ model BiblioField {
 }
 
 model BiblioStatusDM {
-  code        Int     @id @default(autoincrement())
+  code        String       @id
   description String
   default_flg Boolean
+  biblio_copy BiblioCopy[]
 
   @@map("biblio_status_dm")
 }
@@ -189,8 +193,9 @@ model BiblioCopy {
   mbrid           Int?
   renewal_count   Int       @default(0)
 
-  member Member? @relation(fields: [mbrid], references: [mbrid])
-  biblio Biblio  @relation(fields: [bidid], references: [bibid])
+  biblio_status_dm BiblioStatusDM @relation(fields: [status_cd], references: [code])
+  member           Member?        @relation(fields: [mbrid], references: [mbrid])
+  biblio           Biblio         @relation(fields: [bidid], references: [bibid])
 
   @@map("biblio_copy")
 }
@@ -212,9 +217,9 @@ model BiblioStatusHist {
 }
 
 model TransactionTypeDM {
-  code          String             @id 
-  description   String
-  default_flg   Boolean
+  code           String          @id
+  description    String
+  default_flg    Boolean
   member_account MemberAccount[]
 
   @@map("transaction_type_dm")
