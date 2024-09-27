@@ -20,11 +20,11 @@ model Staff {
   username       String          @unique
   password       String
   suspended_flg  Boolean         @default(false)
-  admin_flg      Boolean
-  circ_flg       Boolean
-  circ_mbr_flg   Boolean
-  catalog_flg    Boolean
-  reports_flg    Boolean
+  admin_flg      Boolean?
+  circ_flg       Boolean?
+  circ_mbr_flg   Boolean?
+  catalog_flg    Boolean?
+  reports_flg    Boolean?
   member_account MemberAccount[]
   biblio         Biblio[]
 
@@ -173,10 +173,10 @@ model BiblioField {
 }
 
 model BiblioStatusDM {
-  code        String       @id
-  description String
-  default_flg Boolean
-  biblio_copy BiblioCopy[]
+  code               String             @id
+  description        String
+  default_flg        Boolean
+  biblio_copy        BiblioCopy[]
   biblio_status_hist BiblioStatusHist[]
 
   @@map("biblio_status_dm")
@@ -211,8 +211,8 @@ model BiblioStatusHist {
   mbrid           Int
   renewal_count   Int      @default(0)
 
-  member Member @relation(fields: [mbrid], references: [mbrid])
-  biblio Biblio @relation(fields: [bidid], references: [bibid])
+  member           Member         @relation(fields: [mbrid], references: [mbrid])
+  biblio           Biblio         @relation(fields: [bidid], references: [bibid])
   biblio_status_dm BiblioStatusDM @relation(fields: [status_cd], references: [code])
 
   @@map("biblio_status_hist")
