@@ -3,6 +3,8 @@ import express from "express";
 import path from "node:path";
 import cors from "cors";
 import StaffRoutes from "./routes/StaffRoutes";
+import swaggerUi from "swagger-ui-express";
+import swaggerDocument from '../swagger.json';
 dotenv.config();
 
 class Server {
@@ -26,13 +28,16 @@ class Server {
 
   configRoutes() {
     this.app.use("/staff", new StaffRoutes().router);
+    this.documentation();
   }
 
   configCors() {
     this.app.use(cors({ credentials: true, origin: "http://localhost:3000" }));
   }
 
-  documentation() {}
+  documentation() {
+    this.app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+  }
 }
 
 export default Server;

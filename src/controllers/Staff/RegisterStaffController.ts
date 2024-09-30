@@ -4,7 +4,15 @@ import RegisterStaffService from "../../services/Staff/RegisterStaffService";
 
 class RegisterStaffController {
   static async handle(req: Request, res: Response) {
+    const userId = req.userid;
+    const userroles = req.userroles;
+        
+    if(!userId) return res.status(422).json({ type: 'error', message: 'Usuário não autenticado!'});
+    if(!userroles.admin_flg) return res.status(422).json({ type: 'error', message: 'Usuário não tem permissão!'});
+        
     const registerStaffData: RegisterStaffRequest = req.body;
+
+    registerStaffData.last_change_userid = userId;
 
     if (!registerStaffData.firstName)
       return res
@@ -35,7 +43,7 @@ class RegisterStaffController {
         .status(201)
         .json({
           type: "success",
-          message: "Administrador registrado com sucesso!",
+          message: "Membro da equipe registrado com sucesso!",
           registeredStaff,
         });
     } catch (err: any) {

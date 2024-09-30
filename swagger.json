@@ -1,0 +1,640 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Library Management App",
+    "description": "Api para gestão de bibliotecas.",
+    "version": "2.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:5000",
+      "description": "Servidor principal para desenvolvimento."
+    }
+  ],
+  "paths": {
+    "/staff/register": {
+      "post": {
+        "summary": "Registrar novo Staff User",
+        "description": "Registrar um novo Staff User no aplicativo.",
+        "tags": ["Staff"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "description": "Campos para registrar um novo Staff User",
+          "required": "true",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#components/schemas/RegisterStaffRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Membro da equipe registrado com sucesso!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#components/schemas/RegisterStaffResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Erro ao registrar membro da equipe"
+          }
+        }
+      }
+    },
+    "/staff/login": {
+      "post": {
+        "summary": "Entrar no aplicativo.",
+        "description": "Entrar no aplicativo como Staff User.",
+        "tags": ["Staff"],
+        "requestBody": {
+          "description": "Campos para entrar no aplicativo.",
+          "required": "true",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#components/schemas/LoginStaffRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Usuário entrou com sucesso!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#components/schemas/LoginStaffResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Erro ao entrar no software!"
+          }
+        }
+      }
+    },
+    "/staff/viewstaffs": {
+      "get": {
+        "summary": "Ver todos os Staffs.",
+        "description": "Ver todos os Staffs cadastrados.",
+        "tags": ["Staff"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Membros da equipe encontrados com sucesso!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#components/schemas/ViewStaffsResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Erro ao entrar no software!"
+          }
+        }
+      }
+    },
+    "/staff/detail/{userid}": {
+      "get": {
+        "summary": "Mostrar todas as informações de um usuário.",
+        "description": "Mostrar detalhes de um usuário.",
+        "tags": ["Staff"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "userid",
+            "in": "path",
+            "required": true,
+            "description": "ID do usuário a ser exibido.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Membro da equipe encontrado com sucesso!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#components/schemas/DetailStaffResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Erro ao buscar pelo usuário!"
+          }
+        }
+      }
+    },
+    "/staff/edit/{userid}": {
+      "patch": {
+        "summary": "Editar dados de um Staff User.",
+        "description": "Editar dados de um usuário pelo id.",
+        "tags": ["Staff"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "userid",
+            "in": "path",
+            "required": true,
+            "description": "ID do usuário.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Campos opicionais para editar um Staff User",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#components/schemas/EditStaffRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Membro da equipe registrado com sucesso!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#components/schemas/EditStaffResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Erro ao registrar membro da equipe"
+          }
+        }
+      }
+    },
+    "/staff/changepassword/{userid}": {
+      "patch": {
+        "summary": "Alterar a senha de um Staff User.",
+        "description": "Alterar a senha de um usuário pelo id.",
+        "tags": ["Staff"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "userid",
+            "in": "path",
+            "required": true,
+            "description": "ID do usuário.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Campos para para alterar a senha de um Staff User",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#components/schemas/ChangeStaffPasswordRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Senha alterada com sucesso!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#components/schemas/ChangeStaffPasswordResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Erro ao registrar membro da equipe"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+    "schemas": {
+      "RegisterStaffRequest": {
+        "type": "object",
+        "properties": {
+          "firstName": {
+            "type": "string",
+            "example": "admin"
+          },
+          "lastName": {
+            "type": "string",
+            "example": "admin"
+          },
+          "username": {
+            "type": "string",
+            "example": "admin"
+          },
+          "password": {
+            "type": "string"
+          },
+          "confirmPassword": {
+            "type": "string"
+          },
+          "admin_flg": {
+            "type": "boolean",
+            "example": true
+          },
+          "circ_flg": {
+            "type": "boolean",
+            "example": true
+          },
+          "circ_mbr_flg": {
+            "type": "boolean",
+            "example": true
+          },
+          "catalog_flg": {
+            "type": "boolean",
+            "example": true
+          },
+          "reports_flg": {
+            "type": "boolean",
+            "example": true
+          }
+        }
+      },
+      "RegisterStaffResponse": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "example": "success"
+          },
+          "message": {
+            "type": "string",
+            "example": "Membro da equipe registrado com sucesso!"
+          },
+          "registeredStaff": {
+            "type": "object",
+            "properties": {
+              "userid": {
+                "type": "number",
+                "example": 1
+              },
+              "firstName": {
+                "type": "string",
+                "example": "admin"
+              },
+              "lastName": {
+                "type": "string",
+                "example": "admin"
+              },
+              "username": {
+                "type": "string",
+                "example": "admin"
+              },
+              "admin_flg": {
+                "type": "boolean",
+                "example": true
+              },
+              "circ_flg": {
+                "type": "boolean",
+                "example": true
+              },
+              "circ_mbr_flg": {
+                "type": "boolean",
+                "example": true
+              },
+              "catalog_flg": {
+                "type": "boolean",
+                "example": true
+              },
+              "reports_flg": {
+                "type": "boolean",
+                "example": true
+              },
+              "suspended_flg": {
+                "type": "boolean",
+                "example": false
+              }
+            }
+          }
+        }
+      },
+      "LoginStaffRequest": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string",
+            "example": "admin"
+          },
+          "password": {
+            "type": "string"
+          }
+        }
+      },
+      "LoginStaffResponse": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "example": "success"
+          },
+          "message": {
+            "type": "string",
+            "example": "Usuário entrou com sucesso!"
+          },
+          "staffLogged": {
+            "type": "object",
+            "properties": {
+              "userid": {
+                "type": "number",
+                "example": 1
+              },
+              "admin_flg": {
+                "type": "boolean",
+                "example": true
+              },
+              "token": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      },
+      "ViewStaffsResponse": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "example": "success"
+          },
+          "message": {
+            "type": "string",
+            "example": "Membros da equipe encontrados com sucesso!"
+          },
+          "staffs": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "userid": {
+                  "type": "number",
+                  "example": 1
+                },
+                "firstName": {
+                  "type": "string",
+                  "example": "admin"
+                },
+                "lastName": {
+                  "type": "string",
+                  "example": "admin"
+                },
+                "username": {
+                  "type": "string",
+                  "example": "admin"
+                },
+                "admin_flg": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "circ_flg": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "circ_mbr_flg": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "catalog_flg": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "reports_flg": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "suspended_flg": {
+                  "type": "boolean",
+                  "example": false
+                }
+              }
+            }
+          }
+        }
+      },
+      "DetailStaffResponse": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "example": "success"
+          },
+          "message": {
+            "type": "string",
+            "example": "Membro da equipe encontrado com sucesso!"
+          },
+          "staff": {
+            "type": "object",
+            "properties": {
+              "firstName": {
+                "type": "string",
+                "example": "admin"
+              },
+              "lastName": {
+                "type": "string",
+                "example": "admin"
+              },
+              "username": {
+                "type": "string",
+                "example": "admin"
+              },
+              "admin_flg": {
+                "type": "boolean",
+                "example": true
+              },
+              "circ_flg": {
+                "type": "boolean",
+                "example": true
+              },
+              "circ_mbr_flg": {
+                "type": "boolean",
+                "example": true
+              },
+              "catalog_flg": {
+                "type": "boolean",
+                "example": true
+              },
+              "reports_flg": {
+                "type": "boolean",
+                "example": true
+              },
+              "suspended_flg": {
+                "type": "boolean",
+                "example": false
+              }
+            }
+          }
+        }
+      },
+      "EditStaffRequest": {
+        "type": "object",
+        "properties": {
+          "firstName": {
+            "type": "string",
+            "example": "admin"
+          },
+          "lastName": {
+            "type": "string",
+            "example": "admin"
+          },
+          "username": {
+            "type": "string",
+            "example": "admin"
+          },
+          "suspended_flg": {
+            "type": "boolean",
+            "example": false
+          },
+          "admin_flg": {
+            "type": "boolean",
+            "example": true
+          },
+          "circ_flg": {
+            "type": "boolean",
+            "example": true
+          },
+          "circ_mbr_flg": {
+            "type": "boolean",
+            "example": true
+          },
+          "catalog_flg": {
+            "type": "boolean",
+            "example": true
+          },
+          "reports_flg": {
+            "type": "boolean",
+            "example": true
+          }
+        }
+      },
+      "EditStaffResponse": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "example": "success"
+          },
+          "message": {
+            "type": "string",
+            "example": "Membro da equipe atualizado com sucesso!"
+          },
+          "editStaff": {
+            "type": "object",
+            "properties": {
+              "userid": {
+                "type": "number",
+                "example": 1
+              },
+              "firstName": {
+                "type": "string",
+                "example": "admin"
+              },
+              "lastName": {
+                "type": "string",
+                "example": "admin"
+              },
+              "username": {
+                "type": "string",
+                "example": "admin"
+              },
+              "admin_flg": {
+                "type": "boolean",
+                "example": true
+              },
+              "circ_flg": {
+                "type": "boolean",
+                "example": true
+              },
+              "circ_mbr_flg": {
+                "type": "boolean",
+                "example": true
+              },
+              "catalog_flg": {
+                "type": "boolean",
+                "example": true
+              },
+              "reports_flg": {
+                "type": "boolean",
+                "example": true
+              },
+              "suspended_flg": {
+                "type": "boolean",
+                "example": false
+              }
+            }
+          }
+        }
+      },
+      "ChangeStaffPasswordRequest": {
+        "type": "object",
+        "properties": {
+          "password": {
+            "type": "string"
+          },
+          "confirmPassword": {
+            "type": "string"
+          }
+        }
+      },
+      "ChangeStaffPasswordResponse": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "example": "success"
+          },
+          "message": {
+            "type": "string",
+            "example": "Senha alterada com sucesso!"
+          }
+        }
+      }
+    }
+  }
+}

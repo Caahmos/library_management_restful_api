@@ -26,7 +26,7 @@ class LoginStaffService {
 
     return {
       userid: staffExists.userid,
-      admin: staffExists.admin_flg,
+      admin_flg: staffExists.admin_flg,
       token: token
     };
   }
