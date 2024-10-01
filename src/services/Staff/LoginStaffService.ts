@@ -12,6 +12,7 @@ class LoginStaffService {
     });
 
     if (!staffExists) throw new Error("Usuário e/ou senha incorretos!");
+    if(staffExists.suspended_flg) throw new Error("Essa conta está suspensa, entre em contato com o suporte para liberar-la novamente!");
 
     await Crypto.compare(loginStaffData.password, staffExists.password);
 

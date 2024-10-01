@@ -105,7 +105,7 @@
             }
           },
           "422": {
-            "description": "Erro ao entrar no software!"
+            "description": "Erro ao buscar pelos membros da equipe. Tente novamente mais tarde!"
           }
         }
       }
@@ -241,6 +241,233 @@
           },
           "422": {
             "description": "Erro ao registrar membro da equipe"
+          }
+        }
+      }
+    },
+    "/staff/delete/{userid}": {
+      "delete": {
+        "summary": "Deletar um Staff User.",
+        "description": "Deletar um usuário pelo id.",
+        "tags": ["Staff"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "userid",
+            "in": "path",
+            "required": true,
+            "description": "ID do usuário.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Usuário deletado com sucesso!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#components/schemas/DeleteStaffResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Erro ao deletar membro da equipe"
+          }
+        }
+      }
+    },
+    "/mbrclassifydm/register": {
+      "post": {
+        "summary": "Registrar novo tipo de usuário",
+        "description": "Registrar um novo tipo de usuário no aplicativo.",
+        "tags": ["Member_Classify_DM"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "description": "Campos para registrar um novo tipo de usuário",
+          "required": "true",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#components/schemas/RegisterMbrClassifyRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Membro da equipe registrado com sucesso!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#components/schemas/RegisterMbrClassifyResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Erro ao registrar membro da equipe"
+          }
+        }
+      }
+    },
+    "/mbrclassifydm/viewall": {
+      "get": {
+        "summary": "Ver todos os tipos de usuários.",
+        "description": "Ver todos os tipos de usuários cadastrados.",
+        "tags": ["Member_Classify_DM"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Tipos de usuários encontrados com sucesso!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#components/schemas/ViewClassifyResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Erro ao buscar por tipos de membros"
+          }
+        }
+      }
+    },
+    "/mbrclassifydm/detail/{code}": {
+      "get": {
+        "summary": "Mostrar todas as informações de um tipo de usuário.",
+        "description": "Mostrar detalhes de um tipo de usuário.",
+        "tags": ["Member_Classify_DM"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "code",
+            "in": "path",
+            "required": true,
+            "description": "ID do tipo de usuário a ser exibido.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "tipo de usuário da equipe encontrado com sucesso!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#components/schemas/DetailClassifyResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Erro ao buscar pelo tipo de usuário!"
+          }
+        }
+      }
+    },
+    "/mbrclassifydm/edit/{code}": {
+      "patch": {
+        "summary": "Editar dados de um tipo de usuário.",
+        "description": "Editar dados de um tipo de usuário pelo id.",
+        "tags": ["Member_Classify_DM"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "code",
+            "in": "path",
+            "required": true,
+            "description": "ID do tipo de usuário.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Campos opicionais para editar um tipo de membro",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#components/schemas/EditMbrClassifyRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Tipo de membro da equipe atualizado com sucesso!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#components/schemas/EditMbrClassifyResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Erro ao atualizar um tipo de membro da equipe"
+          }
+        }
+      }
+    },
+    "/mbrclassifydm/delete/{code}": {
+      "delete": {
+        "summary": "Deletar um tipo de usuário.",
+        "description": "Deletar um tipo de usuário pelo code.",
+        "tags": ["Member_Classify_DM"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "code",
+            "in": "path",
+            "required": true,
+            "description": "ID do tipo de usuário.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Tipo de usuário deletado com sucesso!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#components/schemas/DeleteCategoryResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Erro ao deletar tipo usuário"
           }
         }
       }
@@ -564,7 +791,7 @@
             "type": "string",
             "example": "Membro da equipe atualizado com sucesso!"
           },
-          "editStaff": {
+          "editedStaff": {
             "type": "object",
             "properties": {
               "userid": {
@@ -632,6 +859,197 @@
           "message": {
             "type": "string",
             "example": "Senha alterada com sucesso!"
+          }
+        }
+      },
+      "DeleteStaffResponse": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "example": "success"
+          },
+          "message": {
+            "type": "string",
+            "example": "Membro da equipe deletado com sucesso!"
+          }
+        }
+      },
+      "RegisterMbrClassifyRequest": {
+        "type": "object",
+        "properties": {
+          "description": {
+            "type": "string",
+            "example": "Professor"
+          },
+          "max_fines": {
+            "type": "number",
+            "example": 0
+          }
+        }
+      },
+      "RegisterMbrClassifyResponse": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "example": "success"
+          },
+          "message": {
+            "type": "string",
+            "example": "Tipo de membro registrado com sucesso!"
+          },
+          "registeredClassify": {
+            "type": "object",
+            "properties": {
+              "code": {
+                "type": "number",
+                "example": 1
+              },
+              "description": {
+                "type": "string",
+                "example": "Professor"
+              },
+              "default_flg": {
+                "type": "boolean",
+                "example": false
+              },
+              "max_fines": {
+                "type": "number",
+                "example": 0
+              }
+            }
+          }
+        }
+      },
+      "ViewClassifyResponse": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "example": "success"
+          },
+          "message": {
+            "type": "string",
+            "example": "Tipos de membros da equipe encontrados com sucesso!"
+          },
+          "classifies": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "number",
+                  "example": 1
+                },
+                "description": {
+                  "type": "string",
+                  "example": "Professor"
+                },
+                "default_flg": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "max_fines": {
+                  "type": "number",
+                  "example": 0
+                }
+              }
+            }
+          }
+        }
+      },
+      "DetailClassifyResponse": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "example": "success"
+          },
+          "message": {
+            "type": "string",
+            "example": "Tipo de membro da equipe encontrado com sucesso!"
+          },
+          "classify": {
+            "type": "object",
+            "properties": {
+              "code": {
+                "type": "number",
+                "example": 1
+              },
+              "description": {
+                "type": "string",
+                "example": "Professor"
+              },
+              "default_flg": {
+                "type": "boolean",
+                "example": false
+              },
+              "max_fines": {
+                "type": "number",
+                "example": 0
+              }
+            }
+          }
+        }
+      },
+      "EditMbrClassifyRequest": {
+        "type": "object",
+        "properties": {
+          "description": {
+            "type": "string",
+            "example": "Professor"
+          },
+          "max_fines": {
+            "type": "number",
+            "example": 0
+          }
+        }
+      },
+      "EditMbrClassifyResponse": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "example": "success"
+          },
+          "message": {
+            "type": "string",
+            "example": "Tipo de membro da equipe atualizado com sucesso!"
+          },
+          "editedClassify": {
+            "type": "object",
+            "properties": {
+              "code": {
+                "type": "number",
+                "example": 1
+              },
+              "description": {
+                "type": "string",
+                "example": "Professor"
+              },
+              "default_flg": {
+                "type": "boolean",
+                "example": false
+              },
+              "max_fines": {
+                "type": "number",
+                "example": 0
+              }
+            }
+          }
+        }
+      },
+      "DeleteCategoryResponse": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "example": "success"
+          },
+          "message": {
+            "type": "string",
+            "example": "Tipo de usuário deletado com sucesso!"
           }
         }
       }

@@ -5,6 +5,7 @@ import cors from "cors";
 import StaffRoutes from "./routes/StaffRoutes";
 import swaggerUi from "swagger-ui-express";
 import swaggerDocument from '../swagger.json';
+import MemberClassifyDM from "./routes/MemberClassifyDM";
 dotenv.config();
 
 class Server {
@@ -28,6 +29,7 @@ class Server {
 
   configRoutes() {
     this.app.use("/staff", new StaffRoutes().router);
+    this.app.use("/mbrclassifydm", new MemberClassifyDM().router);
     this.documentation();
   }
 
