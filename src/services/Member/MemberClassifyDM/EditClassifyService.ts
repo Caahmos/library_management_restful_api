@@ -3,13 +3,13 @@ import { EditClassifyRequest } from "../../../model/Member/MemberClassifyDM/Edit
 
 class EditClassifyService {
   static async execute(editClassifyData: EditClassifyRequest) {
-    const staffExists = await prisma.memberClassifyDM.findFirst({
+    const classifyExists = await prisma.memberClassifyDM.findFirst({
       where: {
         code: editClassifyData.code,
       },
     });
 
-    if (!staffExists?.code)
+    if (!classifyExists?.code)
       throw new Error("Nenhuma classificação com esse id encontrado!");
 
     if (editClassifyData.description) {
@@ -22,14 +22,14 @@ class EditClassifyService {
       if (usernameExists) throw new Error("Essa descrição já está em uso!");
     }
 
-    const editedStaff = await prisma.memberClassifyDM.update({
+    const editedClassify = await prisma.memberClassifyDM.update({
       where: {
         code: editClassifyData.code,
       },
       data: editClassifyData,
     });
 
-    return editedStaff;
+    return editedClassify;
   }
 }
 

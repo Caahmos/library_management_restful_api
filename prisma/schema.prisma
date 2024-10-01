@@ -75,7 +75,7 @@ model MemberClassifyDM {
 model MemberFieldDM {
   code          String        @id
   description   String        @unique
-  default_flg   Boolean
+  default_flg   Boolean       @default(false)
   member_fields MemberField[]
 
   @@map("member_fields_dm")

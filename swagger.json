@@ -371,7 +371,7 @@
         ],
         "responses": {
           "201": {
-            "description": "tipo de usuário da equipe encontrado com sucesso!",
+            "description": "Tipo de usuário da equipe encontrado com sucesso!",
             "content": {
               "application/json": {
                 "schema": {
@@ -468,6 +468,195 @@
           },
           "422": {
             "description": "Erro ao deletar tipo usuário"
+          }
+        }
+      }
+    },
+    "/mbrfieldsdm/register": {
+      "post": {
+        "summary": "Registrar novo campo de usuário",
+        "description": "Registrar um novo campo de usuário no aplicativo.",
+        "tags": ["Member_Fields_DM"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "description": "Campos para registrar um novo campo de usuário",
+          "required": "true",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#components/schemas/RegisterMbrFieldRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Campo de usuário registrado com sucesso!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#components/schemas/RegisterMbrFieldResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Erro ao registrar campo de usuário"
+          }
+        }
+      }
+    },
+    "/mbrfieldsdm/viewfields": {
+      "get": {
+        "summary": "Ver todos os campos de usuários.",
+        "description": "Ver todos os campos de usuários cadastrados.",
+        "tags": ["Member_Fields_DM"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Campos de usuário encontrados com sucesso!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#components/schemas/ViewFieldsResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Erro ao buscar por campos de membros"
+          }
+        }
+      }
+    },
+    "/mbrfieldsdm/detail/{code}": {
+      "get": {
+        "summary": "Mostrar todas as informações de um campo de usuário.",
+        "description": "Mostrar detalhes de um campo de usuário.",
+        "tags": ["Member_Fields_DM"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "code",
+            "in": "path",
+            "required": true,
+            "description": "ID do campo de usuário a ser exibido.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Campo de usuário da equipe encontrado com sucesso!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#components/schemas/DetailFieldResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Erro ao buscar pelo campo de usuário!"
+          }
+        }
+      }
+    },
+    "/mbrfieldsdm/edit/{code}": {
+      "patch": {
+        "summary": "Editar dados de um campo de usuário.",
+        "description": "Editar dados de um campo de usuário pelo id.",
+        "tags": ["Member_Fields_DM"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "code",
+            "in": "path",
+            "required": true,
+            "description": "ID do tipo de usuário.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Campos opicionais para editar um campo de membro",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#components/schemas/EditMbrFieldRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Campo de usuário atualizado com sucesso!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#components/schemas/EditMbrFieldResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Erro ao atualizar um tipo de usuário"
+          }
+        }
+      }
+    },
+    "/mbrfieldsdm/delete/{code}": {
+      "delete": {
+        "summary": "Deletar um campo de usuário.",
+        "description": "Deletar um campo de usuário pelo code.",
+        "tags": ["Member_Fields_DM"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "code",
+            "in": "path",
+            "required": true,
+            "description": "ID do campo de usuário.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Campo de usuário deletado com sucesso!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#components/schemas/DeleteFieldResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Erro ao deletar campo usuário"
           }
         }
       }
@@ -1050,6 +1239,168 @@
           "message": {
             "type": "string",
             "example": "Tipo de usuário deletado com sucesso!"
+          }
+        }
+      },
+      "RegisterMbrFieldRequest": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "example": "Professor"
+          },
+          "description": {
+            "type": "string",
+            "example": "professor"
+          }
+        }
+      },
+      "RegisterMbrFieldResponse": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "example": "success"
+          },
+          "message": {
+            "type": "string",
+            "example": "Campo de usuário registrado com sucesso!"
+          },
+          "registeredField": {
+            "type": "object",
+            "properties": {
+              "code": {
+                "type": "string",
+                "example": "Professor"
+              },
+              "description": {
+                "type": "string",
+                "example": "Professor"
+              },
+              "default_flg": {
+                "type": "boolean",
+                "example": false
+              }
+            }
+          }
+        }
+      },
+      "ViewFieldsResponse": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "example": "success"
+          },
+          "message": {
+            "type": "string",
+            "example": "Campos de usuários encontrados com sucesso!"
+          },
+          "fields": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "string",
+                  "example": "Professor"
+                },
+                "description": {
+                  "type": "string",
+                  "example": "Professor"
+                },
+                "default_flg": {
+                  "type": "boolean",
+                  "example": false
+                }
+              }
+            }
+          }
+        }
+      },
+      "DetailFieldResponse": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "example": "success"
+          },
+          "message": {
+            "type": "string",
+            "example": "Campo de usuário encontrado com sucesso!"
+          },
+          "field": {
+            "type": "object",
+            "properties": {
+              "code": {
+                "type": "string",
+                "example": "Professor"
+              },
+              "description": {
+                "type": "string",
+                "example": "Professor"
+              },
+              "default_flg": {
+                "type": "boolean",
+                "example": false
+              }
+            }
+          }
+        }
+      },
+      "EditMbrFieldRequest": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "example": "Professor"
+          },
+          "description": {
+            "type": "string",
+            "example": "Professor"
+          }
+        }
+      },
+      "EditMbrFieldResponse": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "example": "success"
+          },
+          "message": {
+            "type": "string",
+            "example": "Campo de usuário atualizado com sucesso!"
+          },
+          "editedField": {
+            "type": "object",
+            "properties": {
+              "code": {
+                "type": "Professor",
+                "example": "Professor"
+              },
+              "description": {
+                "type": "string",
+                "example": "Professor"
+              },
+              "default_flg": {
+                "type": "boolean",
+                "example": false
+              }
+            }
+          }
+        }
+      },
+      "DeleteFieldResponse": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "example": "success"
+          },
+          "message": {
+            "type": "string",
+            "example": "Campo de usuário deletado com sucesso!"
           }
         }
       }

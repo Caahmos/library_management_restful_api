@@ -10,7 +10,7 @@ class DetailClassifyService{
             }
         );
 
-        if(!classify) throw new Error('Classificação não encontrada!');
+        if(!classify) throw new Error('Campo não encontrado!');
 
         return classify;
     }
