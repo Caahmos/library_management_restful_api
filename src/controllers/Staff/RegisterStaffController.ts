@@ -14,11 +14,11 @@ class RegisterStaffController {
 
     registerStaffData.last_change_userid = userId;
 
-    if (!registerStaffData.firstName)
+    if (!registerStaffData.first_name)
       return res
         .status(422)
         .json({ type: "error", message: "Informe o nome!" });
-    if (!registerStaffData.lastName)
+    if (!registerStaffData.last_name)
       return res
         .status(422)
         .json({ type: "error", message: "Informe o sobrenome!" });

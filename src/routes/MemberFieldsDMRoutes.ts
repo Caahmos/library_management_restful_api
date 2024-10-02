@@ -6,7 +6,7 @@ import DetailFieldController from '../controllers/Member/MemberFieldsDM/DetailFi
 import EditFieldController from '../controllers/Member/MemberFieldsDM/EditFieldController';
 import DeleteFieldController from '../controllers/Member/MemberFieldsDM/DeleteFieldController';
 
-class MemberFieldsDM{
+class MemberFieldsDMRoutes{
     public router = express.Router();
 
     constructor(){
@@ -34,4 +34,4 @@ class MemberFieldsDM{
     }
 };
 
-export default MemberFieldsDM;
+export default MemberFieldsDMRoutes;

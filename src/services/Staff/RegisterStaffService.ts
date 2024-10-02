@@ -25,8 +25,8 @@ class RegisterStaffService {
       data: registerStaffData,
       select: {
         userid: true,
-        firstName: true,
-        lastName: true,
+        first_name: true,
+        last_name: true,
         username: true,
         admin_flg: true,
         circ_flg: true,

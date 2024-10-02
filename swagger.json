@@ -660,6 +660,44 @@
           }
         }
       }
+    },
+    "/member/register": {
+      "post": {
+        "summary": "Registrar novo membro",
+        "description": "Registrar um novo membro no aplicativo.",
+        "tags": ["Member"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "description": "Campos para registrar um novo membro",
+          "required": "true",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#components/schemas/RegisterMemberRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Membro registrado com sucesso!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#components/schemas/RegisterMemberResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Erro ao registrar membro da equipe"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -674,11 +712,11 @@
       "RegisterStaffRequest": {
         "type": "object",
         "properties": {
-          "firstName": {
+          "first_name": {
             "type": "string",
             "example": "admin"
           },
-          "lastName": {
+          "last_name": {
             "type": "string",
             "example": "admin"
           },
@@ -732,11 +770,11 @@
                 "type": "number",
                 "example": 1
               },
-              "firstName": {
+              "first_name": {
                 "type": "string",
                 "example": "admin"
               },
-              "lastName": {
+              "last_name": {
                 "type": "string",
                 "example": "admin"
               },
@@ -833,11 +871,11 @@
                   "type": "number",
                   "example": 1
                 },
-                "firstName": {
+                "first_name": {
                   "type": "string",
                   "example": "admin"
                 },
-                "lastName": {
+                "last_name": {
                   "type": "string",
                   "example": "admin"
                 },
@@ -888,11 +926,11 @@
           "staff": {
             "type": "object",
             "properties": {
-              "firstName": {
+              "first_name": {
                 "type": "string",
                 "example": "admin"
               },
-              "lastName": {
+              "last_name": {
                 "type": "string",
                 "example": "admin"
               },
@@ -931,11 +969,11 @@
       "EditStaffRequest": {
         "type": "object",
         "properties": {
-          "firstName": {
+          "first_name": {
             "type": "string",
             "example": "admin"
           },
-          "lastName": {
+          "last_name": {
             "type": "string",
             "example": "admin"
           },
@@ -987,11 +1025,11 @@
                 "type": "number",
                 "example": 1
               },
-              "firstName": {
+              "first_name": {
                 "type": "string",
                 "example": "admin"
               },
-              "lastName": {
+              "last_name": {
                 "type": "string",
                 "example": "admin"
               },
@@ -1401,6 +1439,115 @@
           "message": {
             "type": "string",
             "example": "Campo de usuário deletado com sucesso!"
+          }
+        }
+      },
+      "RegisterMemberRequest": {
+        "type": "object",
+        "properties": {
+          "first_name": {
+            "type": "string",
+            "example": "João"
+          },
+          "last_name": {
+            "type": "string",
+            "example": "Oliveira"
+          },
+          "barcode_nmbr": {
+            "type": "string",
+            "example": "24101"
+          },
+          "address": {
+            "type": "string",
+            "example": "Av. Brasil, 801 - Remanso - Hortolândia/SP"
+          },
+          "home_phone": {
+            "type": "string",
+            "example": "(19) 99999-9999"
+          },
+          "work_phone": {
+            "type": "string",
+            "example": "(19) 99999-9999"
+          },
+          "email": {
+            "type": "string",
+            "example": "joao@gmail.com"
+          },
+          "code": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "example": "Aluno"
+            }
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "example": "1º MIA"
+            }
+          },
+          "classification": {
+            "type": "number",
+            "example": 2
+          }
+        }
+      },
+      "RegisterMemberResponse": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "example": "success"
+          },
+          "message": {
+            "type": "string",
+            "example": "Membro registrado com sucesso!"
+          },
+          "registeredMember": {
+            "type": "object",
+            "properties": {
+              "mbrid": {
+                "type": "number",
+                "example": 27
+              },
+              "first_name": {
+                "type": "string",
+                "example": "João"
+              },
+              "last_name": {
+                "type": "string",
+                "example": "Oliveira"
+              },
+              "barcode_nmbr": {
+                "type": "string",
+                "example": "24101"
+              },
+              "address": {
+                "type": "string",
+                "example": "Av. Brasil, 801 - Remanso - Hortolândia/SP"
+              },
+              "home_phone": {
+                "type": "string",
+                "example": "(19) 99999-9999"
+              },
+              "work_phone": {
+                "type": "string",
+                "example": "(19) 99999-9999"
+              },
+              "email": {
+                "type": "string",
+                "example": "joao@gmail.com"
+              },
+              "last_change_userid": {
+                "type": "number",
+                "example": 1
+              },
+              "classification": {
+                "type": "number",
+                "example": 2
+              }
+            }
           }
         }
       }

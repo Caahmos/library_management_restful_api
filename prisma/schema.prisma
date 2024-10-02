@@ -15,8 +15,8 @@ datasource db {
 
 model Staff {
   userid             Int             @id @default(autoincrement())
-  firstName          String
-  lastName           String
+  first_name         String
+  last_name          String
   username           String          @unique
   password           String
   suspended_flg      Boolean         @default(false)
@@ -40,13 +40,13 @@ model Staff {
 
 model Member {
   mbrid              Int                @id @default(autoincrement())
-  barcode_nmbr       Int                @unique
+  barcode_nmbr       String             @unique @db.VarChar(20)
   last_change_userid Int
-  firstName          String
-  lastName           String
-  address            String
-  home_phone         Int
-  work_phone         Int
+  first_name         String
+  last_name          String
+  address            String?
+  home_phone         String?
+  work_phone         String?
   email              String             @unique
   code               MemberClassifyDM   @relation(fields: [classification], references: [code])
   staff              Staff              @relation(fields: [last_change_userid], references: [userid])
@@ -54,7 +54,7 @@ model Member {
   member_account     MemberAccount[]
   biblio_copy        BiblioCopy[]
   biblio_status_hist BiblioStatusHist[]
-  member_field       MemberField[]
+  member_fields      MemberField[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())

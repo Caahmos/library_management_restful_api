@@ -6,7 +6,7 @@ import EditClassifyController from '../controllers/Member/MemberClassifyDM/EditC
 import DetailClassifyController from '../controllers/Member/MemberClassifyDM/DetailClassifyController';
 import DeleteClassifyController from '../controllers/Member/MemberClassifyDM/DeleteClassifyController';
 
-class MemberClassifyDM{
+class MemberClassifyDMRoutes{
     public router = express.Router();
 
     constructor(){
@@ -34,4 +34,4 @@ class MemberClassifyDM{
     }
 };
 
-export default MemberClassifyDM;
+export default MemberClassifyDMRoutes;

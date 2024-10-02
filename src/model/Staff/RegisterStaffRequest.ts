@@ -1,6 +1,6 @@
 export interface RegisterStaffRequest{
-    firstName: string
-    lastName: string
+    first_name: string
+    last_name: string
     username: string
     password: string
     last_change_userid?: number
