@@ -87,7 +87,7 @@ model MemberField {
   code                 String
   data                 String
   member_field_dm_code MemberFieldDM @relation(fields: [code], references: [code])
-  member               Member        @relation(fields: [mbrid], references: [mbrid])
+  member               Member        @relation(fields: [mbrid], references: [mbrid], onDelete: Cascade)
 
   @@map("member_fields")
 }

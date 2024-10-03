@@ -1,6 +1,10 @@
 import express from 'express';
 import { isAuthenticated } from '../middlewares/isAuthenticated';
 import RegisterMemberController from '../controllers/Member/Member/RegisterMemberController';
+import ViewMembersController from '../controllers/Member/Member/ViewMembersController';
+import DetailMemberController from '../controllers/Member/Member/DetailMemberController';
+import EditMemberController from '../controllers/Member/Member/EditMemberController';
+import DeleteMemberController from '../controllers/Member/Member/DeleteMemberController';
 
 class MemberRoutes{
     public router = express.Router();
@@ -17,12 +21,16 @@ class MemberRoutes{
     }
 
     getRoutes(){
+        this.router.get('/viewmembers', isAuthenticated, ViewMembersController.handle);
+        this.router.get('/detail/:mbrid', isAuthenticated, DetailMemberController.handle);
     }
 
     patchRoutes(){
+        this.router.patch('/edit/:mbrid', isAuthenticated, EditMemberController.handle);
     }
 
     deleteRoutes(){
+        this.router.delete('/delete/:mbrid', isAuthenticated, DeleteMemberController.handle);
     }
 };
 
