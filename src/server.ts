@@ -8,6 +8,7 @@ import swaggerDocument from '../swagger.json';
 import MemberClassifyDMRoutes from "./routes/MemberClassifyDMRoutes";
 import MemberFieldsDMRoutes from "./routes/MemberFieldsDMRoutes";
 import MemberRoutes from "./routes/MemberRoutes";
+import MaterialRoutes from "./routes/MaterialRoutes";
 dotenv.config();
 
 class Server {
@@ -32,6 +33,7 @@ class Server {
   configRoutes() {
     this.app.use("/staff", new StaffRoutes().router);
     this.app.use("/member", new MemberRoutes().router);
+    this.app.use("/material", new MaterialRoutes().router);
     this.app.use("/mbrclassifydm", new MemberClassifyDMRoutes().router);
     this.app.use("/mbrfieldsdm", new MemberFieldsDMRoutes().router);
     this.documentation();

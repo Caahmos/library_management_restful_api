@@ -699,6 +699,71 @@
         }
       }
     },
+    "/member/find": {
+      "get": {
+        "summary": "Buscar por um membro",
+        "description": "Buscar um membro pelo número do cartão, nome ou email.",
+        "tags": ["Member"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "method",
+            "required": true,
+            "description": "Método de pesquisa (name, barcode, email)",
+            "schema": {
+              "type": "string",
+              "enum": ["name", "barcode", "email"]
+            }
+          },
+          {
+            "in": "query",
+            "name": "data",
+            "required": true,
+            "description": "Valor para buscar (nome, número do cartão ou email)",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Membro encontrado com sucesso!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#components/schemas/FindMemberResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Erro ao buscar o membro",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "type": {
+                      "type": "string",
+                      "example": "error"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Erro ao buscar membro."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/member/viewmembers": {
       "get": {
         "summary": "Ver todos os membros",
@@ -846,71 +911,6 @@
           },
           "422": {
             "description": "Erro ao deletar o membro"
-          }
-        }
-      }
-    },
-    "/member/find": {
-      "get": {
-        "summary": "Buscar por um membro",
-        "description": "Buscar um membro pelo número do cartão, nome ou email.",
-        "tags": ["Member"],
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
-        "parameters": [
-          {
-            "in": "query",
-            "name": "method",
-            "required": true,
-            "description": "Método de pesquisa (name, barcode, email)",
-            "schema": {
-              "type": "string",
-              "enum": ["name", "barcode", "email"]
-            }
-          },
-          {
-            "in": "query",
-            "name": "data",
-            "required": true,
-            "description": "Valor para buscar (nome, número do cartão ou email)",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Membro encontrado com sucesso!",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#components/schemas/FindMemberResponse"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Erro ao buscar o membro",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "type": {
-                      "type": "string",
-                      "example": "error"
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Erro ao buscar membro."
-                    }
-                  }
-                }
-              }
-            }
           }
         }
       }
