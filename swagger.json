@@ -698,7 +698,223 @@
           }
         }
       }
-    }
+    },
+    "/member/viewmembers": {
+      "get": {
+        "summary": "Ver todos os membros",
+        "description": "Ver todos os membros cadastrados.",
+        "tags": ["Member"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Membros encontrados com sucesso!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#components/schemas/ViewMembersResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Erro ao buscar por membros"
+          }
+        }
+      }
+    },
+    "/member/detail/{mbrid}": {
+      "get": {
+        "summary": "Mostrar todas as informações de um membro.",
+        "description": "Mostrar detalhes de um membro.",
+        "tags": ["Member"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "mbrid",
+            "in": "path",
+            "required": true,
+            "description": "Id do membro a ser encontrado.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Membro encontrado com sucesso!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#components/schemas/DetailMemberResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Erro ao buscar pelo membro!"
+          }
+        }
+      }
+    },
+    "/member/edit/{mbrid}": {
+      "patch": {
+        "summary": "Editar dados de um membro.",
+        "description": "Editar dados de um membro pelo id.",
+        "tags": ["Member"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "mbrid",
+            "in": "path",
+            "required": true,
+            "description": "ID do membro.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Campos opicionais para editar um membro",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#components/schemas/EditMemberRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Membro atualizado com sucesso!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#components/schemas/EditMemberResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Erro ao atualizar o membro"
+          }
+        }
+      }
+    },
+    "/member/delete/{mbrid}": {
+      "delete": {
+        "summary": "Deletar um membro.",
+        "description": "Deletar um membro pelo code.",
+        "tags": ["Member"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "mbrid",
+            "in": "path",
+            "required": true,
+            "description": "ID do membro.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Membro deletado com sucesso!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#components/schemas/DeleteMemberResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Erro ao deletar o membro"
+          }
+        }
+      }
+    },
+    "/member/find": {
+      "get": {
+        "summary": "Buscar por um membro",
+        "description": "Buscar um membro pelo número do cartão, nome ou email.",
+        "tags": ["Member"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "method",
+            "required": true,
+            "description": "Método de pesquisa (name, barcode, email)",
+            "schema": {
+              "type": "string",
+              "enum": ["name", "barcode", "email"]
+            }
+          },
+          {
+            "in": "query",
+            "name": "data",
+            "required": true,
+            "description": "Valor para buscar (nome, número do cartão ou email)",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Membro encontrado com sucesso!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#components/schemas/FindMemberResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Erro ao buscar o membro",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "type": {
+                      "type": "string",
+                      "example": "error"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Erro ao buscar membro."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }    
   },
   "components": {
     "securitySchemes": {
@@ -1546,6 +1762,321 @@
               "classification": {
                 "type": "number",
                 "example": 2
+              }
+            }
+          }
+        }
+      },
+      "ViewMembersResponse": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "example": "success"
+          },
+          "message": {
+            "type": "string",
+            "example": "Membros encontrados com sucesso!"
+          },
+          "members": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "mbrid": {
+                  "type": "number",
+                  "example": 27
+                },
+                "first_name": {
+                  "type": "string",
+                  "example": "João"
+                },
+                "last_name": {
+                  "type": "string",
+                  "example": "Oliveira"
+                },
+                "barcode_nmbr": {
+                  "type": "string",
+                  "example": "24101"
+                },
+                "address": {
+                  "type": "string",
+                  "example": "Av. Brasil, 801 - Remanso - Hortolândia/SP"
+                },
+                "home_phone": {
+                  "type": "string",
+                  "example": "(19) 99999-9999"
+                },
+                "work_phone": {
+                  "type": "string",
+                  "example": "(19) 99999-9999"
+                },
+                "email": {
+                  "type": "string",
+                  "example": "joao@gmail.com"
+                },
+                "last_change_userid": {
+                  "type": "number",
+                  "example": 1
+                },
+                "classification": {
+                  "type": "number",
+                  "example": 2
+                }
+              }
+            }
+          }
+        }
+      },
+      "DetailMemberResponse": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "example": "success"
+          },
+          "message": {
+            "type": "string",
+            "example": "Membro encontrado com sucesso!"
+          },
+          "member": {
+            "type": "object",
+            "properties": {
+              "mbrid": {
+                "type": "number",
+                "example": 27
+              },
+              "first_name": {
+                "type": "string",
+                "example": "João"
+              },
+              "last_name": {
+                "type": "string",
+                "example": "Oliveira"
+              },
+              "barcode_nmbr": {
+                "type": "string",
+                "example": "24101"
+              },
+              "address": {
+                "type": "string",
+                "example": "Av. Brasil, 801 - Remanso - Hortolândia/SP"
+              },
+              "home_phone": {
+                "type": "string",
+                "example": "(19) 99999-9999"
+              },
+              "work_phone": {
+                "type": "string",
+                "example": "(19) 99999-9999"
+              },
+              "email": {
+                "type": "string",
+                "example": "joao@gmail.com"
+              },
+              "last_change_userid": {
+                "type": "number",
+                "example": 1
+              },
+              "classification": {
+                "type": "number",
+                "example": 2
+              }
+            }
+          }
+        }
+      },
+      "EditMemberRequest": {
+        "type": "object",
+        "properties": {
+          "first_name": {
+            "type": "string",
+            "example": "João"
+          },
+          "last_name": {
+            "type": "string",
+            "example": "Oliveira"
+          },
+          "barcode_nmbr": {
+            "type": "string",
+            "example": "24101"
+          },
+          "address": {
+            "type": "string",
+            "example": "Av. Brasil, 801 - Remanso - Hortolândia/SP"
+          },
+          "home_phone": {
+            "type": "string",
+            "example": "(19) 99999-9999"
+          },
+          "work_phone": {
+            "type": "string",
+            "example": "(19) 99999-9999"
+          },
+          "email": {
+            "type": "string",
+            "example": "joao@gmail.com"
+          },
+          "code": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "example": "Aluno"
+            }
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "example": "1º MIA"
+            }
+          },
+          "classification": {
+            "type": "number",
+            "example": 2
+          }
+        }
+      },
+      "EditMemberResponse": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "example": "success"
+          },
+          "message": {
+            "type": "string",
+            "example": "Membro atualizado com sucesso!"
+          },
+          "editedMember": {
+            "type": "object",
+            "properties": {
+              "mbrid": {
+                "type": "number",
+                "example": 27
+              },
+              "first_name": {
+                "type": "string",
+                "example": "João"
+              },
+              "last_name": {
+                "type": "string",
+                "example": "Oliveira"
+              },
+              "barcode_nmbr": {
+                "type": "string",
+                "example": "24101"
+              },
+              "address": {
+                "type": "string",
+                "example": "Av. Brasil, 801 - Remanso - Hortolândia/SP"
+              },
+              "home_phone": {
+                "type": "string",
+                "example": "(19) 99999-9999"
+              },
+              "work_phone": {
+                "type": "string",
+                "example": "(19) 99999-9999"
+              },
+              "email": {
+                "type": "string",
+                "example": "joao@gmail.com"
+              },
+              "last_change_userid": {
+                "type": "number",
+                "example": 1
+              },
+              "classification": {
+                "type": "number",
+                "example": 2
+              }
+            }
+          }
+        }
+      },
+      "DeleteMemberResponse": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "example": "success"
+          },
+          "message": {
+            "type": "string",
+            "example": "Membro deletado com sucesso!"
+          }
+        }
+      },
+      "FindMemberRequest": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "string",
+            "example": "Cauã"
+          },
+          "method": {
+            "type": "string",
+            "example": "name"
+          }
+        }
+      },
+      "FindMemberResponse": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "example": "success"
+          },
+          "message": {
+            "type": "string",
+            "example": "Membro encontrado com sucesso!"
+          },
+          "members": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "mbrid": {
+                  "type": "number",
+                  "example": 27
+                },
+                "first_name": {
+                  "type": "string",
+                  "example": "João"
+                },
+                "last_name": {
+                  "type": "string",
+                  "example": "Oliveira"
+                },
+                "barcode_nmbr": {
+                  "type": "string",
+                  "example": "24101"
+                },
+                "address": {
+                  "type": "string",
+                  "example": "Av. Brasil, 801 - Remanso - Hortolândia/SP"
+                },
+                "home_phone": {
+                  "type": "string",
+                  "example": "(19) 99999-9999"
+                },
+                "work_phone": {
+                  "type": "string",
+                  "example": "(19) 99999-9999"
+                },
+                "email": {
+                  "type": "string",
+                  "example": "joao@gmail.com"
+                },
+                "last_change_userid": {
+                  "type": "number",
+                  "example": 1
+                },
+                "classification": {
+                  "type": "number",
+                  "example": 2
+                }
               }
             }
           }

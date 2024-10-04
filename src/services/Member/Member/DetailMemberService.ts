@@ -10,7 +10,7 @@ class DetailMemberService{
             }
         );
 
-        if(!detailedMember) throw new Error('Classificação não encontrada!');
+        if(!detailedMember) throw new Error('Membro não encontrado!');
 
         return detailedMember;
     }

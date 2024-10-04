@@ -12,8 +12,8 @@ class DetailMemberController{
         if(!userroles.circ_mbr_flg) return res.status(422).json({ type: 'error', message: 'Usuário não tem permissão!'});
 
         try{
-            const field = await DetailMemberService.execute(mbrid);
-            res.status(200).json({ type: 'success', message: 'Membro encontrado com sucesso!', field});
+            const member = await DetailMemberService.execute(mbrid);
+            res.status(200).json({ type: 'success', message: 'Membro encontrado com sucesso!', member});
         }catch(err: any){
             res.status(422).json({ type: 'error', message: err.message});
         };
