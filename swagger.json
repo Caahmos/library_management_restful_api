@@ -663,7 +663,7 @@
     },
     "/member/register": {
       "post": {
-        "summary": "Registrar novo membro",
+        "summary": "Registrar um novo membro",
         "description": "Registrar um novo membro no aplicativo.",
         "tags": ["Member"],
         "security": [
@@ -914,7 +914,195 @@
           }
         }
       }
-    }    
+    },
+    "/material/register": {
+      "post": {
+        "summary": "Registrar um material",
+        "description": "Registrar um material no aplicativo, incluindo o upload de uma imagem.",
+        "tags": ["Material"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "description": "Campos para registrar um material",
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#components/schemas/RegisterMaterialRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Material registrado com sucesso!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RegisterMaterialResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Erro ao registrar material"
+          }
+        }
+      }
+    },
+    "/material/viewmaterials": {
+      "get": {
+        "summary": "Ver todos os materiais",
+        "description": "Ver todos os materiais cadastrados.",
+        "tags": ["Material"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Materiais encontrados com sucesso!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#components/schemas/ViewMaterialResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Erro ao buscar por materiais"
+          }
+        }
+      }
+    },
+    "/material/detail/{code}": {
+      "get": {
+        "summary": "Mostrar todas as informações de um material.",
+        "description": "Mostrar detalhes de um material.",
+        "tags": ["Material"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "code",
+            "in": "path",
+            "required": true,
+            "description": "Code do material a ser encontrado.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Material encontrado com sucesso!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#components/schemas/DetailMaterialResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Erro ao buscar pelo material!"
+          }
+        }
+      }
+    },
+    "/material/edit/{code}": {
+      "patch": {
+        "summary": "Editar um material",
+        "description": "Editar um material no aplicativo, incluindo o upload de uma imagem.",
+        "tags": ["Material"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "code",
+            "in": "path",
+            "required": true,
+            "description": "Code do material a ser encontrado.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Campos para registrar um material",
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#components/schemas/EditMaterialRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Material editado com sucesso!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EditMaterialResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Erro ao editar material"
+          }
+        }
+      }
+    },
+    "/material/delete/{code}": {
+      "delete": {
+        "summary": "Deletar um material.",
+        "description": "Deletar um material pelo code.",
+        "tags": ["Material"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "code",
+            "in": "path",
+            "required": true,
+            "description": "Code do material.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Material deletado com sucesso!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#components/schemas/DeleteMaterialResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Erro ao deletar o material!"
+          }
+        }
+      }
+    }
   },
   "components": {
     "securitySchemes": {
@@ -2079,6 +2267,186 @@
                 }
               }
             }
+          }
+        }
+      },
+      "RegisterMaterialRequest": {
+        "type": "object",
+        "properties": {
+          "description": {
+            "type": "string",
+            "example": "book"
+          },
+          "image_file": {
+            "type": "string",
+            "format": "binary",
+            "example": null
+          }
+        }
+      },
+      "RegisterMaterialResponse": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "example": "success"
+          },
+          "message": {
+            "type": "string",
+            "example": "Material registrado com sucesso!"
+          },
+          "registeredMaterial": {
+            "type": "object",
+            "properties": {
+              "code": {
+                "type": "number",
+                "example": 1
+              },
+              "description": {
+                "type": "string",
+                "example": "book"
+              },
+              "image_file": {
+                "type": "string",
+                "example": "418.419572646945651728061264265.png"
+              },
+              "default_flg": {
+                "type": "boolean",
+                "example": false
+              }
+            }
+          }
+        }
+      },
+      "ViewMaterialResponse": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "example": "success"
+          },
+          "message": {
+            "type": "string",
+            "example": "Materiais encontrados com sucesso!"
+          },
+          "materials": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "number",
+                  "example": 1
+                },
+                "description": {
+                  "type": "string",
+                  "example": "book"
+                },
+                "image_file": {
+                  "type": "string",
+                  "example": "418.419572646945651728061264265.png"
+                },
+                "default_flg": {
+                  "type": "boolean",
+                  "example": false
+                }
+              }
+            }
+          }
+        }
+      },
+      "DetailMaterialResponse": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "example": "success"
+          },
+          "message": {
+            "type": "string",
+            "example": "Material encontrado com sucesso!"
+          },
+          "member": {
+            "type": "object",
+            "properties": {
+              "code": {
+                "type": "number",
+                "example": 1
+              },
+              "description": {
+                "type": "string",
+                "example": "book"
+              },
+              "image_file": {
+                "type": "string",
+                "example": "418.419572646945651728061264265.png"
+              },
+              "default_flg": {
+                "type": "boolean",
+                "example": false
+              }
+            }
+          }
+        }
+      },
+      "EditMaterialRequest": {
+        "type": "object",
+        "properties": {
+          "description": {
+            "type": "string",
+            "example": "book"
+          },
+          "image_file": {
+            "type": "string",
+            "format": "binary",
+            "example": null
+          }
+        }
+      },
+      "EditMaterialResponse": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "example": "success"
+          },
+          "message": {
+            "type": "string",
+            "example": "Material editado com sucesso!"
+          },
+          "editedMaterial": {
+            "type": "object",
+            "properties": {
+              "code": {
+                "type": "number",
+                "example": 1
+              },
+              "description": {
+                "type": "string",
+                "example": "book"
+              },
+              "image_file": {
+                "type": "string",
+                "example": "418.419572646945651728061264265.png"
+              },
+              "default_flg": {
+                "type": "boolean",
+                "example": false
+              }
+            }
+          }
+        }
+      },
+      "DeleteMaterialResponse": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "example": "success"
+          },
+          "message": {
+            "type": "string",
+            "example": "Material deletado com sucesso!"
           }
         }
       }

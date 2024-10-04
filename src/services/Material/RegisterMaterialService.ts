@@ -13,7 +13,7 @@ class RegisterMaterialService {
 
     console.log(materialData.image_file)
 
-    if (materialExists) {
+    if (materialExists && materialData.image_file) {
       fs.unlink(
         path.resolve(
           __dirname,
@@ -34,7 +34,7 @@ class RegisterMaterialService {
     };
 
     if (materialExists)
-      throw new Error("Já existe um tipo com essa descrição!");
+      throw new Error("Já existe um material com essa descrição!");
 
     const registeredClassify = await prisma.materialTypeDM.create({
       data: materialData,

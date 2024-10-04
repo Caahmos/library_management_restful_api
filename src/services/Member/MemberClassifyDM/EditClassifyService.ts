@@ -13,13 +13,13 @@ class EditClassifyService {
       throw new Error("Nenhuma classificação com esse id encontrado!");
 
     if (editClassifyData.description) {
-      const usernameExists = await prisma.memberClassifyDM.findFirst({
+      const descriptionExists = await prisma.memberClassifyDM.findFirst({
         where: {
           description: editClassifyData.description,
         },
       });
 
-      if (usernameExists) throw new Error("Essa descrição já está em uso!");
+      if (descriptionExists) throw new Error("Essa descrição já está em uso!");
     }
 
     const editedClassify = await prisma.memberClassifyDM.update({
