@@ -1102,6 +1102,194 @@
           }
         }
       }
+    },
+    "/collection/register": {
+      "post": {
+        "summary": "Registrar uma coleção",
+        "description": "Registrar uma coleçao no aplicativo.",
+        "tags": ["Collection"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "description": "Campos para registrar uma coleção",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#components/schemas/RegisterCollectionRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Coleção registrado com sucesso!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RegisterCollectionResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Erro ao registrar coleção"
+          }
+        }
+      }
+    },
+    "/collection/viewcollections": {
+      "get": {
+        "summary": "Ver todas as coleções",
+        "description": "Ver todos as coleções cadastradas.",
+        "tags": ["Collection"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Coleções encontradas com sucesso!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#components/schemas/ViewCollectionsResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Erro ao buscar por coleções"
+          }
+        }
+      }
+    },
+    "/collection/detail/{code}": {
+      "get": {
+        "summary": "Mostrar todas as informações de uma coleção.",
+        "description": "Mostrar detalhes de uma coleção.",
+        "tags": ["Collection"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "code",
+            "in": "path",
+            "required": true,
+            "description": "Code da coleção a ser encontrada.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Coleção encontrada com sucesso!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#components/schemas/DetailCollectionResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Erro ao buscar pela coleção!"
+          }
+        }
+      }
+    },
+    "/collection/edit/{code}": {
+      "patch": {
+        "summary": "Editar dados de uma coleção.",
+        "description": "Editar dados de uma coleção pelo código.",
+        "tags": ["Collection"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "code",
+            "in": "path",
+            "required": true,
+            "description": "Code da coleção.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Campos opicionais para editar uma coleção",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#components/schemas/EditCollectionRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Coleção atualizada com sucesso!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#components/schemas/EditCollectionResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Erro ao atualizar a coleção!"
+          }
+        }
+      }
+    },
+    "/collection/delete/{code}": {
+      "delete": {
+        "summary": "Deletar uma coleção.",
+        "description": "Deletar uma coleção pelo code.",
+        "tags": ["Collection"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "code",
+            "in": "path",
+            "required": true,
+            "description": "Código da coleção a ser deletada.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Coleção deletada com sucesso!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#components/schemas/DeleteCollectionResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Erro ao deletar coleção"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -2447,6 +2635,208 @@
           "message": {
             "type": "string",
             "example": "Material deletado com sucesso!"
+          }
+        }
+      },
+      "RegisterCollectionRequest": {
+        "type": "object",
+        "properties": {
+          "description": {
+            "type": "string",
+            "example": "Engenharia de Software"
+          },
+          "days_due_back": {
+            "type": "number",
+            "example": 15
+          },
+          "daily_late_fee": {
+            "type": "number",
+            "example": 0
+          }
+        }
+      },
+      "RegisterCollectionResponse": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "example": "success"
+          },
+          "message": {
+            "type": "string",
+            "example": "Coleção registrada com sucesso!"
+          },
+          "registeredCollection": {
+            "type": "object",
+            "properties": {
+              "code": {
+                "type": "number",
+                "example": 1
+              },
+              "description": {
+                "type": "string",
+                "example": "Engenharia de Software"
+              },
+              "default_flg": {
+                "type": "boolean",
+                "example": false
+              },
+              "days_due_back": {
+                "type": "number",
+                "example": 15
+              },
+              "daily_late_fee": {
+                "type": "number",
+                "example": 0
+              }
+            }
+          }
+        }
+      },
+      "ViewCollectionsResponse": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "example": "success"
+          },
+          "message": {
+            "type": "string",
+            "example": "Coleções encontradas com sucesso!"
+          },
+          "collections": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "number",
+                  "example": 1
+                },
+                "description": {
+                  "type": "string",
+                  "example": "Engenharia de Software"
+                },
+                "default_flg": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "days_due_back": {
+                  "type": "number",
+                  "example": 15
+                },
+                "daily_late_fee": {
+                  "type": "number",
+                  "example": 0
+                }
+              }
+            }
+          }
+        }
+      },
+      "DetailCollectionResponse": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "example": "success"
+          },
+          "message": {
+            "type": "string",
+            "example": "Coleção encontrada com sucesso!"
+          },
+          "collection": {
+            "type": "object",
+            "properties": {
+              "code": {
+                "type": "number",
+                "example": 1
+              },
+              "description": {
+                "type": "string",
+                "example": "Engenharia de Software"
+              },
+              "default_flg": {
+                "type": "boolean",
+                "example": false
+              },
+              "days_due_back": {
+                "type": "number",
+                "example": 15
+              },
+              "daily_late_fee": {
+                "type": "number",
+                "example": 0
+              }
+            }
+          }
+        }
+      },
+      "EditCollectionRequest": {
+        "type": "object",
+        "properties": {
+          "description": {
+            "type": "string",
+            "example": "Engenharia de Dados"
+          },
+          "days_due_back": {
+            "type": "number",
+            "example": 15
+          },
+          "daily_late_fee": {
+            "type": "number",
+            "example": 0
+          }
+        }
+      },
+      "EditCollectionResponse": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "example": "success"
+          },
+          "message": {
+            "type": "string",
+            "example": "Coleção atualizada com sucesso!"
+          },
+          "editedField": {
+            "type": "object",
+            "properties": {
+              "code": {
+                "type": "number",
+                "example": 1
+              },
+              "description": {
+                "type": "string",
+                "example": "Engenharia de Software"
+              },
+              "default_flg": {
+                "type": "boolean",
+                "example": false
+              },
+              "days_due_back": {
+                "type": "number",
+                "example": 15
+              },
+              "daily_late_fee": {
+                "type": "number",
+                "example": 0
+              }
+            }
+          }
+        }
+      },
+      "DeleteCollectionResponse": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "example": "success"
+          },
+          "message": {
+            "type": "string",
+            "example": "Coleção deletada com sucesso!"
           }
         }
       }
