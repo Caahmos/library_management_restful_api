@@ -162,14 +162,16 @@ model Biblio {
 }
 
 model BiblioField {
-  fieldid     Int    @id @default(autoincrement())
-  bibid       Int
-  biblio      Biblio @relation(fields: [bibid], references: [bibid], onDelete: Cascade)
-  tag         Int
-  ind1_cd     String @default("N")
-  ind2_cd     String @default("N")
-  subfield_cd String
-  field_data  String
+  id            Int         @id @default(autoincrement())
+  fieldid       Int
+  bibid         Int
+  biblio        Biblio      @relation(fields: [bibid], references: [bibid], onDelete: Cascade)
+  tag           Int
+  ind1_cd       String      @default("N")
+  ind2_cd       String      @default("N")
+  subfield_cd   String
+  field_data    String
+  usmarc_tag_dm UsmarcTagDM @relation(fields: [tag], references: [tag])
 
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
@@ -231,3 +233,48 @@ model TransactionTypeDM {
 
   @@map("transaction_type_dm")
 }
+
+model UsmarcBlockDM {
+  block_nmbr    Int           @id @default(autoincrement())
+  description   String
+  usmarc_tag_dm UsmarcTagDM[]
+
+  @@map("usmarc_block_dm")
+}
+
+model UsmarcTagDM {
+  tag                Int                @id
+  description        String
+  ind1_description   String?
+  ind2_description   String?
+  repeatable_flg     Boolean            @default(false)
+  block_nmbr         Int?
+  block              UsmarcBlockDM?     @relation(fields: [block_nmbr], references: [block_nmbr])
+  biblio_fields      BiblioField[]
+  usmarc_subfield_dm UsmarcSubfieldDM[]
+  usmarc_indicator_dm UsmarkIndicatorDM[]
+
+  @@map("usmarc_tag_dm")
+}
+
+model UsmarcSubfieldDM {
+  id             Int         @id @default(autoincrement())
+  tag            Int
+  subfield_cd    String
+  description    String?
+  repeatable_flg Boolean     @default(false)
+  usmarc_tag_dm  UsmarcTagDM @relation(fields: [tag], references: [tag])
+
+  @@map("usmarc_subfield_dm")
+}
+
+model UsmarkIndicatorDM {
+  id Int @id @default(autoincrement())
+  tag Int
+  indicator_cd String
+  description String?
+  usmarc_tag_dm  UsmarcTagDM @relation(fields: [tag], references: [tag])
+
+  @@map("usmarc_indicator_dm")
+}
+
