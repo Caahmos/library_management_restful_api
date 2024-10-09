@@ -272,6 +272,7 @@ model UsmarkIndicatorDM {
   id Int @id @default(autoincrement())
   tag Int
   indicator_cd String
+  indicator_nmbr Int
   description String?
   usmarc_tag_dm  UsmarcTagDM @relation(fields: [tag], references: [tag])
 
