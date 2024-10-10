@@ -13,6 +13,8 @@ class RegisterBiblioController{
 
         const biblioData: RegisterBiblioRequest = req.body;
 
+        biblioData.last_change_userid = userId;
+
         if(!biblioData.material_cd) return res.status(422).json({ type: 'error', message: 'Escolha uma das opções de materiais!'});
         if(!biblioData.collection_cd) return res.status(422).json({ type: 'error', message: 'Escolha uma das opções de coleções!'});
         if(!biblioData.call_nmbr1) return res.status(422).json({ type: 'error', message: 'Informe o número de contato!'});

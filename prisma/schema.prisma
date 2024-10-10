@@ -194,7 +194,7 @@ model BiblioCopy {
   bidid           Int
   copyid          Int
   copy_desc       String?
-  barcode         Int       @unique
+  barcode_nmbr    String    @unique
   status_cd       String
   status_begin_dt DateTime
   due_back_dt     DateTime?
@@ -243,15 +243,15 @@ model UsmarcBlockDM {
 }
 
 model UsmarcTagDM {
-  tag                Int                @id
-  description        String
-  ind1_description   String?
-  ind2_description   String?
-  repeatable_flg     Boolean            @default(false)
-  block_nmbr         Int?
-  block              UsmarcBlockDM?     @relation(fields: [block_nmbr], references: [block_nmbr])
-  biblio_fields      BiblioField[]
-  usmarc_subfield_dm UsmarcSubfieldDM[]
+  tag                 Int                 @id
+  description         String
+  ind1_description    String?
+  ind2_description    String?
+  repeatable_flg      Boolean             @default(false)
+  block_nmbr          Int?
+  block               UsmarcBlockDM?      @relation(fields: [block_nmbr], references: [block_nmbr])
+  biblio_fields       BiblioField[]
+  usmarc_subfield_dm  UsmarcSubfieldDM[]
   usmarc_indicator_dm UsmarkIndicatorDM[]
 
   @@map("usmarc_tag_dm")
@@ -269,13 +269,12 @@ model UsmarcSubfieldDM {
 }
 
 model UsmarkIndicatorDM {
-  id Int @id @default(autoincrement())
-  tag Int
-  indicator_cd String
+  id             Int         @id @default(autoincrement())
+  tag            Int
+  indicator_cd   String
   indicator_nmbr Int
-  description String?
+  description    String?
   usmarc_tag_dm  UsmarcTagDM @relation(fields: [tag], references: [tag])
 
   @@map("usmarc_indicator_dm")
 }
-

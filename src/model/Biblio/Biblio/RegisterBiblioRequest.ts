@@ -26,7 +26,7 @@ export interface RegisterBiblioRequest {
         [key: string]: string
     }
     fieldIds?: {
-        [key: string]: string
+        [key: number]: number
     }
     requiredFlgs?: {
         [key: string]: string
