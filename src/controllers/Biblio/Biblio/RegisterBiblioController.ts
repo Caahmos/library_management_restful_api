@@ -23,7 +23,7 @@ class RegisterBiblioController{
 
         try{
             const registeredBibliography = await RegisterBiblioService.execute(biblioData);
-            res.status(201).json({ type: 'success', message: 'Bibliografia cadastrada com sucesso!', registeredBibliography });
+            res.status(201).json({ type: 'success', message: 'Bibliografia registrada com sucesso!', registeredBibliography });
         }catch(err: any){
             res.status(422).json({ type: 'error', message: err.message });
         };

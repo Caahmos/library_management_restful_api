@@ -1290,6 +1290,195 @@
           }
         }
       }
+    },
+    "/biblio/register": {
+      "post": {
+        "summary": "Registrar uma nova bibliografia",
+        "description": "Registrar uma nova bibliografia no sistema.",
+        "tags": ["Bibliography"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "description": "Campos para registrar uma nova bibliografia",
+          "required": "true",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#components/schemas/RegisterBiblioRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Bibliografia registrada com sucesso!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#components/schemas/RegisterBiblioResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Erro ao registrar bibliografia"
+          }
+        }
+      }
+    },
+    "/biblio/viewbiblios": {
+      "get": {
+        "summary": "Ver todas as bibliografias",
+        "description": "Ver todos as bibliografias cadastradas.",
+        "tags": ["Bibliography"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Bibliografias encontradas com sucesso!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#components/schemas/ViewBibliosResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Erro ao buscar por bibliografias"
+          }
+        }
+      }
+    },
+    "/biblio/detail/{bibid}": {
+      "get": {
+        "summary": "Mostrar todas as informações de uma bibliografia.",
+        "description": "Mostrar detalhes de uma bibliografia.",
+        "tags": ["Bibliography"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "bibid",
+            "in": "path",
+            "required": true,
+            "description": "Bibid da bibliografia a ser encontrada.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Bibliografia encontrada com sucesso!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#components/schemas/DetailBiblioResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Erro ao buscar pela coleção!"
+          }
+        }
+      }
+    },
+    "/biblio/edit/{bibid}": {
+      "patch": {
+        "summary": "Editar dados de uma bibliografia.",
+        "description": "Editar dados de uma bibliografia pelo bibid.",
+        "tags": ["Bibliography"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "bibid",
+            "in": "path",
+            "required": true,
+            "description": "Bibid da bibliografia.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Campos opicionais para editar uma bibliografia",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#components/schemas/RegisterBiblioRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Coleção atualizada com sucesso!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#components/schemas/EditBiblioResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Erro ao atualizar a bibliografia!"
+          }
+        }
+      }
+    },
+    "/biblio/delete/{bibid}": {
+      "delete": {
+        "summary": "Deletar uma bibliografia.",
+        "description": "Deletar uma bibliografia pelo bibid.",
+        "tags": ["Bibliography"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "bibid",
+            "in": "path",
+            "required": true,
+            "description": "Bibid da bibliografia.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Bibliografia deletada com sucesso!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#components/schemas/DeleteBiblioResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Erro ao deletar a bibliografia!"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -2837,6 +3026,416 @@
           "message": {
             "type": "string",
             "example": "Coleção deletada com sucesso!"
+          }
+        }
+      },
+      "RegisterBiblioRequest": {
+        "type": "object",
+        "properties": {
+          "title": { "type": "string", "example": "Moby Dick" },
+          "title_remainder": { "type": "string", "example": "or, The Whale" },
+          "author": { "type": "string", "example": "Herman Melville" },
+          "responsibility_stmt": {
+            "type": "string",
+            "example": "Written by Herman Melville"
+          },
+          "material_cd": { "type": "number", "example": 2 },
+          "collection_cd": { "type": "number", "example": 82 },
+          "call_nmbr1": { "type": "string", "example": "FIC" },
+          "call_nmbr2": { "type": "string", "example": "MEL" },
+          "call_nmbr3": { "type": "string", "example": "1851" },
+          "topic1": { "type": "string", "example": "Whaling" },
+          "topic2": { "type": "string", "example": "Adventure" },
+          "topic3": { "type": "string", "example": "Sea Stories" },
+          "topic4": { "type": "string", "example": "Classic Literature" },
+          "topic5": { "type": "string", "example": "American Fiction" },
+          "last_change_userid": { "type": "number", "example": 12345 },
+          "opac_flg": { "type": "boolean", "example": true },
+          "values": {
+            "type": "object",
+            "properties": {
+              "245a": { "type": "string", "example": "Moby Dick" },
+              "245b": { "type": "string", "example": "or, The Whale" },
+              "245c": { "type": "string", "example": "Herman Melville" },
+              "100a": { "type": "string", "example": "Herman Melville" },
+              "650a": { "type": "string", "example": "Whaling" },
+              "650a1": { "type": "string", "example": "Adventure" },
+              "650a2": { "type": "string", "example": "Sea Stories" },
+              "650a3": { "type": "string", "example": "Classic Literature" },
+              "650a4": { "type": "string", "example": "American Fiction" },
+              "250a": { "type": "string", "example": "First Edition" },
+              "010a": { "type": "string", "example": "123456789" },
+              "020a": { "type": "string", "example": "978-0-14-243724-7" },
+              "050a": { "type": "string", "example": "PS2384.M6" },
+              "050b": { "type": "string", "example": "A14" },
+              "082a": { "type": "string", "example": "813.3" },
+              "0822": { "type": "string", "example": "23" },
+              "260a": { "type": "string", "example": "New York" },
+              "260b": { "type": "string", "example": "Harper & Brothers" },
+              "260c": { "type": "string", "example": "1851" },
+              "520a": {
+                "type": "string",
+                "example": "A narrative of the whaling voyage of Captain Ahab, who seeks revenge on the great white whale."
+              },
+              "300a": { "type": "string", "example": "635 pages" },
+              "300b": { "type": "string", "example": "Illustrations" },
+              "300c": { "type": "string", "example": "23 cm" },
+              "300e": { "type": "string", "example": "None" },
+              "020c": { "type": "string", "example": "Available" },
+              "541h": { "type": "string", "example": "$12.99" }
+            }
+          },
+          "indexes": {
+            "type": "array",
+            "items": { "type": "string" },
+            "example": [
+              "245a",
+              "245b",
+              "245c",
+              "100a",
+              "650a",
+              "650a1",
+              "650a2",
+              "650a3",
+              "650a4",
+              "250a",
+              "010a",
+              "020a",
+              "050a",
+              "050b",
+              "082a",
+              "0822",
+              "260a",
+              "260b",
+              "260c",
+              "520a",
+              "300a",
+              "300b",
+              "300c",
+              "300e",
+              "020c",
+              "541h"
+            ]
+          },
+          "tags": {
+            "type": "object",
+            "example": {
+              "245a": "245",
+              "245b": "245",
+              "245c": "245",
+              "100a": "100",
+              "650a": "650",
+              "650a1": "650",
+              "650a2": "650",
+              "650a3": "650",
+              "650a4": "650",
+              "250a": "250",
+              "010a": "10",
+              "020a": "20",
+              "050a": "50",
+              "050b": "50",
+              "082a": "82",
+              "0822": "82",
+              "260a": "260",
+              "260b": "260",
+              "260c": "260",
+              "520a": "520",
+              "300a": "300",
+              "300b": "300",
+              "300c": "300",
+              "300e": "300",
+              "020c": "20",
+              "541h": "541"
+            }
+          },
+          "subfields": {
+            "type": "object",
+            "example": {
+              "245a": "a",
+              "245b": "b",
+              "245c": "c",
+              "100a": "a",
+              "650a": "a",
+              "650a1": "a",
+              "650a2": "a",
+              "650a3": "a",
+              "650a4": "a",
+              "250a": "a",
+              "010a": "a",
+              "020a": "a",
+              "050a": "a",
+              "050b": "b",
+              "082a": "a",
+              "0822": "2",
+              "260a": "a",
+              "260b": "b",
+              "260c": "c",
+              "520a": "a",
+              "300a": "a",
+              "300b": "b",
+              "300c": "c",
+              "300e": "e",
+              "020c": "c",
+              "541h": "h"
+            }
+          },
+          "fieldIds": {
+            "type": "object",
+            "example": {
+              "245a": "",
+              "245b": "",
+              "245c": "",
+              "100a": "",
+              "650a": "",
+              "650a1": "",
+              "650a2": "",
+              "650a3": "",
+              "650a4": "",
+              "250a": "",
+              "010a": "",
+              "020a": "",
+              "050a": "",
+              "050b": "",
+              "082a": "",
+              "0822": "",
+              "260a": "",
+              "260b": "",
+              "260c": "",
+              "520a": "",
+              "300a": "",
+              "300b": "",
+              "300c": "",
+              "300e": "",
+              "020c": "",
+              "541h": ""
+            }
+          },
+          "requiredFlgs": {
+            "type": "object",
+            "example": {
+              "245a": "1",
+              "245b": "",
+              "245c": "",
+              "100a": "1",
+              "650a": "",
+              "650a1": "",
+              "650a2": "",
+              "650a3": "",
+              "650a4": "",
+              "250a": "",
+              "010a": "",
+              "020a": "",
+              "050a": "",
+              "050b": "",
+              "082a": "",
+              "0822": "",
+              "260a": "",
+              "260b": "",
+              "260c": "",
+              "520a": "",
+              "300a": "",
+              "300b": "",
+              "300c": "",
+              "300e": "",
+              "020c": "",
+              "541h": ""
+            }
+          }
+        }
+      },
+      "RegisterBiblioResponse": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "example": "success"
+          },
+          "message": {
+            "type": "string",
+            "example": "Bibliografia registrada com sucesso!"
+          },
+          "registeredBibliography": {
+            "type": "object",
+            "properties": {
+              "bibid": { "type": "number", "example": 1 },
+              "title": { "type": "string", "example": "Moby Dick" },
+              "title_remainder": {
+                "type": "string",
+                "example": "or, The Whale"
+              },
+              "author": { "type": "string", "example": "Herman Melville" },
+              "responsibility_stmt": {
+                "type": "string",
+                "example": "Written by Herman Melville"
+              },
+              "material_cd": { "type": "number", "example": 2 },
+              "collection_cd": { "type": "number", "example": 82 },
+              "call_nmbr1": { "type": "string", "example": "FIC" },
+              "call_nmbr2": { "type": "string", "example": "MEL" },
+              "call_nmbr3": { "type": "string", "example": "1851" },
+              "topic1": { "type": "string", "example": "Whaling" },
+              "topic2": { "type": "string", "example": "Adventure" },
+              "topic3": { "type": "string", "example": "Sea Stories" },
+              "topic4": { "type": "string", "example": "Classic Literature" },
+              "topic5": { "type": "string", "example": "American Fiction" },
+              "last_change_userid": { "type": "number", "example": 12345 },
+              "opac_flg": { "type": "boolean", "example": true }
+            }
+          }
+        }
+      },
+      "ViewBibliosResponse": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "example": "success"
+          },
+          "message": {
+            "type": "string",
+            "example": "Bibliografias encontradas com sucesso!"
+          },
+          "biblios": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "bibid": { "type": "number", "example": 1 },
+                "title": { "type": "string", "example": "Moby Dick" },
+                "title_remainder": {
+                  "type": "string",
+                  "example": "or, The Whale"
+                },
+                "author": { "type": "string", "example": "Herman Melville" },
+                "responsibility_stmt": {
+                  "type": "string",
+                  "example": "Written by Herman Melville"
+                },
+                "material_cd": { "type": "number", "example": 2 },
+                "collection_cd": { "type": "number", "example": 82 },
+                "call_nmbr1": { "type": "string", "example": "FIC" },
+                "call_nmbr2": { "type": "string", "example": "MEL" },
+                "call_nmbr3": { "type": "string", "example": "1851" },
+                "topic1": { "type": "string", "example": "Whaling" },
+                "topic2": { "type": "string", "example": "Adventure" },
+                "topic3": { "type": "string", "example": "Sea Stories" },
+                "topic4": { "type": "string", "example": "Classic Literature" },
+                "topic5": { "type": "string", "example": "American Fiction" },
+                "last_change_userid": { "type": "number", "example": 12345 },
+                "opac_flg": { "type": "boolean", "example": true }
+              }
+            }
+          }
+        }
+      },
+      "DetailBiblioResponse": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "example": "success"
+          },
+          "message": {
+            "type": "string",
+            "example": "Bibliografia encontrada com sucesso!"
+          },
+          "biblio": {
+            "type": "object",
+            "properties": {
+              "bibid": { "type": "number", "example": 1 },
+              "title": { "type": "string", "example": "Moby Dick" },
+              "title_remainder": {
+                "type": "string",
+                "example": "or, The Whale"
+              },
+              "author": { "type": "string", "example": "Herman Melville" },
+              "responsibility_stmt": {
+                "type": "string",
+                "example": "Written by Herman Melville"
+              },
+              "material_cd": { "type": "number", "example": 2 },
+              "collection_cd": { "type": "number", "example": 82 },
+              "call_nmbr1": { "type": "string", "example": "FIC" },
+              "call_nmbr2": { "type": "string", "example": "MEL" },
+              "call_nmbr3": { "type": "string", "example": "1851" },
+              "topic1": { "type": "string", "example": "Whaling" },
+              "topic2": { "type": "string", "example": "Adventure" },
+              "topic3": { "type": "string", "example": "Sea Stories" },
+              "topic4": { "type": "string", "example": "Classic Literature" },
+              "topic5": { "type": "string", "example": "American Fiction" },
+              "last_change_userid": { "type": "number", "example": 12345 },
+              "opac_flg": { "type": "boolean", "example": true },
+              "biblio_fields": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": { "type": "number", "example": 2 },
+                    "fieldid": { "type": "number", "example": 10 },
+                    "bibid": { "type": "number", "example": 2 },
+                    "tag": { "type": "number", "example": 245 },
+                    "ind1_cd": { "type": "string", "example": "N" },
+                    "ind2_cd": { "type": "string", "example": "N" },
+                    "subfield_cd": { "type": "string", "example": "a" },
+                    "field_data": { "type": "string", "example": "Moby Dick" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "EditBiblioResponse": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "example": "success"
+          },
+          "message": {
+            "type": "string",
+            "example": "Bibliografia atualizada com sucesso!"
+          },
+          "editedBibliography": {
+            "type": "object",
+            "properties": {
+              "bibid": { "type": "number", "example": 1 },
+              "title": { "type": "string", "example": "Moby Dick" },
+              "title_remainder": {
+                "type": "string",
+                "example": "or, The Whale"
+              },
+              "author": { "type": "string", "example": "Herman Melville" },
+              "responsibility_stmt": {
+                "type": "string",
+                "example": "Written by Herman Melville"
+              },
+              "material_cd": { "type": "number", "example": 2 },
+              "collection_cd": { "type": "number", "example": 82 },
+              "call_nmbr1": { "type": "string", "example": "FIC" },
+              "call_nmbr2": { "type": "string", "example": "MEL" },
+              "call_nmbr3": { "type": "string", "example": "1851" },
+              "topic1": { "type": "string", "example": "Whaling" },
+              "topic2": { "type": "string", "example": "Adventure" },
+              "topic3": { "type": "string", "example": "Sea Stories" },
+              "topic4": { "type": "string", "example": "Classic Literature" },
+              "topic5": { "type": "string", "example": "American Fiction" },
+              "last_change_userid": { "type": "number", "example": 12345 },
+              "opac_flg": { "type": "boolean", "example": true }
+            }
+          }
+        }
+      },
+      "DeleteBiblioResponse": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "example": "success"
+          },
+          "message": {
+            "type": "string",
+            "example": "Bibliografia deletada com sucesso!"
           }
         }
       }
