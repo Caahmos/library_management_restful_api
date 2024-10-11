@@ -63,11 +63,12 @@ model Member {
 }
 
 model MemberClassifyDM {
-  code        Int      @id @default(autoincrement())
-  description String
-  default_flg Boolean  @default(false)
-  max_fines   Decimal  @default(0) @db.Decimal(4, 2)
-  member      Member[]
+  code          Int             @id @default(autoincrement())
+  description   String
+  default_flg   Boolean         @default(false)
+  max_fines     Decimal         @default(0) @db.Decimal(4, 2)
+  member        Member[]
+  CheckoutPrivs CheckoutPrivs[]
 
   @@map("mbr_classify_dm")
 }
@@ -121,11 +122,12 @@ model CollectionDM {
 }
 
 model MaterialTypeDM {
-  code        Int      @id @default(autoincrement())
-  description String
-  default_flg Boolean  @default(false)
-  image_file  String?
-  biblio      Biblio[]
+  code          Int             @id @default(autoincrement())
+  description   String
+  default_flg   Boolean         @default(false)
+  image_file    String?
+  biblio        Biblio[]
+  CheckoutPrivs CheckoutPrivs[]
 
   @@map("material_type_dm")
 }
@@ -181,8 +183,8 @@ model BiblioField {
 
 model BiblioStatusDM {
   code               String             @id
-  description        String
-  default_flg        Boolean
+  description        String?
+  default_flg        Boolean            @default(false)
   biblio_copy        BiblioCopy[]
   biblio_status_hist BiblioStatusHist[]
 
@@ -191,7 +193,7 @@ model BiblioStatusDM {
 
 model BiblioCopy {
   id              Int       @id @default(autoincrement())
-  bidid           Int
+  bibid           Int
   copyid          Int
   copy_desc       String?
   barcode_nmbr    String    @unique
@@ -203,23 +205,23 @@ model BiblioCopy {
 
   biblio_status_dm BiblioStatusDM @relation(fields: [status_cd], references: [code])
   member           Member?        @relation(fields: [mbrid], references: [mbrid])
-  biblio           Biblio         @relation(fields: [bidid], references: [bibid])
+  biblio           Biblio         @relation(fields: [bibid], references: [bibid])
 
   @@map("biblio_copy")
 }
 
 model BiblioStatusHist {
-  id              Int      @id @default(autoincrement())
-  bidid           Int
+  id              Int       @id @default(autoincrement())
+  bibid           Int
   copyid          Int
   status_cd       String
   status_begin_dt DateTime
-  due_back_dt     DateTime
+  due_back_dt     DateTime?
   mbrid           Int
-  renewal_count   Int      @default(0)
+  renewal_count   Int       @default(0)
 
   member           Member         @relation(fields: [mbrid], references: [mbrid])
-  biblio           Biblio         @relation(fields: [bidid], references: [bibid])
+  biblio           Biblio         @relation(fields: [bibid], references: [bibid])
   biblio_status_dm BiblioStatusDM @relation(fields: [status_cd], references: [code])
 
   @@map("biblio_status_hist")
@@ -277,4 +279,17 @@ model UsmarkIndicatorDM {
   usmarc_tag_dm  UsmarcTagDM @relation(fields: [tag], references: [tag])
 
   @@map("usmarc_indicator_dm")
+}
+
+model CheckoutPrivs {
+  id             Int @id @default(autoincrement())
+  material_cd    Int
+  classification Int
+  checkout_limit Int
+  renewal_limit  Int
+
+  material_type_dm MaterialTypeDM   @relation(fields: [material_cd], references: [code], onDelete: Cascade)
+  mbr_classify_dm  MemberClassifyDM @relation(fields: [classification], references: [code], onDelete: Cascade)
+
+  @@map("checkout_privs")
 }

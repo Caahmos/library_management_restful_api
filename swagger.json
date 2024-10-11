@@ -1479,6 +1479,119 @@
           }
         }
       }
+    },
+    "/checkprivs/viewcheckprivs": {
+      "get": {
+        "summary": "Ver todas as informações de permanência.",
+        "description": "Ver todas as informações de permanência dos tipos de usuários com os materiais.",
+        "tags": ["CheckoutPrivs"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Informações de permanência dos materiais por tipo de usuário encontradas com sucesso!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#components/schemas/ViewCheckPrivsResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Erro ao buscar dados"
+          }
+        }
+      }
+    },
+    "/checkprivs/detail/{id}": {
+      "get": {
+        "summary": "Ver as informações de permanência.",
+        "description": "Ver as informações de permanência por id.",
+        "tags": ["CheckoutPrivs"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "id",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Informação de permanência dos materiais por tipo de usuário encontradas com sucesso!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#components/schemas/DetailCheckPrivsResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Erro ao buscar pela coleção!"
+          }
+        }
+      }
+    },
+    "/checkprivs/edit/{id}": {
+      "patch": {
+        "summary": "Editar dados de permanência de material.",
+        "description": "Editar dados de permanência de um material pelo id.",
+        "tags": ["CheckoutPrivs"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "id do checkoutpriv.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Campos opicionais para editar.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#components/schemas/RegisterCheckPrivsRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Informações de tempo de permanência com os material atualizado!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#components/schemas/RegisterCheckPrivsResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Erro ao atualizar os dados!"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -3436,6 +3549,136 @@
           "message": {
             "type": "string",
             "example": "Bibliografia deletada com sucesso!"
+          }
+        }
+      },
+      "RegisterCheckPrivsRequest": {
+        "type": "object",
+        "properties": {
+          "checkout_limit": {
+            "type": "number",
+            "example": 20
+          },
+          "renewal_limit": {
+            "type": "number",
+            "example": 5
+          }
+        }
+      },
+      "RegisterCheckPrivsResponse": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "example": "success"
+          },
+          "message": {
+            "type": "string",
+            "example": "Informações de tempo de permanência com os material atualizado!"
+          },
+          "EditedCheckPrivs": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "number",
+                "example": 1
+              },
+              "material_cd": {
+                "type": "number",
+                "example": 1
+              },
+              "classification": {
+                "type": "number",
+                "example": 2
+              },
+              "checkout_limit": {
+                "type": "number",
+                "example": 20
+              },
+              "renewal_limit": {
+                "type": "number",
+                "example": 5
+              }
+            }
+          }
+        }
+      },
+      "ViewCheckPrivsResponse": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "example": "success"
+          },
+          "message": {
+            "type": "string",
+            "example": "Informações de permanência dos materiais por tipo de usuário encontradas com sucesso!"
+          },
+          "checkprivs": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "number",
+                  "example": 1
+                },
+                "material_cd": {
+                  "type": "number",
+                  "example": 1
+                },
+                "classification": {
+                  "type": "number",
+                  "example": 2
+                },
+                "checkout_limit": {
+                  "type": "number",
+                  "example": 20
+                },
+                "renewal_limit": {
+                  "type": "number",
+                  "example": 5
+                }
+              }
+            }
+          }
+        }
+      },
+      "DetailCheckPrivsResponse": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "example": "success"
+          },
+          "message": {
+            "type": "string",
+            "example": "Informação de permanência dos materiais por tipo de usuário encontrada com sucesso!"
+          },
+          "checkpriv": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "number",
+                "example": 1
+              },
+              "material_cd": {
+                "type": "number",
+                "example": 1
+              },
+              "classification": {
+                "type": "number",
+                "example": 2
+              },
+              "checkout_limit": {
+                "type": "number",
+                "example": 20
+              },
+              "renewal_limit": {
+                "type": "number",
+                "example": 5
+              }
+            }
           }
         }
       }

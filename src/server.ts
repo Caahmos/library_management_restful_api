@@ -11,6 +11,8 @@ import MemberRoutes from "./routes/MemberRoutes";
 import MaterialRoutes from "./routes/MaterialRoutes";
 import CollectionRoutes from "./routes/CollectionRoutes";
 import BiblioRoutes from "./routes/BiblioRoutes";
+import BiblioCopyRoutes from "./routes/BiblioCopyRoutes";
+import CheckoutPrivsRoutes from "./routes/CheckoutPrivsRoutes";
 dotenv.config();
 
 class Server {
@@ -36,6 +38,8 @@ class Server {
     this.app.use("/staff", new StaffRoutes().router);
     this.app.use("/member", new MemberRoutes().router);
     this.app.use("/biblio", new BiblioRoutes().router);
+    this.app.use("/bibliocopy", new BiblioCopyRoutes().router);
+    this.app.use("/checkprivs", new CheckoutPrivsRoutes().router);
     this.app.use("/material", new MaterialRoutes().router);
     this.app.use("/collection", new CollectionRoutes().router);
     this.app.use("/mbrclassifydm", new MemberClassifyDMRoutes().router);
