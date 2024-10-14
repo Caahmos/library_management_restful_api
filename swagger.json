@@ -1592,6 +1592,205 @@
           }
         }
       }
+    },
+    "/bibliocopy/register/{bibid}": {
+      "post": {
+        "summary": "Registrar uma cópia bibliográfica.",
+        "description": "Registrar uma cópia de uma bibliografia previamente registrada..",
+        "tags": ["BiblioCopy"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "bibid",
+            "in": "path",
+            "required": true,
+            "description": "id da bibliografia.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Campos para registrar uma cópia",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#components/schemas/RegisterCopyRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Cópia cadastrada com sucesso!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RegisterCopyResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Erro ao registrar coleção"
+          }
+        }
+      }
+    },
+    "/bibliocopy/detail/{id}": {
+      "get": {
+        "summary": "Mostrar todas as informações de uma cópia.",
+        "description": "Mostrar detalhes de uma cópia bibliográfica.",
+        "tags": ["BiblioCopy"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Id da cópia bibliográfica a ser encontrada.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Cópia bibliográfica encontrada com sucesso!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#components/schemas/DetailCopyResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Erro ao buscar pela cópia!"
+          }
+        }
+      }
+    },
+    "/bibliocopy/viewcopies": {
+      "get": {
+        "summary": "Ver todas as cópias de uma bibliografia",
+        "description": "Ver todas as cópias de uma bibliografia",
+        "tags": ["BiblioCopy"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Cópias bibliográficas encontrados com sucesso!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#components/schemas/ViewCopiesResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Erro ao buscar pelas cópias."
+          }
+        }
+      }
+    },
+    "/bibliocopy/edit/{id}": {
+      "patch": {
+        "summary": "Editar dados de uma cópia bibliográfica.",
+        "description": "Editar dados de uma cópia bibliográfica.",
+        "tags": ["BiblioCopy"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Id da cópia.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Campos opicionais para editar uma cópia.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#components/schemas/EditCopyRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Copia da bibliografia atualizada com sucesso!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#components/schemas/EditCopyResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Erro ao atualizar a cópia!"
+          }
+        }
+      }
+    },
+    "/bibliocopy/delete/{id}": {
+      "delete": {
+        "summary": "Deletar uma cópia bibliográfica.",
+        "description": "Deletar uma cópia bibliográfica pelo id.",
+        "tags": ["BiblioCopy"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Id da cópia a ser deletada.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Cópia bibliográfica deletada com sucesso!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#components/schemas/DeleteCopyResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Erro ao deletar a cópia!"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -3679,6 +3878,300 @@
                 "example": 5
               }
             }
+          }
+        }
+      },
+      "RegisterCopyRequest": {
+        "type": "object",
+        "properties": {
+          "barcode_nmbr": {
+            "type": "string",
+            "example": "1234"
+          },
+          "copy_desc": {
+            "type": "string",
+            "example": "Primeira cópia do Moby Dick"
+          }
+        }
+      },
+      "RegisterCopyResponse": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "example": "success"
+          },
+          "message": {
+            "type": "string",
+            "example": "Cópia cadastrada com sucesso!"
+          },
+          "registeredCopy": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "number",
+                "example": 1
+              },
+              "bibid": {
+                "type": "number",
+                "example": 1
+              },
+              "copyid": {
+                "type": "number",
+                "example": 1
+              },
+              "create_dt": {
+                "type": "date",
+                "example": "2024-10-14T13:17:09.686Z"
+              },
+              "copy_desc": {
+                "type": "string",
+                "example": "Primeira cópia do Moby Dick"
+              },
+              "barcode_nmbr": {
+                "type": "string",
+                "example": "1234"
+              },
+              "status_cd": {
+                "type": "string",
+                "example": "in"
+              },
+              "status_begin_dt": {
+                "type": "date",
+                "example": "2024-10-14T13:17:09.686Z"
+              },
+              "due_back_dt": {
+                "type": "date",
+                "example": "2024-10-30T13:17:09.686Z"
+              },
+              "mbrid": {
+                "type": "number",
+                "example": 1
+              },
+              "renewal_count": {
+                "type": "number",
+                "example": 0
+              }
+            }
+          }
+        }
+      },
+      "DetailCopyResponse": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "example": "success"
+          },
+          "message": {
+            "type": "string",
+            "example": "Cópia bibliográfica encontrada com sucesso!"
+          },
+          "copy": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "number",
+                "example": 1
+              },
+              "bibid": {
+                "type": "number",
+                "example": 1
+              },
+              "copyid": {
+                "type": "number",
+                "example": 1
+              },
+              "create_dt": {
+                "type": "date",
+                "example": "2024-10-14T13:17:09.686Z"
+              },
+              "copy_desc": {
+                "type": "string",
+                "example": "Primeira cópia do Moby Dick"
+              },
+              "barcode_nmbr": {
+                "type": "string",
+                "example": "1234"
+              },
+              "status_cd": {
+                "type": "string",
+                "example": "in"
+              },
+              "status_begin_dt": {
+                "type": "date",
+                "example": "2024-10-14T13:17:09.686Z"
+              },
+              "due_back_dt": {
+                "type": "date",
+                "example": "2024-10-30T13:17:09.686Z"
+              },
+              "mbrid": {
+                "type": "number",
+                "example": 1
+              },
+              "renewal_count": {
+                "type": "number",
+                "example": 0
+              }
+            }
+          }
+        }
+      },
+      "ViewCopiesResponse": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "example": "success"
+          },
+          "message": {
+            "type": "string",
+            "example": "Cópias bibliográficas encontradas com sucesso!"
+          },
+          "copies": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "number",
+                  "example": 1
+                },
+                "bibid": {
+                  "type": "number",
+                  "example": 1
+                },
+                "copyid": {
+                  "type": "number",
+                  "example": 1
+                },
+                "create_dt": {
+                  "type": "date",
+                  "example": "2024-10-14T13:17:09.686Z"
+                },
+                "copy_desc": {
+                  "type": "string",
+                  "example": "Primeira cópia do Moby Dick"
+                },
+                "barcode_nmbr": {
+                  "type": "string",
+                  "example": "1234"
+                },
+                "status_cd": {
+                  "type": "string",
+                  "example": "in"
+                },
+                "status_begin_dt": {
+                  "type": "date",
+                  "example": "2024-10-14T13:17:09.686Z"
+                },
+                "due_back_dt": {
+                  "type": "date",
+                  "example": "2024-10-30T13:17:09.686Z"
+                },
+                "mbrid": {
+                  "type": "number",
+                  "example": 1
+                },
+                "renewal_count": {
+                  "type": "number",
+                  "example": 0
+                }
+              }
+            }
+          }
+        }
+      },
+      "EditCopyRequest": {
+        "type": "object",
+        "properties": {
+          "copy_desc": {
+            "type": "string",
+            "example": "Segunda cópia do Moby Dick"
+          },
+          "barcode_nmbr": {
+            "type": "string",
+            "example": "1235"
+          },
+          "status_cd": {
+            "type": "string",
+            "example": "hld"
+          }
+        }
+      },
+      "EditCopyResponse": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "example": "success"
+          },
+          "message": {
+            "type": "string",
+            "example": "Copia da bibliografia atualizada com sucesso!"
+          },
+          "editedCopy": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "number",
+                "example": 1
+              },
+              "bibid": {
+                "type": "number",
+                "example": 1
+              },
+              "copyid": {
+                "type": "number",
+                "example": 1
+              },
+              "create_dt": {
+                "type": "date",
+                "example": "2024-10-14T13:17:09.686Z"
+              },
+              "copy_desc": {
+                "type": "string",
+                "example": "Primeira cópia do Moby Dick"
+              },
+              "barcode_nmbr": {
+                "type": "string",
+                "example": "1234"
+              },
+              "status_cd": {
+                "type": "string",
+                "example": "in"
+              },
+              "status_begin_dt": {
+                "type": "date",
+                "example": "2024-10-14T13:17:09.686Z"
+              },
+              "due_back_dt": {
+                "type": "date",
+                "example": "2024-10-30T13:17:09.686Z"
+              },
+              "mbrid": {
+                "type": "number",
+                "example": 1
+              },
+              "renewal_count": {
+                "type": "number",
+                "example": 0
+              }
+            }
+          }
+        }
+      },
+      "DeleteCopyResponse": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "example": "success"
+          },
+          "message": {
+            "type": "string",
+            "example": "Cópia bibliográfica deletada com sucesso!"
           }
         }
       }

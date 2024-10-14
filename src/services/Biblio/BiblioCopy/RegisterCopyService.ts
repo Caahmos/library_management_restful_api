@@ -5,17 +5,23 @@ class RegisterCopyService {
   static async execute(copyData: RegisterCopyRequest) {
     copyData.copyid = 1;   
 
-    const biblioExists = await prisma.biblioCopy.findMany({ where: {
+    const biblioCopyExists = await prisma.biblioCopy.findMany({ where: {
         bibid: copyData.bibid
-    }})
+    }});
 
-    if(biblioExists && biblioExists.length > 0){
-        const lastCopyId = biblioExists.reduce((prevCopy, currentCopy) => {
+    if(biblioCopyExists && biblioCopyExists.length > 0){
+        const lastCopyId = biblioCopyExists.reduce((prevCopy, currentCopy) => {
             return (prevCopy.copyid > currentCopy.copyid) ? prevCopy : currentCopy;
         });
 
-        copyData.copyid = lastCopyId.copyid;
-    }
+        copyData.copyid = lastCopyId.copyid + 1;
+    };
+
+    const bibidExists = await prisma.biblio.findFirst({ where: {
+      bibid: copyData.bibid
+    }});
+
+    if(!bibidExists) throw new Error('Nenhuma bibliografia com esse bibid encontrada!');
 
     const copyExists = await prisma.biblioCopy.findFirst({
       where: {
@@ -31,7 +37,7 @@ class RegisterCopyService {
     });
 
     return registeredCopy;
-  }
-}
+  };
+};
 
 export default RegisterCopyService;

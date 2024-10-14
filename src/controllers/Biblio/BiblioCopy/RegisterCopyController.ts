@@ -14,10 +14,8 @@ class RegisterCopyController{
         const copyData: RegisterCopyRequest = req.body;
         copyData.bibid = Number(req.params.bibid);
 
-        if(!copyData.barcode_nmbr) return res.status(422).json({ type: 'error', message: 'Informe o código da cópia!'});
-        if(!copyData.status_cd) return res.status(422).json({ type: 'error', message: 'Informe a descrição!'});
-        if(!copyData.copy_desc) return res.status(422).json({ type: 'error', message: 'Informe a descrição!'});
         if(!copyData.bibid) return res.status(422).json({ type: 'error', message: 'Informe a bibid da bibliografia!'});
+        if(!copyData.barcode_nmbr) return res.status(422).json({ type: 'error', message: 'Informe o código da cópia!'});
 
         try{
             const registeredCopy = await RegisterCopyService.execute(copyData);
