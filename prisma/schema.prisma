@@ -56,8 +56,9 @@ model Member {
   biblio_status_hist BiblioStatusHist[]
   member_fields      MemberField[]
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now())
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @default(now())
+  BiblioHold BiblioHold[]
 
   @@map("member")
 }
@@ -204,9 +205,11 @@ model BiblioCopy {
   mbrid           Int?
   renewal_count   Int       @default(0)
 
-  biblio_status_dm BiblioStatusDM @relation(fields: [status_cd], references: [code])
-  member           Member?        @relation(fields: [mbrid], references: [mbrid])
-  biblio           Biblio         @relation(fields: [bibid], references: [bibid])
+  biblio_status_dm BiblioStatusDM     @relation(fields: [status_cd], references: [code], onDelete: Cascade)
+  member           Member?            @relation(fields: [mbrid], references: [mbrid], onDelete: Cascade)
+  biblio           Biblio             @relation(fields: [bibid], references: [bibid], onDelete: Cascade)
+  BiblioStatusHist BiblioStatusHist[]
+  BiblioHold       BiblioHold[]
 
   @@map("biblio_copy")
 }
@@ -216,16 +219,29 @@ model BiblioStatusHist {
   bibid           Int
   copyid          Int
   status_cd       String
-  status_begin_dt DateTime
+  status_begin_dt DateTime  @default(now())
   due_back_dt     DateTime?
   mbrid           Int
   renewal_count   Int       @default(0)
 
+  biblio_copy      BiblioCopy     @relation(fields: [copyid], references: [id])
   member           Member         @relation(fields: [mbrid], references: [mbrid])
   biblio           Biblio         @relation(fields: [bibid], references: [bibid])
   biblio_status_dm BiblioStatusDM @relation(fields: [status_cd], references: [code])
 
   @@map("biblio_status_hist")
+}
+
+model BiblioHold {
+  id     Int @id @default(autoincrement())
+  holdid Int
+  copyid Int
+  mbrid  Int
+
+  member      Member     @relation(fields: [mbrid], references: [mbrid])
+  biblio_copy BiblioCopy @relation(fields: [copyid], references: [id])
+
+  @@map("biblio_hold")
 }
 
 model TransactionTypeDM {

@@ -13,6 +13,7 @@ import CollectionRoutes from "./routes/CollectionRoutes";
 import BiblioRoutes from "./routes/BiblioRoutes";
 import BiblioCopyRoutes from "./routes/BiblioCopyRoutes";
 import CheckoutPrivsRoutes from "./routes/CheckoutPrivsRoutes";
+import BiblioHistRoutes from "./routes/BiblioHistRoutes";
 dotenv.config();
 
 class Server {
@@ -39,6 +40,7 @@ class Server {
     this.app.use("/member", new MemberRoutes().router);
     this.app.use("/biblio", new BiblioRoutes().router);
     this.app.use("/bibliocopy", new BiblioCopyRoutes().router);
+    this.app.use("/bibliohist", new BiblioHistRoutes().router);
     this.app.use("/checkprivs", new CheckoutPrivsRoutes().router);
     this.app.use("/material", new MaterialRoutes().router);
     this.app.use("/collection", new CollectionRoutes().router);

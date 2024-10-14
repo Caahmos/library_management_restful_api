@@ -1791,6 +1791,139 @@
           }
         }
       }
+    },
+    "/bibliohist/checkout/{mbrid}": {
+      "post": {
+        "summary": "Checkout de um livro.",
+        "description": "Emprestar um livro para um membro",
+        "tags": ["BiblioHist"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "mbrid",
+            "in": "path",
+            "required": true,
+            "description": "Mbrid do membro.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Campos para realizar o checkout",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#components/schemas/RegisterBiblioHistRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Livro emprestado com sucesso!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RegisterCheckoutResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Erro ao fazer o checkout"
+          }
+        }
+      }
+    },
+    "/bibliohist/checkin": {
+      "post": {
+        "summary": "Checkin de um livro.",
+        "description": "Devolver um livro",
+        "tags": ["BiblioHist"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "description": "Campos para realizar o checkin",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#components/schemas/RegisterBiblioHistRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Livro devolovido com sucesso!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RegisterCheckinResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Erro ao fazer o checkout"
+          }
+        }
+      }
+    },
+    "/bibliohist/renewal/{mbrid}": {
+      "post": {
+        "summary": "Renewal de um livro.",
+        "description": "Renovar um livro para um membro",
+        "tags": ["BiblioHist"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "mbrid",
+            "in": "path",
+            "required": true,
+            "description": "Mbrid do membro.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Campos para renovar o livro.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#components/schemas/RegisterBiblioHistRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Livro ronavado com sucesso!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RegisterRenewalResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Erro ao renovar o livro"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -3921,7 +4054,7 @@
                 "example": 1
               },
               "create_dt": {
-                "type": "date",
+                "type": "string",
                 "example": "2024-10-14T13:17:09.686Z"
               },
               "copy_desc": {
@@ -3937,11 +4070,11 @@
                 "example": "in"
               },
               "status_begin_dt": {
-                "type": "date",
+                "type": "string",
                 "example": "2024-10-14T13:17:09.686Z"
               },
               "due_back_dt": {
-                "type": "date",
+                "type": "string",
                 "example": "2024-10-30T13:17:09.686Z"
               },
               "mbrid": {
@@ -3983,7 +4116,7 @@
                 "example": 1
               },
               "create_dt": {
-                "type": "date",
+                "type": "string",
                 "example": "2024-10-14T13:17:09.686Z"
               },
               "copy_desc": {
@@ -3999,11 +4132,11 @@
                 "example": "in"
               },
               "status_begin_dt": {
-                "type": "date",
+                "type": "string",
                 "example": "2024-10-14T13:17:09.686Z"
               },
               "due_back_dt": {
-                "type": "date",
+                "type": "string",
                 "example": "2024-10-30T13:17:09.686Z"
               },
               "mbrid": {
@@ -4047,7 +4180,7 @@
                   "example": 1
                 },
                 "create_dt": {
-                  "type": "date",
+                  "type": "string",
                   "example": "2024-10-14T13:17:09.686Z"
                 },
                 "copy_desc": {
@@ -4063,11 +4196,11 @@
                   "example": "in"
                 },
                 "status_begin_dt": {
-                  "type": "date",
+                  "type": "string",
                   "example": "2024-10-14T13:17:09.686Z"
                 },
                 "due_back_dt": {
-                  "type": "date",
+                  "type": "string",
                   "example": "2024-10-30T13:17:09.686Z"
                 },
                 "mbrid": {
@@ -4127,7 +4260,7 @@
                 "example": 1
               },
               "create_dt": {
-                "type": "date",
+                "type": "string",
                 "example": "2024-10-14T13:17:09.686Z"
               },
               "copy_desc": {
@@ -4143,11 +4276,11 @@
                 "example": "in"
               },
               "status_begin_dt": {
-                "type": "date",
+                "type": "string",
                 "example": "2024-10-14T13:17:09.686Z"
               },
               "due_back_dt": {
-                "type": "date",
+                "type": "string",
                 "example": "2024-10-30T13:17:09.686Z"
               },
               "mbrid": {
@@ -4172,6 +4305,201 @@
           "message": {
             "type": "string",
             "example": "Cópia bibliográfica deletada com sucesso!"
+          }
+        }
+      },
+      "RegisterBiblioHistRequest": {
+        "type": "object",
+        "properties": {
+          "barcode_nmbr": {
+            "type": "string",
+            "example": "1234"
+          }
+        }
+      },
+      "RegisterCheckoutResponse": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "example": "success"
+          },
+          "message": {
+            "type": "string",
+            "example": "Livro emprestado com sucesso!"
+          },
+          "registeredCopy": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "number",
+                "example": 1
+              },
+              "bibid": {
+                "type": "number",
+                "example": 1
+              },
+              "copyid": {
+                "type": "number",
+                "example": 1
+              },
+              "create_dt": {
+                "type": "string",
+                "example": "2024-10-14T13:17:09.686Z"
+              },
+              "copy_desc": {
+                "type": "string",
+                "example": "Primeira cópia do Moby Dick"
+              },
+              "barcode_nmbr": {
+                "type": "string",
+                "example": "1234"
+              },
+              "status_cd": {
+                "type": "string",
+                "example": "in"
+              },
+              "status_begin_dt": {
+                "type": "string",
+                "example": "2024-10-14T13:17:09.686Z"
+              },
+              "due_back_dt": {
+                "type": "string",
+                "example": "2024-10-30T13:17:09.686Z"
+              },
+              "mbrid": {
+                "type": "number",
+                "example": 1
+              },
+              "renewal_count": {
+                "type": "number",
+                "example": 0
+              }
+            }
+          }
+        }
+      },
+      "RegisterCheckinResponse": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "example": "success"
+          },
+          "message": {
+            "type": "string",
+            "example": "Livro devolvido com sucesso!"
+          },
+          "registeredCopy": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "number",
+                "example": 1
+              },
+              "bibid": {
+                "type": "number",
+                "example": 1
+              },
+              "copyid": {
+                "type": "number",
+                "example": 1
+              },
+              "create_dt": {
+                "type": "string",
+                "example": "2024-10-14T13:17:09.686Z"
+              },
+              "copy_desc": {
+                "type": "string",
+                "example": "Primeira cópia do Moby Dick"
+              },
+              "barcode_nmbr": {
+                "type": "string",
+                "example": "1234"
+              },
+              "status_cd": {
+                "type": "string",
+                "example": "in"
+              },
+              "status_begin_dt": {
+                "type": "string",
+                "example": null
+              },
+              "due_back_dt": {
+                "type": "string",
+                "example": null
+              },
+              "mbrid": {
+                "type": "number",
+                "example": null
+              },
+              "renewal_count": {
+                "type": "number",
+                "example": 0
+              }
+            }
+          }
+        }
+      },
+      "RegisterRenewalResponse": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "example": "success"
+          },
+          "message": {
+            "type": "string",
+            "example": "Livro renovado com sucesso!"
+          },
+          "registeredCopy": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "number",
+                "example": 1
+              },
+              "bibid": {
+                "type": "number",
+                "example": 1
+              },
+              "copyid": {
+                "type": "number",
+                "example": 1
+              },
+              "create_dt": {
+                "type": "string",
+                "example": "2024-10-14T13:17:09.686Z"
+              },
+              "copy_desc": {
+                "type": "string",
+                "example": "Primeira cópia do Moby Dick"
+              },
+              "barcode_nmbr": {
+                "type": "string",
+                "example": "1234"
+              },
+              "status_cd": {
+                "type": "string",
+                "example": "in"
+              },
+              "status_begin_dt": {
+                "type": "string",
+                "example": null
+              },
+              "due_back_dt": {
+                "type": "string",
+                "example": null
+              },
+              "mbrid": {
+                "type": "number",
+                "example": null
+              },
+              "renewal_count": {
+                "type": "number",
+                "example": 1
+              }
+            }
           }
         }
       }
