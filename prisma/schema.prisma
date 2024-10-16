@@ -158,8 +158,9 @@ model Biblio {
   biblio_copy         BiblioCopy[]
   BiblioStatusHist    BiblioStatusHist[]
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now())
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @default(now())
+  BiblioHold BiblioHold[]
 
   @@map("biblio")
 }
@@ -237,7 +238,9 @@ model BiblioHold {
   holdid Int
   copyid Int
   mbrid  Int
+  bibid  Int
 
+  biblio      Biblio     @relation(fields: [bibid], references: [bibid])
   member      Member     @relation(fields: [mbrid], references: [mbrid])
   biblio_copy BiblioCopy @relation(fields: [copyid], references: [id])
 

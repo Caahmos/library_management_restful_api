@@ -58,7 +58,8 @@ class HoldService {
         data: {
             holdid: holdid,
             copyid: copyExists.id,
-            mbrid: memberExistis.mbrid
+            mbrid: memberExistis.mbrid,
+            bibid: copyExists.bibid
         }
       });
 

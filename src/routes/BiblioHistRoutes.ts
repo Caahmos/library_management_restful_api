@@ -4,6 +4,8 @@ import CheckoutController from '../controllers/Biblio/BiblioStatusHist/CheckoutC
 import CheckinController from '../controllers/Biblio/BiblioStatusHist/CheckinController';
 import RenewalController from '../controllers/Biblio/BiblioStatusHist/RenewalController';
 import HoldController from '../controllers/Biblio/BiblioStatusHist/HoldController';
+import ViewHistController from '../controllers/Biblio/BiblioStatusHist/ViewHistController';
+import ViewHoldsController from '../controllers/Biblio/BiblioStatusHist/ViewHoldsController';
 
 class BiblioHistRoutes{
     public router = express.Router();
@@ -23,6 +25,8 @@ class BiblioHistRoutes{
     }
 
     getRoutes(){
+        this.router.get('/viewhist/:bibid', isAuthenticated, ViewHistController.handle);
+        this.router.get('/viewholds/:bibid', isAuthenticated, ViewHoldsController.handle);
     }
 
     patchRoutes(){
