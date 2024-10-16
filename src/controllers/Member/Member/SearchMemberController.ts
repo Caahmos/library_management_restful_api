@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
 import { FindMemberRequest } from "../../../model/Member/Member/FindMemberRequest";
-import FindMemberService from "../../../services/Member/Member/FindMemberService";
+import SearchMemberService from "../../../services/Member/Member/SearchMemberService";
 
-class FindMemberController {
+class SearchMemberController {
   static async handle(req: Request, res: Response) {
     const userId = req.userid;
     const userroles = req.userroles;
@@ -23,18 +23,18 @@ class FindMemberController {
     const method = req.query.method as "name" | "barcode" | "email"; 
     const data = req.query.data as string;
 
-    if (!data)
-      return res
-        .status(422)
-        .json({ type: "error", message: "Preencha o campo de pesquisa." });
+    // if (!data)
+    //   return res
+    //     .status(422)
+    //     .json({ type: "error", message: "Preencha o campo de pesquisa." });
 
-    const findMemberData: FindMemberRequest = {
+    const searchMemberData: FindMemberRequest = {
       method: method || "name",
       data: data,
     };
 
     try {
-      const foundMember = await FindMemberService.execute(findMemberData);
+      const foundMember = await SearchMemberService.execute(searchMemberData);
       res
         .status(200)
         .json({ type: "success", message: "Membro encontrado com sucesso!", foundMember });
@@ -44,4 +44,4 @@ class FindMemberController {
   }
 }
 
-export default FindMemberController;
+export default SearchMemberController;

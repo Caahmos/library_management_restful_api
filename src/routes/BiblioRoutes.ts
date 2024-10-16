@@ -5,6 +5,7 @@ import ViewBibliosController from '../controllers/Biblio/Biblio/ViewBibliosContr
 import DetailBiblioController from '../controllers/Biblio/Biblio/DetailBiblioController';
 import EditBiblioController from '../controllers/Biblio/Biblio/EditBiblioController';
 import DeleteBiblioController from '../controllers/Biblio/Biblio/DeleteBiblioController';
+import SearchBibliosController from '../controllers/Biblio/Biblio/SearchBibliosController';
 
 class BiblioRoutes{
     public router = express.Router();
@@ -21,6 +22,7 @@ class BiblioRoutes{
     }
 
     getRoutes(){
+        this.router.get('/search', isAuthenticated, SearchBibliosController.handle);
         this.router.get('/viewbiblios', isAuthenticated, ViewBibliosController.handle);
         this.router.get('/detail/:bibid', isAuthenticated, DetailBiblioController.handle);
     }

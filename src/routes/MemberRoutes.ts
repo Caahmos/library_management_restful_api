@@ -5,7 +5,7 @@ import ViewMembersController from '../controllers/Member/Member/ViewMembersContr
 import DetailMemberController from '../controllers/Member/Member/DetailMemberController';
 import EditMemberController from '../controllers/Member/Member/EditMemberController';
 import DeleteMemberController from '../controllers/Member/Member/DeleteMemberController';
-import FindMemberController from '../controllers/Member/Member/FindMemberController';
+import SearchMemberController from '../controllers/Member/Member/SearchMemberController';
 
 class MemberRoutes{
     public router = express.Router();
@@ -22,7 +22,7 @@ class MemberRoutes{
     }
 
     getRoutes(){
-        this.router.get('/find', isAuthenticated, FindMemberController.handle);
+        this.router.get('/search', isAuthenticated, SearchMemberController.handle);
         this.router.get('/viewmembers', isAuthenticated, ViewMembersController.handle);
         this.router.get('/detail/:mbrid', isAuthenticated, DetailMemberController.handle);
     }

@@ -1,7 +1,7 @@
 import { FindMemberRequest } from "../../../model/Member/Member/FindMemberRequest";
 import prisma from "../../../prisma/prisma";
 
-class FindMemberService {
+class SearchMemberService {
   static async execute(findMemberData: FindMemberRequest) {
     const { method, data } = findMemberData;
     let foundMember;
@@ -38,4 +38,4 @@ class FindMemberService {
   }
 }
 
-export default FindMemberService;
+export default SearchMemberService;
