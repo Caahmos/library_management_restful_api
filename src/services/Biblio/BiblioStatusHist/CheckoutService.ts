@@ -10,7 +10,9 @@ class CheckoutService {
       });
 
       if (!copyExists) throw new Error("Livro não encontrado!");
-      if (copyExists.status_cd !== 'in') throw new Error("Livro não disponível!");
+      if(copyExists.status_cd === 'hld' && copyExists.mbrid !== mbrid) throw new Error('Outro membro fez a reserva desse livro. Entre na fila!')
+      
+      if (copyExists.status_cd !== 'in' && copyExists.status_cd !== 'hld' ) throw new Error("Livro não disponível!");
 
       const biblio = await prisma.biblio.findFirst({
         where: {
