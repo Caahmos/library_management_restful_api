@@ -2035,6 +2035,82 @@
           }
         }
       }
+    },
+    "/bibliohist/viewhist/{bibid}": {
+      "get": {
+        "summary": "Mostrar o histórico de checkout.",
+        "description": "Mostrar o histórico de checkout por bibid.",
+        "tags": ["BiblioHist"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "bibid",
+            "in": "path",
+            "required": true,
+            "description": "Bibid bibliografia.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Histórico encontrado com sucesso!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#components/schemas/ViewHistResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Erro ao buscar pelo histórico!"
+          }
+        }
+      }
+    },
+    "/bibliohist/viewholds/{bibid}": {
+      "get": {
+        "summary": "Mostrar as reservas.",
+        "description": "Mostrar as reservas por bibid.",
+        "tags": ["BiblioHist"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "bibid",
+            "in": "path",
+            "required": true,
+            "description": "Bibid bibliografia.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Histórico encontrado com sucesso!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#components/schemas/ViewHoldsResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Erro ao buscar pelo histórico!"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -4736,6 +4812,88 @@
               "mbrid": {
                 "type": "number",
                 "example": 14
+              }
+            }
+          }
+        }
+      },
+      "ViewHistResponse": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "example": "success"
+          },
+          "message": {
+            "type": "string",
+            "example": "Histórico encontrado com sucesso!"
+          },
+          "foundHist": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "number",
+                  "example": 1
+                },
+                "holdid": {
+                  "type": "number",
+                  "example": 1
+                },
+                "copyid": {
+                  "type": "number",
+                  "example": 1
+                },
+                "mbrid": {
+                  "type": "number",
+                  "example": 1
+                },
+                "bibid": {
+                  "type": "number",
+                  "example": 1
+                }
+              }
+            }
+          }
+        }
+      },
+      "ViewHoldsResponse": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "example": "success"
+          },
+          "message": {
+            "type": "string",
+            "example": "Histórico de reservas encontrado com sucesso!"
+          },
+          "foundHist": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "number",
+                  "example": 1
+                },
+                "holdid": {
+                  "type": "number",
+                  "example": 1
+                },
+                "copyid": {
+                  "type": "number",
+                  "example": 1
+                },
+                "mbrid": {
+                  "type": "number",
+                  "example": 1
+                },
+                "bibid": {
+                  "type": "number",
+                  "example": 1
+                }
               }
             }
           }
