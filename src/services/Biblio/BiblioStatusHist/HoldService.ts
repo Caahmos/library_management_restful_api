@@ -11,8 +11,8 @@ class HoldService {
 
       if (!copyExists) throw new Error("Livro não encontrado!");
       
-      if (copyExists.status_cd !== 'out') throw new Error("Livro não está emprestado, você já pode fazer o checkout!");
-      if (copyExists.mbrid === mbrid) throw new Error('Você não pode fazer uma reserva. O livro já está com você!');
+      if (copyExists.status_cd !== 'out', copyExists.status_cd !== 'hld') throw new Error("Livro não está emprestado e não está em espera, você já pode fazer o checkout!");
+      if (copyExists.mbrid === mbrid) throw new Error('Não foi possível realizar a reserva pois o livro já está com você!');
 
       const biblio = await prisma.biblio.findFirst({
         where: {
@@ -43,7 +43,7 @@ class HoldService {
 
         console.log(holdExists);
         console.log(holdAlreadyExists);
-        if(holdAlreadyExists) throw new Error('O usuário já fez o pedido. Aguarde a sua vez!');
+        if(holdAlreadyExists) throw new Error('O usuário já fez a reserva. Aguarde a sua vez!');
       }
 
       if(holdExists && holdExists.length > 0){

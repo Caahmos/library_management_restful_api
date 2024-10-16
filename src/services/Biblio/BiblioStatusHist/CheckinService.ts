@@ -13,6 +13,9 @@ class CheckinService {
       if (copyExists.status_cd === "in")
         throw new Error("Livro já está disponível!");
 
+      if (copyExists.status_cd === "hld")
+        throw new Error("O livro está reservado!");
+
       const biblio = await prisma.biblio.findFirst({
         where: {
           bibid: copyExists.bibid,
@@ -34,7 +37,7 @@ class CheckinService {
             : previousHold;
         });
 
-        const checkedin = await prisma.biblioCopy.update({
+        const checkedIn = await prisma.biblioCopy.update({
           where: {
             id: orderedHold.copyid,
           },
@@ -83,7 +86,11 @@ class CheckinService {
           });
         }
 
-        return checkedin;
+        return {
+          message:
+            "O livro foi colocado em espera, pois um membro fez a reserva!",
+          checkedIn: checkedIn,
+        };
       }
 
       const checkedIn = await prisma.biblioCopy.update({
@@ -98,10 +105,10 @@ class CheckinService {
         },
       });
 
-      return {message: 'O livro foi colocado em espera, pois um membro fez a reserva!', checkedIn: checkedIn};
+      return { message: "Livro devolvido com sucesso!", checkedIn: checkedIn };
     });
 
-    return {message: 'Livro devolvido com sucesso!', checkedIn: checkedIn};;
+    return checkedIn;
   }
 }
 

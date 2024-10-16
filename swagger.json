@@ -1942,7 +1942,7 @@
     },
     "/bibliohist/renewal/{mbrid}": {
       "post": {
-        "summary": "Renewal de um livro.",
+        "summary": "Renovar um livro.",
         "description": "Renovar um livro para um membro",
         "tags": ["BiblioHist"],
         "security": [
@@ -1978,6 +1978,54 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/RegisterRenewalResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Erro ao renovar o livro"
+          }
+        }
+      }
+    },
+    "/bibliohist/hold/{mbrid}": {
+      "post": {
+        "summary": "Reserva de um livro.",
+        "description": "Reservar um livro para um membro",
+        "tags": ["BiblioHist"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "mbrid",
+            "in": "path",
+            "required": true,
+            "description": "Mbrid do membro.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Campos para reservar o livro.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#components/schemas/RegisterBiblioHistRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Livro ronavado com sucesso!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RegisterHoldResponse"
                 }
               }
             }
@@ -4654,6 +4702,40 @@
               "renewal_count": {
                 "type": "number",
                 "example": 1
+              }
+            }
+          }
+        }
+      },
+      "RegisterHoldResponse": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "example": "success"
+          },
+          "message": {
+            "type": "string",
+            "example": "Livro em espera com sucesso!"
+          },
+          "held": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "number",
+                "example": 1
+              },
+              "holdid": {
+                "type": "number",
+                "example": 1
+              },
+              "copyid": {
+                "type": "number",
+                "example": 1
+              },
+              "mbrid": {
+                "type": "number",
+                "example": 14
               }
             }
           }
