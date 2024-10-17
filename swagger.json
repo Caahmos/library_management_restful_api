@@ -2036,10 +2036,10 @@
         }
       }
     },
-    "/bibliohist/viewhist/{bibid}": {
+    "/bibliohist/viewhist": {
       "get": {
         "summary": "Mostrar o histórico de checkout.",
-        "description": "Mostrar o histórico de checkout por bibid.",
+        "description": "Mostrar o histórico de checkout usando parâmetros de consulta (query strings). É possível buscar pelo ID da bibliografia (bibid) ou ID do membro (mbrid).",
         "tags": ["BiblioHist"],
         "security": [
           {
@@ -2049,35 +2049,44 @@
         "parameters": [
           {
             "name": "bibid",
-            "in": "path",
-            "required": true,
-            "description": "Bibid bibliografia.",
+            "in": "query",
+            "required": false,
+            "description": "ID da bibliografia (bibid).",
             "schema": {
-              "type": "string"
+              "type": "integer"
+            }
+          },
+          {
+            "name": "mbrid",
+            "in": "query",
+            "required": false,
+            "description": "ID do membro (mbrid).",
+            "schema": {
+              "type": "integer"
             }
           }
         ],
         "responses": {
-          "201": {
+          "200": {
             "description": "Histórico encontrado com sucesso!",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#components/schemas/ViewHistResponse"
+                  "$ref": "#/components/schemas/ViewHistResponse"
                 }
               }
             }
           },
           "422": {
-            "description": "Erro ao buscar pelo histórico!"
+            "description": "Erro ao buscar pelo histórico! Verifique se os parâmetros estão corretos."
           }
         }
       }
     },
-    "/bibliohist/viewholds/{bibid}": {
+    "/bibliohist/viewholds": {
       "get": {
-        "summary": "Mostrar as reservas.",
-        "description": "Mostrar as reservas por bibid.",
+        "summary": "Mostrar o histórico de reservas.",
+        "description": "Exibe o histórico de reservas com base nos parâmetros de pesquisa, como `bibid` ou `mbrid`.",
         "tags": ["BiblioHist"],
         "security": [
           {
@@ -2087,31 +2096,57 @@
         "parameters": [
           {
             "name": "bibid",
-            "in": "path",
-            "required": true,
-            "description": "Bibid bibliografia.",
+            "in": "query",
+            "required": false,
+            "description": "ID da bibliografia (bibid).",
             "schema": {
-              "type": "string"
+              "type": "integer"
+            }
+          },
+          {
+            "name": "mbrid",
+            "in": "query",
+            "required": false,
+            "description": "ID do membro (mbrid) para a pesquisa de reservas.",
+            "schema": {
+              "type": "integer"
             }
           }
         ],
         "responses": {
-          "201": {
-            "description": "Histórico encontrado com sucesso!",
+          "200": {
+            "description": "Histórico de reservas encontrado com sucesso!",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#components/schemas/ViewHoldsResponse"
+                  "$ref": "#/components/schemas/ViewHoldsResponse"
                 }
               }
             }
           },
           "422": {
-            "description": "Erro ao buscar pelo histórico!"
+            "description": "Erro ao buscar pelo histórico de reservas ou ausência de parâmetros de pesquisa.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "type": {
+                      "type": "string",
+                      "example": "error"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Usuário não autenticado!" 
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
-    }
+    }   
   },
   "components": {
     "securitySchemes": {

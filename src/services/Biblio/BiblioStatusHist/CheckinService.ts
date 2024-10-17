@@ -13,7 +13,7 @@ class CheckinService {
       if (copyExists.status_cd === "in")
         throw new Error("Livro já está disponível!");
 
-      if (copyExists.status_cd === "hld")
+      if (copyExists.status_cd === "hld" && copyExists.mbrid)
         throw new Error("O livro está reservado!");
 
       const biblio = await prisma.biblio.findFirst({
@@ -65,26 +65,6 @@ class CheckinService {
             id: orderedHold.id,
           },
         });
-
-        const remainingHolds = await prisma.biblioHold.findMany({
-          where: {
-            copyid: copyExists.id,
-          },
-          orderBy: {
-            holdid: "asc",
-          },
-        });
-
-        for (let i = 0; i < remainingHolds.length; i++) {
-          await prisma.biblioHold.update({
-            where: {
-              id: remainingHolds[i].id,
-            },
-            data: {
-              holdid: i + 1,
-            },
-          });
-        }
 
         return {
           message:

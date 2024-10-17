@@ -25,8 +25,8 @@ class BiblioHistRoutes{
     }
 
     getRoutes(){
-        this.router.get('/viewhist/:bibid', isAuthenticated, ViewHistController.handle);
-        this.router.get('/viewholds/:bibid', isAuthenticated, ViewHoldsController.handle);
+        this.router.get('/viewhist', isAuthenticated, ViewHistController.handle);
+        this.router.get('/viewholds', isAuthenticated, ViewHoldsController.handle);
     }
 
     patchRoutes(){

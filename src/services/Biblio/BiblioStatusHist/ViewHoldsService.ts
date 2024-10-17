@@ -1,19 +1,19 @@
+import { ViewHistSearch } from "../../../model/Biblio/BiblioStatusHist/ViewHistRequest";
 import prisma from "../../../prisma/prisma";
 
-class ViewHoldsService{
-    static async execute(bibid: number){
-        const foundHolds = await prisma.biblioHold.findMany(
-            {
-                where: {
-                    bibid: bibid
-                }
-            }
-        );
+class ViewHoldService {
+  static async execute(viewHoldData: ViewHistSearch) {
+    const foundHold = await prisma.biblioHold.findMany({
+      where: {
+        bibid: viewHoldData.bibid || undefined,
+        mbrid: viewHoldData.mbrid || undefined,
+      },
+    });
 
-        if(foundHolds.length <= 0) throw new Error('Histórico de reservas não encontrado!');
+    if(foundHold.length <= 0) throw new Error('Nenhuma reserva encontrada encontrado!')
 
-        return foundHolds;
-    }
-};
+    return foundHold;
+  }
+}
 
-export default ViewHoldsService;
+export default ViewHoldService;
