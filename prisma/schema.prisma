@@ -95,7 +95,8 @@ model MemberField {
 }
 
 model MemberAccount {
-  transid             Int               @id @default(autoincrement())
+  id                  Int               @id @default(autoincrement())
+  transid             Int
   mbrid               Int
   create_userid       Int
   transaction_type    String
@@ -124,7 +125,7 @@ model CollectionDM {
 
 model MaterialTypeDM {
   code          Int             @id @default(autoincrement())
-  description   String
+  description   String          @unique
   default_flg   Boolean         @default(false)
   image_file    String?
   biblio        Biblio[]

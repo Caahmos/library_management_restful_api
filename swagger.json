@@ -2137,7 +2137,7 @@
                     },
                     "message": {
                       "type": "string",
-                      "example": "Usuário não autenticado!" 
+                      "example": "Usuário não autenticado!"
                     }
                   }
                 }
@@ -2146,7 +2146,131 @@
           }
         }
       }
-    }   
+    },
+    "/mbraccount/register/{mbrid}": {
+      "post": {
+        "summary": "Registrar uma transação.",
+        "description": "Registrar uma transação.",
+        "tags": ["MemberAccount"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "mbrid",
+            "in": "path",
+            "required": true,
+            "description": "Mbrid do membro.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Campos para realizar uma transação",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#components/schemas/RegisterTransactionRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Transação registrada com sucesso!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RegisterTransactionResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Erro ao fazer a transação"
+          }
+        }
+      }
+    },
+    "/mbraccount/viewtransactions": {
+      "get": {
+        "summary": "Mostrar as transações.",
+        "description": "Mostrar as transações usando parâmetros de consulta (query strings). É possível buscar pelo ID do membro (mbrid).",
+        "tags": ["MemberAccount"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "mbrid",
+            "in": "query",
+            "required": false,
+            "description": "ID da bibliografia (mbrid).",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Transações encontradas com sucesso!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ViewTransactionsResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Erro ao buscar pelas transações!."
+          }
+        }
+      }
+    },
+    "/mbraccount/delete/{id}": {
+      "delete": {
+        "summary": "Deletar uma transação.",
+        "description": "Deletar uma transação pelo id.",
+        "tags": ["MemberAccount"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Id transação a ser deletada.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Transação deletada com sucesso!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#components/schemas/DeleteTransactionResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Erro ao deletar a transação!"
+          }
+        }
+      }
+    }
   },
   "components": {
     "securitySchemes": {
@@ -4931,6 +5055,123 @@
                 }
               }
             }
+          }
+        }
+      },
+      "RegisterTransactionRequest": {
+        "type": "object",
+        "properties": {
+          "transaction_type": {
+            "type": "string",
+            "example": "pagamento  || crédito || carregar"
+          },
+          "description": {
+            "type": "string",
+            "example": "Multa"
+          },
+          "amount": {
+            "type": "number",
+            "example": 12.0
+          }
+        }
+      },
+      "RegisterTransactionResponse": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "example": "success"
+          },
+          "message": {
+            "type": "string",
+            "example": "Transação registrada com sucesso!"
+          },
+          "registeredTransaction": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "number",
+                "example": 1
+              },
+              "transid": {
+                "type": "number",
+                "example": 1
+              },
+              "create_userid": {
+                "type": "number",
+                "example": 1
+              },
+              "transaction_type": {
+                "type": "string",
+                "example": "-p"
+              },
+              "description": {
+                "type": "string",
+                "example": "Multa"
+              },
+              "amount": {
+                "type": "number",
+                "example": 12.0
+              }
+            }
+          }
+        }
+      },
+      "ViewTransactionsResponse": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "example": "success"
+          },
+          "message": {
+            "type": "string",
+            "example": "Transações encontradas com sucesso!"
+          },
+          "transactions": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "number",
+                  "example": 1
+                },
+                "transid": {
+                  "type": "number",
+                  "example": 1
+                },
+                "create_userid": {
+                  "type": "number",
+                  "example": 1
+                },
+                "transaction_type": {
+                  "type": "string",
+                  "example": "-p"
+                },
+                "description": {
+                  "type": "string",
+                  "example": "Multa"
+                },
+                "amount": {
+                  "type": "number",
+                  "example": 12.0
+                }
+              }
+            }
+          }
+        }
+      },
+      "DeleteTransactionResponse": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "example": "success"
+          },
+          "message": {
+            "type": "string",
+            "example": "Transação deletada com sucesso!"
           }
         }
       }
