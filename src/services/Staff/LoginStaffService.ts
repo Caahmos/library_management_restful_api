@@ -28,6 +28,8 @@ class LoginStaffService {
     return {
       userid: staffExists.userid,
       admin_flg: staffExists.admin_flg,
+      first_name: staffExists.first_name,
+      last_name: staffExists.last_name,
       token: token
     };
   }
