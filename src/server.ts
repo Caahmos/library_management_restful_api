@@ -15,6 +15,7 @@ import BiblioCopyRoutes from "./routes/BiblioCopyRoutes";
 import CheckoutPrivsRoutes from "./routes/CheckoutPrivsRoutes";
 import BiblioHistRoutes from "./routes/BiblioHistRoutes";
 import MemberAccountRoutes from "./routes/MemberAccount";
+import BiblioMediaRoutes from "./routes/BiblioMediaRoutes";
 dotenv.config();
 
 class Server {
@@ -42,6 +43,7 @@ class Server {
     this.app.use("/biblio", new BiblioRoutes().router);
     this.app.use("/bibliocopy", new BiblioCopyRoutes().router);
     this.app.use("/bibliohist", new BiblioHistRoutes().router);
+    this.app.use("/bibliomedia", new BiblioMediaRoutes().router);
     this.app.use("/checkprivs", new CheckoutPrivsRoutes().router);
     this.app.use("/material", new MaterialRoutes().router);
     this.app.use("/collection", new CollectionRoutes().router);

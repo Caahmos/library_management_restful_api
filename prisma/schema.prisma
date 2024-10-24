@@ -59,6 +59,7 @@ model Member {
   createdAt  DateTime     @default(now())
   updatedAt  DateTime     @default(now())
   BiblioHold BiblioHold[]
+  UserRank   UserRank[]
 
   @@map("member")
 }
@@ -159,11 +160,38 @@ model Biblio {
   biblio_copy         BiblioCopy[]
   BiblioStatusHist    BiblioStatusHist[]
 
-  createdAt  DateTime     @default(now())
-  updatedAt  DateTime     @default(now())
-  BiblioHold BiblioHold[]
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @default(now())
+  BiblioHold  BiblioHold[]
+  BiblioMedia BiblioMedia[]
+  UserRank    UserRank[]
 
   @@map("biblio")
+}
+
+model BiblioMedia {
+  id          Int        @id @default(autoincrement())
+  bibid       Int
+  imageUrl    String?
+  rank        Int?
+  description String?
+  biblio      Biblio     @relation(fields: [bibid], references: [bibid])
+
+  @@map("biblio_media")
+}
+
+model UserRank {
+  id        Int      @id @default(autoincrement())
+  rank      Int
+  comment   String?
+  bibid     Int
+  mbrid     Int
+  createdAt DateTime @default(now())
+
+  member        Member       @relation(fields: [mbrid], references: [mbrid])
+  biblioMedia   Biblio       @relation(fields: [bibid], references: [bibid])
+
+  @@map("user_rank")
 }
 
 model BiblioField {
