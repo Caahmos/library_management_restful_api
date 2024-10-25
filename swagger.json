@@ -2270,6 +2270,54 @@
           }
         }
       }
+    },
+    "/bibliomedia/register/{bibid}": {
+      "post": {
+        "summary": "Registrar uma avaliação.",
+        "description": "Registrar uma avaliação da bibliografia.",
+        "tags": ["BiblioMedia"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "bibid",
+            "in": "path",
+            "required": true,
+            "description": "Bibid da bibliografia.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Campos para realizar uma avaliação",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#components/schemas/RegisterCommentRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Avaliação registrada com sucesso!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RegisterCommentResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Erro ao fazer a transação"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -5172,6 +5220,65 @@
           "message": {
             "type": "string",
             "example": "Transação deletada com sucesso!"
+          }
+        }
+      },
+      "RegisterCommentRequest": {
+        "type": "object",
+        "properties": {
+          "comment": {
+            "type": "string",
+            "example": "Gostei demais do livro!"
+          },
+          "rank": {
+            "type": "number",
+            "example": 5
+          },
+          "mbrid": {
+            "type": "number",
+            "example": 4
+          }
+        }
+      },
+      "RegisterCommentResponse": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "example": "success"
+          },
+          "message": {
+            "type": "string",
+            "example": "Transação registrada com sucesso!"
+          },
+          "registeredTransaction": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "number",
+                "example": 1
+              },
+              "comment": {
+                "type": "string",
+                "example": "Gostei demais do livro!"
+              },
+              "rank": {
+                "type": "number",
+                "example": 5
+              },
+              "mbrid": {
+                "type": "number",
+                "example": 4
+              },
+              "bibid": {
+                "type": "number",
+                "example": 5934
+              },
+              "createAt": {
+                "type": "string",
+                "example": "2024-10-25T14:10:28.152Z"
+              }
+            }
           }
         }
       }

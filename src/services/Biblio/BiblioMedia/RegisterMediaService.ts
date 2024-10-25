@@ -10,7 +10,7 @@ class RegisterRankService {
     if (!memberExists)
       throw new Error("Membro não foi encontrado!");
 
-    const rankExists = await prisma.userRank.findFirst({
+    const rankExists = await prisma.biblioRank.findFirst({
       where: {
         mbrid: rankData.mbrid
       },
@@ -19,7 +19,7 @@ class RegisterRankService {
     if (rankExists)
       throw new Error("Já existe um comentário deste membro!");
 
-    const registeredRank = await prisma.userRank.create({
+    const registeredRank = await prisma.biblioRank.create({
       data: rankData
     });
 
