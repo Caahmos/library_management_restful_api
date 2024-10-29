@@ -2271,11 +2271,11 @@
         }
       }
     },
-    "/bibliomedia/register/{bibid}": {
+    "/bibliorank/register/{bibid}": {
       "post": {
         "summary": "Registrar uma avaliação.",
         "description": "Registrar uma avaliação da bibliografia.",
-        "tags": ["BiblioMedia"],
+        "tags": ["BiblioRank"],
         "security": [
           {
             "bearerAuth": []
@@ -2315,6 +2315,44 @@
           },
           "422": {
             "description": "Erro ao fazer a transação"
+          }
+        }
+      }
+    },
+    "/bibliorank/delete/{id}": {
+      "delete": {
+        "summary": "Deletar um rank.",
+        "description": "Deletar um rank pelo id.",
+        "tags": ["BiblioRank"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Id do rank a ser deletada.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Rank deletado com sucesso!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#components/schemas/DeleteRankResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Erro ao deletar a rank!"
           }
         }
       }
@@ -5279,6 +5317,19 @@
                 "example": "2024-10-25T14:10:28.152Z"
               }
             }
+          }
+        }
+      },
+      "DeleteRankResponse": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "example": "success"
+          },
+          "message": {
+            "type": "string",
+            "example": "Rank deletado com sucesso!"
           }
         }
       }

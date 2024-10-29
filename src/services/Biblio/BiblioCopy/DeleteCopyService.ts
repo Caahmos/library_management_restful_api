@@ -10,13 +10,13 @@ class DeleteCopyService{
 
     if (!copyExists?.id) throw new Error("Nenhuma cópia bibliográfica com esse id encontrada!");
 
-    const deletedCollection = await prisma.biblioCopy.delete({
+    const deletedCopy = await prisma.biblioCopy.delete({
       where: {
         id: id
       }
     });
 
-    return deletedCollection;
+    return deletedCopy;
   }
 }
 

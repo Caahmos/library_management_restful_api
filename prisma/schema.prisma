@@ -59,7 +59,7 @@ model Member {
   createdAt  DateTime     @default(now())
   updatedAt  DateTime     @default(now())
   BiblioHold BiblioHold[]
-  BiblioRank   BiblioRank[]
+  BiblioRank BiblioRank[]
 
   @@map("member")
 }
@@ -164,7 +164,7 @@ model Biblio {
   updatedAt   DateTime      @default(now())
   BiblioHold  BiblioHold[]
   BiblioMedia BiblioMedia[]
-  BiblioRank BiblioRank[]
+  BiblioRank  BiblioRank[]
 
   @@map("biblio")
 }
@@ -174,8 +174,9 @@ model BiblioMedia {
   bibid       Int
   imageUrl    String?
   rank        Int?
+  count_ranks Int?
   description String?
-  biblio      Biblio  @relation(fields: [bibid], references: [bibid])
+  biblio      Biblio  @relation(fields: [bibid], references: [bibid], onDelete: Cascade)
 
   @@map("biblio_media")
 }
@@ -189,7 +190,7 @@ model BiblioRank {
   createdAt DateTime @default(now())
 
   member      Member @relation(fields: [mbrid], references: [mbrid])
-  biblioMedia Biblio @relation(fields: [bibid], references: [bibid])
+  biblioMedia Biblio @relation(fields: [bibid], references: [bibid], onDelete: Cascade)
 
   @@map("biblio_rank")
 }

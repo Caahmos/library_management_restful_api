@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { RegisterRankRequest } from "../../../model/Biblio/BiblioMedia/RegisterRankRequest";
-import RegisterRankService from "../../../services/Biblio/BiblioMedia/RegisterMediaService";
+import RegisterRankService from "../../../services/Biblio/BiblioRank/RegisterRankService";
 
 class RegisterRankController{
     static async handle(req: Request, res: Response){
