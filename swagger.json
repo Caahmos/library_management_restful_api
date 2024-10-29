@@ -2356,6 +2356,44 @@
           }
         }
       }
+    },
+    "/bibliorank/viewranks/{bibid}": {
+      "get": {
+        "summary": "Ver todos os ranks.",
+        "description": "Ver todos os ranks e comentários de uma bibliografia",
+        "tags": ["BiblioRank"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "bibid",
+            "in": "path",
+            "required": true,
+            "description": "bibid do membro.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Ranks encontrados com sucesso!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ViewRanksResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Erro ao buscar pelos ranks"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -5330,6 +5368,51 @@
           "message": {
             "type": "string",
             "example": "Rank deletado com sucesso!"
+          }
+        }
+      },
+      "ViewRanksResponse": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "example": "success"
+          },
+          "message": {
+            "type": "string",
+            "example": "Ranks encontrados com sucesso!"
+          },
+          "ranks": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "number",
+                  "example": 1
+                },
+                "comment": {
+                  "type": "string",
+                  "example": "Gostei demais do livro!"
+                },
+                "rank": {
+                  "type": "number",
+                  "example": 5
+                },
+                "mbrid": {
+                  "type": "number",
+                  "example": 4
+                },
+                "bibid": {
+                  "type": "number",
+                  "example": 5934
+                },
+                "createAt": {
+                  "type": "string",
+                  "example": "2024-10-25T14:10:28.152Z"
+                }
+              }
+            }
           }
         }
       }
