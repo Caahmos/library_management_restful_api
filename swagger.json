@@ -1505,6 +1505,54 @@
         }
       }
     },
+    "/biblio/addimage/{bibid}": {
+      "patch": {
+        "summary": "Atualizar imagem de uma bibliografia.",
+        "description": "Adicionar/atualizar imagem de uma bibliografia.",
+        "tags": ["Bibliography"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "bibid",
+            "in": "path",
+            "required": true,
+            "description": "Bibid da bibliografia.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Campos para adicionar uma imagem a bibliografia",
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#components/schemas/RegisterImageBiblioRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Bibliografia atualizada com sucesso!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#components/schemas/EditImageBiblioResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Erro ao atualizar a imagem da bibliografia!"
+          }
+        }
+      }
+    },
     "/biblio/delete/{bibid}": {
       "delete": {
         "summary": "Deletar uma bibliografia.",
@@ -4198,6 +4246,34 @@
             }
           }
         }
+      },
+      "RegisterImageBiblioRequest": {
+          "type": "object",
+          "properties": {
+            "image_file": {
+              "type": "string",
+              "format": "binary",
+              "example": null
+          }
+        }
+      },
+      "RegisterImageBiblioResponse": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "example": "success"
+          },
+          "message": {
+            "type": "string",
+            "example": "Imagem da bibliografia cadastrada com sucesso!"
+          },
+          "image_file": {
+            "type": "string",
+            "format": "binary",
+            "example": null
+        }
+      }
       },
       "SearchBibliosResponse": {
         "type": "object",

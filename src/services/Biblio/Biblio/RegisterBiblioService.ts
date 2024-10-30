@@ -84,6 +84,10 @@ class RegisterBiblioService {
 
       console.log(editedFields);
 
+      await prisma.biblioMedia.create({ data: {
+        bibid: biblio.bibid
+      }});
+
       return biblio;
     }
   });

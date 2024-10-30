@@ -6,6 +6,8 @@ import DetailBiblioController from '../controllers/Biblio/Biblio/DetailBiblioCon
 import EditBiblioController from '../controllers/Biblio/Biblio/EditBiblioController';
 import DeleteBiblioController from '../controllers/Biblio/Biblio/DeleteBiblioController';
 import SearchBibliosController from '../controllers/Biblio/Biblio/SearchBibliosController';
+import AddImageController from '../controllers/Biblio/Biblio/AddImageController';
+import { upload } from '../helpers/imageUpload';
 
 class BiblioRoutes{
     public router = express.Router();
@@ -29,6 +31,7 @@ class BiblioRoutes{
 
     patchRoutes(){
         this.router.patch('/edit/:bibid', isAuthenticated, EditBiblioController.handle);
+        this.router.patch('/addimage/:bibid', isAuthenticated, upload.single('image_file'), AddImageController.handle);
     }
 
     deleteRoutes(){
