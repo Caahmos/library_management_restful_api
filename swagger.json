@@ -1531,7 +1531,7 @@
           "content": {
             "multipart/form-data": {
               "schema": {
-                "$ref": "#components/schemas/RegisterImageBiblioRequest"
+                "$ref": "#components/schemas/EditImageBiblioRequest"
               }
             }
           }
@@ -4247,17 +4247,17 @@
           }
         }
       },
-      "RegisterImageBiblioRequest": {
-          "type": "object",
-          "properties": {
-            "image_file": {
-              "type": "string",
-              "format": "binary",
-              "example": null
+      "EditImageBiblioRequest": {
+        "type": "object",
+        "properties": {
+          "image_file": {
+            "type": "string",
+            "format": "binary",
+            "example": null
           }
         }
       },
-      "RegisterImageBiblioResponse": {
+      "EditImageBiblioResponse": {
         "type": "object",
         "properties": {
           "type": {
@@ -4268,12 +4268,32 @@
             "type": "string",
             "example": "Imagem da bibliografia cadastrada com sucesso!"
           },
-          "image_file": {
-            "type": "string",
-            "format": "binary",
-            "example": null
+          "addedImage": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "number",
+                "example": 1
+              },
+              "bibid": {
+                "type": "number",
+                "example": 1
+              },
+              "imageURL": {
+                "type": "string",
+                "example": "555.24891984050351730314101806.jpg"
+              },
+              "rank": {
+                "type": "number",
+                "example": 5
+              },
+              "count_ranks": {
+                "type": "number",
+                "example": 89
+              }
+            }
+          }
         }
-      }
       },
       "SearchBibliosResponse": {
         "type": "object",
