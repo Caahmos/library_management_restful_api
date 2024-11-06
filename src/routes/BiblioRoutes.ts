@@ -8,6 +8,8 @@ import DeleteBiblioController from '../controllers/Biblio/Biblio/DeleteBiblioCon
 import SearchBibliosController from '../controllers/Biblio/Biblio/SearchBibliosController';
 import AddImageController from '../controllers/Biblio/Biblio/AddImageController';
 import { upload } from '../helpers/imageUpload';
+import TopSearchService from '../services/Biblio/Biblio/RandomSearchService';
+import RandomSearchController from '../controllers/Biblio/Biblio/RandomSearchController';
 
 class BiblioRoutes{
     public router = express.Router();
@@ -25,6 +27,7 @@ class BiblioRoutes{
 
     getRoutes(){
         this.router.get('/search', isAuthenticated, SearchBibliosController.handle);
+        this.router.get('/randomsearch', isAuthenticated, RandomSearchController.handle);
         this.router.get('/viewbiblios', isAuthenticated, ViewBibliosController.handle);
         this.router.get('/detail/:bibid', isAuthenticated, DetailBiblioController.handle);
     }

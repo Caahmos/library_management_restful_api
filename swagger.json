@@ -1392,6 +1392,69 @@
         }
       }
     },
+    "/biblio/randomsearch": {
+      "get": {
+        "summary": "Buscar por bibliografias por coleções aleatórias",
+        "description": "Buscar bibliografia(s) pelo número da coleção gerada aleatoriamente",
+        "tags": ["Bibliography"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "method",
+            "description": "Método de pesquisa (title, author, collection)",
+            "schema": {
+              "type": "string",
+              "enum": ["title", "author", "collection"]
+            }
+          },
+          {
+            "in": "query",
+            "name": "number",
+            "description": "Número de coleções que serão geradas aleatoriamente.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Bibliografias encontradas com sucesso!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#components/schemas/RandomSearchBibliosResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Erro ao buscar a bibliografia",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "type": {
+                      "type": "string",
+                      "example": "error"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Erro ao buscar bibliografia."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/biblio/viewbiblios": {
       "get": {
         "summary": "Ver todas as bibliografias",
@@ -4386,6 +4449,130 @@
               }
             }
           }
+        }
+      },
+      "RandomSearchBibliosResponse": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "example": "success"
+          },
+          "message": {
+            "type": "string",
+            "example": "Bibliografias encontradas com sucesso!"
+          },
+          "biblios": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "collection": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "number",
+                      "example": 1
+                    },
+                    "description": {
+                      "type": "string",
+                      "example": "Engenharia de Software"
+                    },
+                    "default_flg": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "days_due_back": {
+                      "type": "number",
+                      "example": 15
+                    },
+                    "daily_late_fee": {
+                      "type": "number",
+                      "example": 0
+                    }
+                  }
+                },
+                "biblios": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "bibid": { "type": "number", "example": 1 },
+                      "title": { "type": "string", "example": "Moby Dick" },
+                      "title_remainder": {
+                        "type": "string",
+                        "example": "or, The Whale"
+                      },
+                      "author": { "type": "string", "example": "Herman Melville" },
+                      "responsibility_stmt": {
+                        "type": "string",
+                        "example": "Written by Herman Melville"
+                      },
+                      "material_cd": { "type": "number", "example": 2 },
+                      "collection_cd": { "type": "number", "example": 82 },
+                      "call_nmbr1": { "type": "string", "example": "FIC" },
+                      "call_nmbr2": { "type": "string", "example": "MEL" },
+                      "call_nmbr3": { "type": "string", "example": "1851" },
+                      "topic1": { "type": "string", "example": "Whaling" },
+                      "topic2": { "type": "string", "example": "Adventure" },
+                      "topic3": { "type": "string", "example": "Sea Stories" },
+                      "topic4": { "type": "string", "example": "Classic Literature" },
+                      "topic5": { "type": "string", "example": "American Fiction" },
+                      "last_change_userid": { "type": "number", "example": 12345 },
+                      "opac_flg": { "type": "boolean", "example": true },
+                      "biblio_copy": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "number",
+                            "example": 1
+                          },
+                          "bibid": {
+                            "type": "number",
+                            "example": 1
+                          },
+                          "copyid": {
+                            "type": "number",
+                            "example": 1
+                          },
+                          "create_dt": {
+                            "type": "string",
+                            "example": "2024-10-14T13:17:09.686Z"
+                          },
+                          "copy_desc": {
+                            "type": "string",
+                            "example": "Primeira cópia do Moby Dick"
+                          },
+                          "barcode_nmbr": {
+                            "type": "string",
+                            "example": "1234"
+                          },
+                          "status_cd": {
+                            "type": "string",
+                            "example": "in"
+                          },
+                          "status_begin_dt": {
+                            "type": "string",
+                            "example": "2024-10-14T13:17:09.686Z"
+                          },
+                          "due_back_dt": {
+                            "type": "string",
+                            "example": "2024-10-30T13:17:09.686Z"
+                          },
+                          "mbrid": {
+                            "type": "number",
+                            "example": 1
+                          },
+                          "renewal_count": {
+                            "type": "number",
+                            "example": 0
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }}}
         }
       },
       "ViewBibliosResponse": {
