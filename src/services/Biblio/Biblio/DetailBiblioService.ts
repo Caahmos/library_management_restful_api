@@ -8,7 +8,9 @@ class DetailBiblioService{
                     bibid: bibid
                 },
                 include: {
-                    biblio_field: true
+                    biblio_field: true,
+                    BiblioMedia: true,
+                    BiblioRank: true,
                 }
             }
         );
