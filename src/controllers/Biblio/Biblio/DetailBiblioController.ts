@@ -12,8 +12,8 @@ class DetailBiblioController{
         if(!userroles.catalog_flg) return res.status(422).json({ type: 'error', message: 'Usuário não tem permissão!'});
 
         try{
-            const biblio = await DetailBiblioService.execute(bibid);
-            res.status(200).json({ type: 'success', message: 'Bibliografia encontrada com sucesso!', biblio});
+            const {biblio, subfieldsDescriptions} = await DetailBiblioService.execute(bibid);
+            res.status(200).json({ type: 'success', message: 'Bibliografia encontrada com sucesso!', biblio, subfieldsDescriptions});
         }catch(err: any){
             res.status(422).json({ type: 'error', message: err.message});
         };

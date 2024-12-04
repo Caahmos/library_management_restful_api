@@ -17,7 +17,24 @@ class DetailBiblioService{
 
         if(!biblio) throw new Error('Bibliografia não encontrada!');
 
-        return biblio;
+        const subfieldsDescriptions = await Promise.all(
+            biblio.biblio_field.map(async (value) => {
+                const subfieldDescription = await prisma.usmarcSubfieldDM.findFirst({
+                    where: {
+                        tag: value.tag,
+                        subfield_cd: value.subfield_cd
+                    },
+                    select: {
+                        description: true
+                    }
+                });
+                return subfieldDescription?.description || "Descrição não encontrada";
+            })
+        );
+
+        console.log(subfieldsDescriptions)
+
+        return {biblio, subfieldsDescriptions};
     }
 };
 

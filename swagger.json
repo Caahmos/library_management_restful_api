@@ -1853,14 +1853,25 @@
         }
       }
     },
-    "/bibliocopy/viewcopies": {
+    "/bibliocopy/viewcopies/{bibid}": {
       "get": {
         "summary": "Ver todas as cópias de uma bibliografia",
-        "description": "Ver todas as cópias de uma bibliografia",
+        "description": "Ver todas as cópias de uma bibliografia pelo bibid",
         "tags": ["BiblioCopy"],
         "security": [
           {
             "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "bibid",
+            "in": "path",
+            "required": true,
+            "description": "id da bibliografia.",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {

@@ -21,7 +21,7 @@ class BiblioCopyRoutes{
     }
 
     getRoutes(){
-        this.router.get('/viewcopies', isAuthenticated, ViewCopiesController.handle);
+        this.router.get('/viewcopies/:bibid', isAuthenticated, ViewCopiesController.handle);
         this.router.get('/detail/:id', isAuthenticated, DetailCopyController.handle);
     }
 
