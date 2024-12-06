@@ -6,6 +6,7 @@ import RenewalController from '../controllers/Biblio/BiblioStatusHist/RenewalCon
 import HoldController from '../controllers/Biblio/BiblioStatusHist/HoldController';
 import ViewHistController from '../controllers/Biblio/BiblioStatusHist/ViewHistController';
 import ViewHoldsController from '../controllers/Biblio/BiblioStatusHist/ViewHoldsController';
+import ViewStatusController from '../controllers/Biblio/BiblioStatusHist/ViewStatusController';
 
 class BiblioHistRoutes{
     public router = express.Router();
@@ -27,6 +28,7 @@ class BiblioHistRoutes{
     getRoutes(){
         this.router.get('/viewhist', isAuthenticated, ViewHistController.handle);
         this.router.get('/viewholds', isAuthenticated, ViewHoldsController.handle);
+        this.router.get('/viewstatus', isAuthenticated, ViewStatusController.handle);
     }
 
     patchRoutes(){
