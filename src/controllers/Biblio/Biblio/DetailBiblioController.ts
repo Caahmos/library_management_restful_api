@@ -12,8 +12,8 @@ class DetailBiblioController{
         if(!userroles.catalog_flg) return res.status(422).json({ type: 'error', message: 'Usuário não tem permissão!'});
 
         try{
-            const {biblio, subfieldsDescriptions} = await DetailBiblioService.execute(bibid);
-            res.status(200).json({ type: 'success', message: 'Bibliografia encontrada com sucesso!', biblio, subfieldsDescriptions});
+            const {biblio, subfieldsDescriptions, collection} = await DetailBiblioService.execute(bibid);
+            res.status(200).json({ type: 'success', message: 'Bibliografia encontrada com sucesso!', biblio, subfieldsDescriptions, collection});
         }catch(err: any){
             res.status(422).json({ type: 'error', message: err.message});
         };
@@ -21,3 +21,5 @@ class DetailBiblioController{
 };
 
 export default DetailBiblioController;
+
+// PRECISO LIMPAR TODOS OS ESPAÇOS VAZIOS DAS TABELAS E ARRUMAR O SWAGGER PARA MOSTRAR QUE AGORA RETORNA A DESCRIÇÃO DA COLEÇÃO

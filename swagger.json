@@ -4711,6 +4711,12 @@
                 }
               }
             }
+          },
+          "collection": {
+            "type": "object",
+            "properties": {
+              "description": { "type": "string", "example": "Ficção" }
+            }
           }
         }
       },
