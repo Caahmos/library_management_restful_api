@@ -6,7 +6,7 @@ import DetailBiblioController from '../controllers/Biblio/Biblio/DetailBiblioCon
 import EditBiblioController from '../controllers/Biblio/Biblio/EditBiblioController';
 import DeleteBiblioController from '../controllers/Biblio/Biblio/DeleteBiblioController';
 import SearchBibliosController from '../controllers/Biblio/Biblio/SearchBibliosController';
-import AddImageController from '../controllers/Biblio/Biblio/AddImageController';
+import UpdateImageController from '../controllers/Biblio/Biblio/UpdateImageController';
 import { upload } from '../helpers/imageUpload';
 import TopSearchService from '../services/Biblio/Biblio/RandomSearchService';
 import RandomSearchController from '../controllers/Biblio/Biblio/RandomSearchController';
@@ -34,7 +34,7 @@ class BiblioRoutes{
 
     patchRoutes(){
         this.router.patch('/edit/:bibid', isAuthenticated, EditBiblioController.handle);
-        this.router.patch('/addimage/:bibid', isAuthenticated, upload.single('image_file'), AddImageController.handle);
+        this.router.patch('/updateimage/:bibid', isAuthenticated, upload.single('image_file'), UpdateImageController.handle);
     }
 
     deleteRoutes(){

@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
-import AddImageService from "../../../services/Biblio/Biblio/AddImageService";
+import UpdateImageService from "../../../services/Biblio/Biblio/UpdateImageService";
 
-class AddImageController {
+class UpdateImageController {
   static async handle(req: Request, res: Response) {
     const userId = req.userid;
     const userroles = req.userroles;
@@ -31,7 +31,7 @@ class AddImageController {
     if(!bibid) throw new Error('Informe o bibid!');
 
     try {
-      const addedImage = await AddImageService.execute(
+      const addedImage = await UpdateImageService.execute(
         image_file, bibid
       );
       res
@@ -47,4 +47,4 @@ class AddImageController {
   }
 }
 
-export default AddImageController;
+export default UpdateImageController;

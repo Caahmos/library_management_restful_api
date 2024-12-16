@@ -1568,7 +1568,7 @@
         }
       }
     },
-    "/biblio/addimage/{bibid}": {
+    "/biblio/updateimage/{bibid}": {
       "patch": {
         "summary": "Atualizar imagem de uma bibliografia.",
         "description": "Adicionar/atualizar imagem de uma bibliografia.",
