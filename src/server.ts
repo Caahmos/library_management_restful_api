@@ -16,6 +16,7 @@ import CheckoutPrivsRoutes from "./routes/CheckoutPrivsRoutes";
 import BiblioHistRoutes from "./routes/BiblioHistRoutes";
 import MemberAccountRoutes from "./routes/MemberAccount";
 import BiblioRankRoutes from "./routes/BiblioRankRoutes";
+import BiblioReportsRoutes from "./routes/BiblioReportsRoutes";
 dotenv.config();
 
 class Server {
@@ -50,6 +51,7 @@ class Server {
     this.app.use("/mbrclassifydm", new MemberClassifyDMRoutes().router);
     this.app.use("/mbrfieldsdm", new MemberFieldsDMRoutes().router);
     this.app.use("/mbraccount", new MemberAccountRoutes().router);
+    this.app.use("/biblioreports", new BiblioReportsRoutes().router);
     this.documentation();
   }
 

@@ -23,8 +23,6 @@ class RandomSearchService {
           if (biblios.length >= 15) {
             return { collection: randomCollection, biblios };
           } else {
-            console.log(`Menos de 15 biblios encontrados para a coleção ${randomCollection.code}, buscando nova coleção...`);
-            
             return fetchBibliosRecursively();
           }
         };
