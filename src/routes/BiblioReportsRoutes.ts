@@ -1,6 +1,7 @@
 import express from 'express';
 import { isAuthenticated } from '../middlewares/isAuthenticated';
 import TopBooksController from '../controllers/Biblio/BiblioReports/TopBooksController';
+import RentalStatisticsController from '../controllers/Biblio/BiblioReports/RentalStatisticsController';
 
 class BiblioReportsRoutes{
     public router = express.Router();
@@ -14,6 +15,7 @@ class BiblioReportsRoutes{
 
     postRoutes(){
         this.router.get('/topbooks', isAuthenticated, TopBooksController.handle);
+        this.router.get('/rentals', isAuthenticated, RentalStatisticsController.handle);
     }
 
     getRoutes(){
