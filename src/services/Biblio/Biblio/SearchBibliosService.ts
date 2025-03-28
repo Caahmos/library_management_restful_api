@@ -36,7 +36,9 @@ class SearchBibiosService {
     } else if (method === "author") {
       foundBiblio = await prisma.biblio.findMany({
         where: {
-          author: data,
+          author: {
+            contains: data
+          },
         },
         include: {
           biblio_copy: true,
