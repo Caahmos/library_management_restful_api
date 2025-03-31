@@ -8,8 +8,8 @@ class DetailStaffService{
                     userid: userid
                 },
                 select: {
-                    firstName: true,
-                    lastName: true,
+                    first_name: true,
+                    last_name: true,
                     username: true,
                     circ_flg: true,
                     circ_mbr_flg: true,

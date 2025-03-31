@@ -6,8 +6,8 @@ class ViewStaffsService{
             {
                 select: {
                     userid: true,
-                    firstName: true,
-                    lastName: true,
+                    first_name: true,
+                    last_name: true,
                     username: true,
                     circ_flg: true,
                     circ_mbr_flg: true,
