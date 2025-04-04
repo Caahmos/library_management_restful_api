@@ -17,7 +17,7 @@ class RegisterCollectionController{
 
         try{
             const registeredCollection = await RegisterCollectionService.execute(collectionData);
-            res.status(201).json({ type: 'success', message: 'Material cadastrado com sucesso!', registeredCollection });
+            res.status(201).json({ type: 'success', message: 'Coleção cadastrada com sucesso!', registeredCollection });
         }catch(err: any){
             res.status(422).json({ type: 'error', message: err.message });
         };
