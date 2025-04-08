@@ -10,6 +10,7 @@ import UpdateImageController from '../controllers/Biblio/Biblio/UpdateImageContr
 import { upload } from '../helpers/imageUpload';
 import TopSearchService from '../services/Biblio/Biblio/RandomSearchService';
 import RandomSearchController from '../controllers/Biblio/Biblio/RandomSearchController';
+import DetailedSearchController from '../controllers/Biblio/Biblio/DetailedSearchController';
 
 class BiblioRoutes{
     public router = express.Router();
@@ -30,6 +31,7 @@ class BiblioRoutes{
         this.router.get('/randomsearch', isAuthenticated, RandomSearchController.handle);
         this.router.get('/viewbiblios', isAuthenticated, ViewBibliosController.handle);
         this.router.get('/detail/:bibid', isAuthenticated, DetailBiblioController.handle);
+        this.router.get('/detailedsearch', isAuthenticated, DetailedSearchController.handle);
     }
 
     patchRoutes(){

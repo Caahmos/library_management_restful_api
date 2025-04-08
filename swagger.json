@@ -1482,6 +1482,61 @@
         }
       }
     },
+    "/biblio/detailedsearch": {
+      "get": {
+        "summary": "Ver todas as bibliografias filtradas",
+        "description": "Ver todos as bibliografias filtradas.",
+        "tags": ["Bibliography"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "collection",
+            "description": "Busca por categoria: (Filosofia",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "date",
+            "description": "Valor para ordenar por data:",
+            "schema": {
+              "type": "string",
+              "enum": ["asc", "desc"]
+            }
+          },
+          {
+            "in": "query",
+            "name": "order",
+            "description": "Valor para ordenar por ordem alfabetica:",
+            "schema": {
+              "type": "string",
+              "enum": ["A-Z", "Z-A"]
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Bibliografias encontradas com sucesso!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#components/schemas/ViewBibliosResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Erro ao buscar por bibliografias"
+          }
+        }
+      }
+    },
     "/biblio/detail/{bibid}": {
       "get": {
         "summary": "Mostrar todas as informações de uma bibliografia.",
