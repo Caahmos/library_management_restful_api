@@ -114,6 +114,7 @@ class RegisterBiblioService {
           field_data: values[index],
         }));
 
+        console.log(marcFields)
         await tx.biblioField.createMany({ data: marcFields });
       }
 

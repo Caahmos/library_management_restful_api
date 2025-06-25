@@ -4,7 +4,7 @@ class ViewSubfieldsService {
   static async execute(query: any) {
     const subfields = await prisma.usmarcSubfieldDM.findMany({
        where: {
-            required: query.required ? true : false
+            repeatable_flg: query.required ? true : false
        }
     });
 
