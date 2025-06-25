@@ -2652,6 +2652,43 @@
           }
         }
       }
+    },
+    "/marc/viewsubfieldsrequired": {
+      "get": {
+        "summary": "Ver todos os subcampos Marc necessários.",
+        "description": "Ver todos os subcampos Marc necessários.",
+        "tags": ["Marc"],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "required",
+            "required": false,
+            "description": "Campos obrigatorios ou não",
+            "schema": {
+              "type": "boolean"
+            }
+          }],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Subcampos encontrados com sucesso!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ViewSubfieldsRequired"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Erro ao buscar pelos ranks"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -5945,6 +5982,51 @@
                 "total_rentals": {
                   "type": "number",
                   "example": 2222
+                }
+              }
+            }
+          }
+        }
+      },
+      "ViewSubfieldsRequired": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "example": "success"
+          },
+          "message": {
+            "type": "string",
+            "example": "Subcampos encontrados com sucesso!"
+          },
+          "subfields": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "number",
+                  "example": 1
+                },
+                "tag": {
+                  "type": "number",
+                  "example": 10
+                },
+                "subfield": {
+                  "type": "string",
+                  "example": "a"
+                },
+                "description": {
+                  "type": "string",
+                  "example": "Número de classificação LC"
+                },
+                "repeteable_flg": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "required": {
+                  "type": "boolean",
+                  "example": "true"
                 }
               }
             }

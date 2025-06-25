@@ -17,6 +17,7 @@ import BiblioHistRoutes from "./routes/BiblioHistRoutes";
 import MemberAccountRoutes from "./routes/MemberAccount";
 import BiblioRankRoutes from "./routes/BiblioRankRoutes";
 import BiblioReportsRoutes from "./routes/BiblioReportsRoutes";
+import MarcRoutes from "./routes/MarcRoutes";
 dotenv.config();
 
 class Server {
@@ -52,11 +53,12 @@ class Server {
     this.app.use("/mbrfieldsdm", new MemberFieldsDMRoutes().router);
     this.app.use("/mbraccount", new MemberAccountRoutes().router);
     this.app.use("/biblioreports", new BiblioReportsRoutes().router);
+    this.app.use("/marc", new MarcRoutes().router);
     this.documentation();
   }
 
   configCors() {
-    this.app.use(cors({ credentials: true, origin: "http://localhost:3000" }));
+    this.app.use(cors({ credentials: true, origin: "http://localhost:5173" }));
   }
 
   documentation() {

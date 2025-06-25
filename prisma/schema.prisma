@@ -47,7 +47,7 @@ model Member {
   address            String?
   home_phone         String?
   work_phone         String?
-  email              String             @unique
+  email              String?            @unique
   code               MemberClassifyDM   @relation(fields: [classification], references: [code])
   staff              Staff              @relation(fields: [last_change_userid], references: [userid])
   classification     Int
@@ -315,6 +315,7 @@ model UsmarcSubfieldDM {
   subfield_cd    String
   description    String?
   repeatable_flg Boolean     @default(false)
+  required       Boolean     @default(false) 
   usmarc_tag_dm  UsmarcTagDM @relation(fields: [tag], references: [tag])
 
   @@map("usmarc_subfield_dm")
