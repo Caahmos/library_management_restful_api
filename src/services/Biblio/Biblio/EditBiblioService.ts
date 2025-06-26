@@ -10,86 +10,66 @@ class EditBiblioService {
     bibid: number,
     biblioFields: BiblioFieldRequest
   ) {
-    const { indexes, tags, values, fieldIds, subfields } = biblioFields;
+    const { indexes, tags, values, subfields } = biblioFields;
 
     if (editBiblioData.title) {
       const titleExists = await prisma.biblio.findFirst({
-        where: { title: editBiblioData.title },
+        where: { title: editBiblioData.title, bibid: { not: bibid } },
       });
       if (titleExists) {
         throw new Error("Esse título já está registrado.");
       }
     }
 
-    const editedBiblio = await prisma.$transaction(async (prisma) => {
-      const biblio = await prisma.biblio.update({
-        where: { bibid: bibid },
+    const editedBiblio = await prisma.$transaction(async (tx) => {
+      const biblio = await tx.biblio.update({
+        where: { bibid },
         data: editBiblioData,
       });
 
-      if (
-        indexes &&
-        values &&
-        tags &&
-        subfields &&
-        fieldIds &&
-        indexes.length > 0 &&
-        Object.keys(values).length >= 0 &&
-        Object.keys(values).length === indexes.length &&
-        Object.keys(fieldIds).length === indexes.length
-      ) {
-        console.log("Entrou aqui");
-
-        const fieldIdsArray = Object.values(fieldIds).map((id) => Number(id));
-
-        console.log(fieldIdsArray);
-
-        const existingFields = await prisma.biblioField.findMany({
-          where: { id: { in: fieldIdsArray } },
+      if (indexes && tags && values && subfields) {
+        const existingFields = await tx.biblioField.findMany({
+          where: { bibid },
         });
 
-        console.log(existingFields);
+        let maxFieldId = Math.max(
+          0,
+          ...existingFields.map((f) => f.fieldid ?? 0)
+        );
 
-        if (existingFields.length !== fieldIdsArray.length) {
-          throw new Error(
-            "Um ou mais fieldIds não estão cadastrados em biblioField!"
+        const updates: Promise<any>[] = [];
+        const inserts: any[] = [];
+
+        for (const index of indexes) {
+          const tag = Number(tags[index]);
+          const subfield_cd = subfields[index];
+          const field_data = values[index]?.trim();
+
+          const existing = existingFields.find(
+            (f) => f.tag === tag && f.subfield_cd === subfield_cd
           );
-        }
 
-        await Promise.all(
-          existingFields.map(async (field, i) => {
-            const index = indexes[i];
-            console.log(field.id)
-            console.log(index)
-            console.log(values[index])
-
-            await prisma.biblioField.update({
-              where: { id: field.id },
-              data: {
-                field_data: values[index],
-              },
+          if (existing) {
+            updates.push(
+              tx.biblioField.update({
+                where: { id: existing.id },
+                data: { field_data },
+              })
+            );
+          } else if (field_data && field_data !== "") {
+            maxFieldId += 1;
+            inserts.push({
+              bibid,
+              tag,
+              subfield_cd,
+              field_data,
+              fieldid: maxFieldId,
             });
-          })
-        );
-
-        const newFields = fieldIdsArray.filter(
-          (fieldId) =>
-            !existingFields.some((field) => field.fieldid === fieldId)
-        );
-
-        if (newFields.length > 0) {
-          const newbiblioFields = newFields.map((newFieldId, i) => ({
-            fieldid: newFieldId,
-            bibid: bibid,
-            tag: Number(tags[indexes[i]]),
-            subfield_cd: subfields[indexes[i]],
-            field_data: values[indexes[i]]
-          }));
-
-          await prisma.biblioField.createMany({
-            data: newbiblioFields,
-          });
+          }
         }
+
+        if (updates.length > 0) await Promise.all(updates);
+        if (inserts.length > 0) await tx.biblioField.createMany({ data: inserts });
       }
 
       return biblio;

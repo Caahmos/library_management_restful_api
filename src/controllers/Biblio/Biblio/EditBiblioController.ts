@@ -50,28 +50,10 @@ class EditBiblioController {
       responsibility_stmt,
     }: EditBiblioRequest = req.body;
 
-    const editBiblioData: BiblioRequest = {};
-    const biblioFields: BiblioFieldRequest = {};
+    console.log(req.body.biblio_field);
 
-    if (
-      indexes &&
-      values &&
-      tags &&
-      fieldIds &&
-      subfields &&
-      indexes.length > 0 &&
-      Object.keys(values).length >= 0 &&
-      Object.keys(values).length === indexes.length &&
-      Object.keys(fieldIds).length === indexes.length
-    ) {
-      biblioFields.tags = tags;
-      biblioFields.values = values;
-      biblioFields.indexes = indexes;
-      biblioFields.subfields = subfields;
-      biblioFields.fieldIds = fieldIds;
-    } else {
-        return res.status(422).json({ type: 'error', message: 'Preencha os campos corretamente!'})
-    };
+    const editBiblioData: BiblioRequest = {};
+    let biblioFields: BiblioFieldRequest = {};
 
     if (author) editBiblioData.author = author;
     if (call_nmbr1) editBiblioData.call_nmbr1 = call_nmbr1;
@@ -89,6 +71,10 @@ class EditBiblioController {
     if (topic5) editBiblioData.topic5 = topic5;
     if (last_change_userid) editBiblioData.last_change_userid = last_change_userid;
     if (opac_flg) editBiblioData.opac_flg = opac_flg;
+
+    if(values && indexes && tags && fieldIds && subfields){
+      biblioFields = {values, indexes, tags, fieldIds, subfields}
+    }
 
     try {
       const editedBibliography = await EditBiblioService.execute(
