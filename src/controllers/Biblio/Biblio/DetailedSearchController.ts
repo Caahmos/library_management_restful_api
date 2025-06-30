@@ -14,12 +14,12 @@ class DetailedSearchController {
       });
     }
 
-    if (!userroles.admin_flg && !userroles.catalog_flg) {
-      return res.status(403).json({
-        type: "error",
-        message: "Usuário não tem permissão!"
-      });
-    }
+    // if (!userroles.admin_flg && !userroles.catalog_flg) {
+    //   return res.status(403).json({
+    //     type: "error",
+    //     message: "Usuário não tem permissão!"
+    //   });
+    // }
 
     const { collection, date, order, take } = req.query as Partial<DetailedSearchRequest>;
 

@@ -11,14 +11,14 @@ class SearchBibliosController {
       return res
         .status(422)
         .json({ type: "error", message: "Usuário não autenticado!" });
-    if (!userroles.admin_flg)
-      return res
-        .status(422)
-        .json({ type: "error", message: "Usuário não tem permissão!" });
-    if (!userroles.catalog_flg)
-      return res
-        .status(422)
-        .json({ type: "error", message: "Usuário não tem permissão!" });
+    // if (!userroles.admin_flg)
+    //   return res
+    //     .status(422)
+    //     .json({ type: "error", message: "Usuário não tem permissão!" });
+    // if (!userroles.catalog_flg)
+    //   return res
+    //     .status(422)
+    //     .json({ type: "error", message: "Usuário não tem permissão!" });
 
     const method = req.query.method as "title" | "author" | "collection";
     const data = req.query.data as string;

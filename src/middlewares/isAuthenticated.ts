@@ -18,25 +18,28 @@ export const isAuthenticated = (
   if (req.headers.authorization) {
     const token = req.headers.authorization.split(" ")[1];
 
-    const verifiedToken = jwt.verify(
-      token,
-      process.env.SECRET as string
-    ) as IToken;
+    try {
+      const verifiedToken = jwt.verify(token, process.env.SECRET as string) as IToken;
 
-    req.userid = verifiedToken.userid;
-    req.userroles = {
-      admin_flg: verifiedToken?.admin_flg,
-      catalog_flg: verifiedToken?.catalog_flg,
-      circ_flg: verifiedToken?.circ_flg,
-      circ_mbr_flg: verifiedToken?.circ_mbr_flg,
-      reports_flg: verifiedToken?.reports_flg,
-    };
+      req.userid = verifiedToken.userid;
+      req.userroles = {
+        admin_flg: verifiedToken?.admin_flg,
+        catalog_flg: verifiedToken?.catalog_flg,
+        circ_flg: verifiedToken?.circ_flg,
+        circ_mbr_flg: verifiedToken?.circ_mbr_flg,
+        reports_flg: verifiedToken?.reports_flg,
+      };
 
-    next();
+      next();
+    } catch (err) {
+      return res.status(401).json({
+        type: "error",
+        message: "Token inválido ou expirado, faça login novamente.",
+      });
+    }
+
     return;
   }
 
-  return res
-    .status(422)
-    .json({ type: "error", message: "Usuário não autenticado!" });
+  return res.status(422).json({ type: "error", message: "Usuário não autenticado!" });
 };
