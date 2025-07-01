@@ -25,7 +25,7 @@ class RegisterCopyService {
 
     const copyExists = await prisma.biblioCopy.findFirst({
       where: {
-        copy_desc: copyData.copy_desc,
+        barcode_nmbr: copyData.barcode_nmbr,
       },
     });
 
