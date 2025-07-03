@@ -12,6 +12,19 @@ class EditBiblioService {
   ) {
     const { indexes, tags, values, subfields } = biblioFields;
 
+    if (
+      editBiblioData.material_cd !== undefined &&
+      editBiblioData.material_cd !== null
+    ) {
+      editBiblioData.material_cd = Number(editBiblioData.material_cd);
+    }
+    if (
+      editBiblioData.collection_cd !== undefined &&
+      editBiblioData.collection_cd !== null
+    ) {
+      editBiblioData.collection_cd = Number(editBiblioData.collection_cd);
+    }
+
     if (editBiblioData.title) {
       const titleExists = await prisma.biblio.findFirst({
         where: { title: editBiblioData.title, bibid: { not: bibid } },
@@ -69,7 +82,8 @@ class EditBiblioService {
         }
 
         if (updates.length > 0) await Promise.all(updates);
-        if (inserts.length > 0) await tx.biblioField.createMany({ data: inserts });
+        if (inserts.length > 0)
+          await tx.biblioField.createMany({ data: inserts });
       }
 
       return biblio;

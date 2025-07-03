@@ -47,7 +47,7 @@ model Member {
   address            String?
   home_phone         String?
   work_phone         String?
-  email              String?            @unique
+  email              String?            
   code               MemberClassifyDM   @relation(fields: [classification], references: [code])
   staff              Staff              @relation(fields: [last_change_userid], references: [userid])
   classification     Int
