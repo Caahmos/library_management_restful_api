@@ -71,7 +71,31 @@ class SearchBibiosService {
         },
         take: 100,
       });
-    } else {
+    } 
+    else if (method === "barcode") {
+      const barcodeExists = await prisma.biblioCopy.findFirst({
+        where: {
+          barcode_nmbr: (data)
+        }
+      })
+
+      if (!barcodeExists) throw new Error("Coleção não encontrada!");
+
+      foundBiblio = await prisma.biblio.findMany({
+        where: {
+          bibid: barcodeExists.bibid
+        },
+        include: {
+          biblio_copy: true,
+          BiblioMedia: true,
+        },
+        orderBy: {
+          createdAt: 'desc',
+        },
+        take: 100,
+      });
+    }
+    else {
       throw new Error("Método de busca inválido!");
     }
 
