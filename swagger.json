@@ -2314,6 +2314,80 @@
         }
       }
     },
+    "/bibliohist/viewhists": {
+      "get": {
+        "summary": "Mostrar o histórico por parametros.",
+        "description": "Mostrar o histórico de checkout usando parâmetros de consulta (query strings). É possível buscar pelo ID da bibliografia (bibid), ID do membro (mbrid), Status (status_cd) ou se já está vencido (due).",
+        "tags": ["BiblioHist"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "bibid",
+            "in": "query",
+            "required": false,
+            "description": "ID da bibliografia (bibid).",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "mbrid",
+            "in": "query",
+            "required": false,
+            "description": "ID do membro (mbrid).",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "status_cd",
+            "in": "query",
+            "required": false,
+            "description": "status (status_cd).",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "due",
+            "in": "query",
+            "required": false,
+            "description": "Vencidos?",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "description": "Quantidade de itens para buscar",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Histórico encontrado com sucesso!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ViewHistResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Erro ao buscar pelo histórico! Verifique se os parâmetros estão corretos."
+          }
+        }
+      }
+    },
     "/bibliohist/viewstatus": {
       "get": {
         "summary": "Mostrar as informações dos codes de status.",

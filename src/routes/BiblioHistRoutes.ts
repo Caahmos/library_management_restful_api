@@ -7,6 +7,7 @@ import HoldController from '../controllers/Biblio/BiblioStatusHist/HoldControlle
 import ViewHistController from '../controllers/Biblio/BiblioStatusHist/ViewHistController';
 import ViewHoldsController from '../controllers/Biblio/BiblioStatusHist/ViewHoldsController';
 import ViewStatusController from '../controllers/Biblio/BiblioStatusHist/ViewStatusController';
+import ViewHistsController from '../controllers/Biblio/BiblioStatusHist/ViewHistsController';
 
 class BiblioHistRoutes{
     public router = express.Router();
@@ -27,6 +28,7 @@ class BiblioHistRoutes{
 
     getRoutes(){
         this.router.get('/viewhist', isAuthenticated, ViewHistController.handle);
+        this.router.get('/viewhists', isAuthenticated, ViewHistsController.handle);
         this.router.get('/viewholds', isAuthenticated, ViewHoldsController.handle);
         this.router.get('/viewstatus', isAuthenticated, ViewStatusController.handle);
     }
