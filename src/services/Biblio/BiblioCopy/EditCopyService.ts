@@ -3,13 +3,13 @@ import prisma from "../../../prisma/prisma";
 
 class EditCopyService {
   static async execute(editCopyData: EditCopyRequest, id: number) {
-    const idExists = await prisma.biblioCopy.findFirst({
-      where: {
-        id: id,
-      },
+    const existingCopy = await prisma.biblioCopy.findFirst({
+      where: { id },
     });
 
-    if (!idExists) throw new Error("Nenhuma cópia com esse código encontrada!");
+    if (!existingCopy) {
+      throw new Error("Nenhuma cópia com esse código encontrada!");
+    }
 
     if (editCopyData.barcode_nmbr) {
       const barcodeAlreadyExists = await prisma.biblioCopy.findFirst({
@@ -19,24 +19,34 @@ class EditCopyService {
         },
       });
 
-      if (barcodeAlreadyExists)
+      if (barcodeAlreadyExists) {
         throw new Error("Esse código de barras já está em uso!");
+      }
     }
 
     if (editCopyData.status_cd) {
       const statusExists = await prisma.biblioStatusDM.findFirst({
-        where: {
-          code: editCopyData.status_cd,
-        },
+        where: { code: editCopyData.status_cd },
       });
 
-      if (!statusExists) throw new Error("Esse status não existe!");
+      if (!statusExists) {
+        throw new Error("Esse status não existe!");
+      }
+
+      const statusPermitidos = ["in", "crt", "lst", "dis", "mnd"];
+      const statusAtual = existingCopy.status_cd;
+      const novoStatus = editCopyData.status_cd;
+
+      const ambosPermitidos =
+        statusPermitidos.includes(statusAtual) && statusPermitidos.includes(novoStatus);
+
+      if (!ambosPermitidos) {
+        throw new Error("Alteração de status não permitida.");
+      }
     }
 
     const editedCopy = await prisma.biblioCopy.update({
-      where: {
-        id: id,
-      },
+      where: { id },
       data: editCopyData,
     });
 
