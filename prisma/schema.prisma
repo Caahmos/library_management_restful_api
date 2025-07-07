@@ -47,7 +47,7 @@ model Member {
   address            String?            @db.VarChar(255)
   home_phone         String?
   work_phone         String?
-  email              String?            
+  email              String?
   code               MemberClassifyDM   @relation(fields: [classification], references: [code])
   staff              Staff              @relation(fields: [last_change_userid], references: [userid])
   classification     Int
@@ -252,6 +252,7 @@ model BiblioStatusHist {
   status_cd       String
   status_begin_dt DateTime  @default(now())
   due_back_dt     DateTime?
+  returned_at     DateTime?
   mbrid           Int
   renewal_count   Int       @default(0)
 
@@ -315,7 +316,7 @@ model UsmarcSubfieldDM {
   subfield_cd    String
   description    String?
   repeatable_flg Boolean     @default(false)
-  required       Boolean     @default(false) 
+  required       Boolean     @default(false)
   usmarc_tag_dm  UsmarcTagDM @relation(fields: [tag], references: [tag])
 
   @@map("usmarc_subfield_dm")

@@ -9,8 +9,14 @@ class ViewHistsService {
       ...(bibid && { bibid }),
       ...(copyid && { copyid }),
       ...(mbrid && { mbrid }),
-      ...(status_cd && { status_cd }),
     };
+
+    if (due === "yes") {
+      filters.status_cd = "out";
+      filters.due_back_dt = { lt: new Date() };
+    } else if (status_cd) {
+      filters.status_cd = status_cd;
+    }
 
     console.log("Filtros finais:", filters);
 
@@ -20,6 +26,9 @@ class ViewHistsService {
         status_begin_dt: "desc",
       },
       take: limit && limit > 0 ? limit : undefined,
+      include: {
+        member: true, 
+      },
     });
 
     if (foundHists.length === 0) {
@@ -38,10 +47,12 @@ class ViewHistsService {
     const updatedHists = foundHists.map(hist => ({
       ...hist,
       status_cd: statusMap.get(hist.copyid) || hist.status_cd,
+      firstname: hist.member?.first_name || null, 
     }));
 
     return updatedHists;
   }
 }
+
 
 export default ViewHistsService;
