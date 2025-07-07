@@ -1,5 +1,8 @@
 import { Request, Response } from "express";
-import { ViewHistsRequest, ViewHistsSearch } from "../../../model/Biblio/BiblioStatusHist/ViewHistRequest";
+import {
+  ViewHistsRequest,
+  ViewHistsSearch,
+} from "../../../model/Biblio/BiblioStatusHist/ViewHistRequest";
 import ViewHistsService from "../../../services/Biblio/BiblioStatusHist/ViewHistsService";
 
 class ViewHistsController {
@@ -16,27 +19,30 @@ class ViewHistsController {
         .status(422)
         .json({ type: "error", message: "Usuário não tem permissão!" });
 
-    const { bibid, mbrid, due, status_cd, limit }: ViewHistsRequest = req.query;
+    const { bibid, copyid, mbrid, due, status_cd, limit }: ViewHistsRequest =
+      req.query;
 
     const viewHistsData: ViewHistsSearch = {};
 
-    if(bibid) viewHistsData.bibid = Number(bibid);
-    if(mbrid) viewHistsData.mbrid = Number(mbrid);
-    if(due) viewHistsData.due = due;
-    if(status_cd) viewHistsData.status_cd = status_cd;
+    if (bibid) viewHistsData.bibid = Number(bibid);
+    if (copyid) viewHistsData.copyid = Number(copyid);
+    if (mbrid) viewHistsData.mbrid = Number(mbrid);
+    if (due) viewHistsData.due = due;
+    if (status_cd) viewHistsData.status_cd = status_cd;
     if (limit) viewHistsData.limit = Number(limit);
 
-    if(!bibid && !mbrid && !due && !status_cd) return res.status(422).json({ type: "error", message: 'Nada a ser procurado!' });
+    if (!copyid && !mbrid && !due && !status_cd && !bibid)
+      return res
+        .status(422)
+        .json({ type: "error", message: "Nada a ser procurado!" });
 
     try {
       const foundHists = await ViewHistsService.execute(viewHistsData);
-      res
-        .status(200)
-        .json({
-          type: "success",
-          message: "'Histórico encontrado com sucesso!'",
-          foundHists,
-        });
+      res.status(200).json({
+        type: "success",
+        message: "'Histórico encontrado com sucesso!'",
+        foundHists,
+      });
     } catch (err: any) {
       res.status(422).json({ type: "error", message: err.message });
     }

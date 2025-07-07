@@ -44,7 +44,7 @@ model Member {
   last_change_userid Int
   first_name         String
   last_name          String
-  address            String?
+  address            String?            @db.VarChar(255)
   home_phone         String?
   work_phone         String?
   email              String?            

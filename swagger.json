@@ -2335,6 +2335,15 @@
             }
           },
           {
+            "name": "copyid",
+            "in": "query",
+            "required": false,
+            "description": "ID da cópia (copyid).",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
             "name": "mbrid",
             "in": "query",
             "required": false,

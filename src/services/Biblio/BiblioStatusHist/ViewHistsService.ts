@@ -3,33 +3,21 @@ import prisma from "../../../prisma/prisma";
 
 class ViewHistsService {
   static async execute(viewHoldData: ViewHistsSearch) {
-    const { bibid, mbrid, due, status_cd, limit } = viewHoldData;
-
-    const notReturnedStatus = ["out", "ln", "hld", "ord"];
+    const { bibid, copyid, mbrid, due, status_cd, limit } = viewHoldData;
 
     const filters: any = {
       ...(bibid && { bibid }),
+      ...(copyid && { copyid }),
       ...(mbrid && { mbrid }),
       ...(status_cd && { status_cd }),
     };
-
-    if (due) {
-      if (status_cd && !notReturnedStatus.includes(status_cd)) {
-        throw new Error(
-          "O status fornecido não é considerado como não devolvido."
-        );
-      }
-
-      filters.status_cd = { in: notReturnedStatus };
-      filters.due_back_dt = { lt: new Date() };
-    }
 
     console.log("Filtros finais:", filters);
 
     const foundHists = await prisma.biblioStatusHist.findMany({
       where: filters,
       orderBy: {
-        due_back_dt: "desc",
+        status_begin_dt: "desc",
       },
       take: limit && limit > 0 ? limit : undefined,
     });
@@ -38,7 +26,21 @@ class ViewHistsService {
       throw new Error("Nenhum histórico encontrado!");
     }
 
-    return foundHists;
+    const copyIds = [...new Set(foundHists.map(h => h.copyid))];
+
+    const copyStatuses = await prisma.biblioCopy.findMany({
+      where: { id: { in: copyIds } },
+      select: { id: true, status_cd: true }
+    });
+
+    const statusMap = new Map(copyStatuses.map(copy => [copy.id, copy.status_cd]));
+
+    const updatedHists = foundHists.map(hist => ({
+      ...hist,
+      status_cd: statusMap.get(hist.copyid) || hist.status_cd,
+    }));
+
+    return updatedHists;
   }
 }
 

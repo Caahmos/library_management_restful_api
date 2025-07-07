@@ -10,6 +10,7 @@ export interface ViewHistSearch {
 
 export interface ViewHistsRequest {
   bibid?: string;
+  copyid?: string;
   mbrid?: string;
   status_cd?: string;
   due?: string;
@@ -18,6 +19,7 @@ export interface ViewHistsRequest {
 
 export interface ViewHistsSearch {
   bibid?: number;
+  copyid?: number;
   mbrid?: number;
   status_cd?: string;
   due?: string;
