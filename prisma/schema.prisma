@@ -140,17 +140,17 @@ model Biblio {
   title               String
   title_remainder     String?
   author              String
-  responsibility_stmt String?
+  responsibility_stmt String?            @db.Text
   material_cd         Int
   collection_cd       Int
   call_nmbr1          String
   call_nmbr2          String?
   call_nmbr3          String?
-  topic1              String?
-  topic2              String?
-  topic3              String?
-  topic4              String?
-  topic5              String?
+  topic1              String?            @db.Text
+  topic2              String?            @db.Text
+  topic3              String?            @db.Text
+  topic4              String?            @db.Text
+  topic5              String?            @db.Text
   last_change_userid  Int
   opac_flg            Boolean            @default(true)
   user                Staff              @relation(fields: [last_change_userid], references: [userid])

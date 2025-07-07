@@ -1,0 +1,6 @@
+-- AlterTable
+ALTER TABLE `biblio` MODIFY `topic1` VARCHAR(255) NULL,
+    MODIFY `topic2` VARCHAR(255) NULL,
+    MODIFY `topic3` VARCHAR(255) NULL,
+    MODIFY `topic4` VARCHAR(255) NULL,
+    MODIFY `topic5` VARCHAR(255) NULL;
