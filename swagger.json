@@ -1763,6 +1763,33 @@
         }
       }
     },
+    "/biblioreports/balance": {
+      "get": {
+        "summary": "Responsável por buscar e retornar informações sobre a quantidade de cada status",
+        "description": "Responsável por buscar e retornar informações sobre a quantidade de cada status",
+        "tags": ["BiblioReports"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Busca realizada com sucesso!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#components/schemas/BalanceResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Erro ao realizar a busca!"
+          }
+        }
+      }
+    },
     "/checkprivs/viewcheckprivs": {
       "get": {
         "summary": "Ver todas as informações de permanência.",
@@ -2750,7 +2777,8 @@
             "schema": {
               "type": "boolean"
             }
-          }],
+          }
+        ],
         "security": [
           {
             "bearerAuth": []
@@ -4770,7 +4798,10 @@
                         "type": "string",
                         "example": "or, The Whale"
                       },
-                      "author": { "type": "string", "example": "Herman Melville" },
+                      "author": {
+                        "type": "string",
+                        "example": "Herman Melville"
+                      },
                       "responsibility_stmt": {
                         "type": "string",
                         "example": "Written by Herman Melville"
@@ -4783,9 +4814,18 @@
                       "topic1": { "type": "string", "example": "Whaling" },
                       "topic2": { "type": "string", "example": "Adventure" },
                       "topic3": { "type": "string", "example": "Sea Stories" },
-                      "topic4": { "type": "string", "example": "Classic Literature" },
-                      "topic5": { "type": "string", "example": "American Fiction" },
-                      "last_change_userid": { "type": "number", "example": 12345 },
+                      "topic4": {
+                        "type": "string",
+                        "example": "Classic Literature"
+                      },
+                      "topic5": {
+                        "type": "string",
+                        "example": "American Fiction"
+                      },
+                      "last_change_userid": {
+                        "type": "number",
+                        "example": 12345
+                      },
                       "opac_flg": { "type": "boolean", "example": true },
                       "biblio_copy": {
                         "type": "object",
@@ -4839,7 +4879,9 @@
                     }
                   }
                 }
-              }}}
+              }
+            }
+          }
         }
       },
       "ViewBibliosResponse": {
@@ -6071,6 +6113,45 @@
           }
         }
       },
+      "BalanceResponse": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "example": "success"
+          },
+          "message": {
+            "type": "string",
+            "example": "Busca realizada com sucesso!"
+          },
+          "balance": {
+            "type": "object",
+            "properties": {
+              "total": {
+                "type": "number",
+                "example": 11258
+              },
+              "statusCounts": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "out"
+                    },
+                    "count": {
+                      "type": "number",
+                      "example": 214
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+
       "ViewSubfieldsRequired": {
         "type": "object",
         "properties": {
