@@ -22,10 +22,12 @@ class SearchBibliosController {
 
     const method = req.query.method as "title" | "author" | "collection";
     const data = req.query.data as string;
+    const limit = Number(req.query.limit) as number;
 
     const searchData: SearchBibliosRequest = {
         method: method || 'title',
-        data: data
+        data: data,
+        limit: limit
     };
 
     try {

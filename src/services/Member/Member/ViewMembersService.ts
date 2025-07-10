@@ -1,13 +1,23 @@
+import { ViewMembersSearch } from "../../../model/Member/Member/ViewMembersRequest";
 import prisma from "../../../prisma/prisma";
 
-class ViewMembersService{
-    static async execute(){
-        const members = await prisma.member.findMany();
+class ViewMembersService {
+  static async execute(filters: ViewMembersSearch) {
+    const { limit = 20, sort = "asc" } = filters;
 
-        if(members.length <= 0) throw new Error('Nenhum membro encontrado!');
+    const members = await prisma.member.findMany({
+      take: limit,
+      orderBy: {
+        createdAt: sort, 
+      },
+    });
 
-        return members;
+    if (members.length === 0) {
+      throw new Error("Nenhum membro encontrado!");
     }
-};
+
+    return members;
+  }
+}
 
 export default ViewMembersService;

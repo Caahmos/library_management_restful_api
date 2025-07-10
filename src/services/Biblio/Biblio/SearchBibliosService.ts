@@ -3,7 +3,7 @@ import prisma from "../../../prisma/prisma";
 
 class SearchBibiosService {
   static async execute(searchData: SearchBibliosRequest) {
-    const { method, data } = searchData;
+    const { method, data, limit } = searchData;
     let foundBiblio;
 
     if (!method && !data) {
@@ -15,7 +15,7 @@ class SearchBibiosService {
           biblio_copy: true,
           BiblioMedia: true,
         },
-        take: 100,  
+        take: limit || 10,  
       });
     } else if (method === "title") {
       foundBiblio = await prisma.biblio.findMany({
@@ -31,7 +31,7 @@ class SearchBibiosService {
         orderBy: {
           createdAt: 'desc',
         },
-        take: 100,
+        take: limit || 10,
       });
     } else if (method === "author") {
       foundBiblio = await prisma.biblio.findMany({
@@ -47,7 +47,7 @@ class SearchBibiosService {
         orderBy: {
           createdAt: 'desc',
         },
-        take: 100,
+        take: limit || 10,
       });
     } else if (method === "collection") {
       const collectionExists = await prisma.collectionDM.findFirst({ 
@@ -69,7 +69,7 @@ class SearchBibiosService {
         orderBy: {
           createdAt: 'desc',
         },
-        take: 100,
+        take: limit || 10,
       });
     } 
     else if (method === "barcode") {
@@ -92,7 +92,7 @@ class SearchBibiosService {
         orderBy: {
           createdAt: 'desc',
         },
-        take: 100,
+        take: limit || 10,
       });
     }
     else {

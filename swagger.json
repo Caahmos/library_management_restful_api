@@ -774,6 +774,26 @@
             "bearerAuth": []
           }
         ],
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "description": "Quantidade de membros para buscar",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "required": false,
+            "description": "Buscar por asc ou desc",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "201": {
             "description": "Membros encontrados com sucesso!",
@@ -1355,6 +1375,15 @@
             "description": "Valor para buscar (título, autor ou collection)",
             "schema": {
               "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "description": "Quantidade de livros para buscar",
+            "schema": {
+              "type": "number"
             }
           }
         ],

@@ -11,6 +11,9 @@ const storage = multer.diskStorage({
     if (req.baseUrl.includes("biblio")) {
       folder = "biblio";
     }
+    if (req.baseUrl.includes("members")) {
+      folder = "members";
+    }
 
     cb(null, `src/public/assets/imgs/${folder}`);
   },
