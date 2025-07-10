@@ -28,6 +28,15 @@ class RenewalService {
 
       if (!memberExistis) throw new Error("Esse membro não foi encontrado!");
 
+      const memberIsBlocked = await prisma.member.findFirst({
+        where: {
+          mbrid: mbrid,
+          isBlocked: true
+        }
+      });
+
+      if(memberIsBlocked) throw new Error('O membro está bloquado!');
+
       const checkoutInfo = await prisma.checkoutPrivs.findFirst({
         where: {
           classification: memberExistis.classification,

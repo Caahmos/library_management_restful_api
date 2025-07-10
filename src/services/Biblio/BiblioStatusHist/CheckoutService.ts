@@ -2,7 +2,7 @@ import prisma from "../../../prisma/prisma";
 
 class CheckoutService {
   static async execute(barcode_nmbr: string, mbrid: number) {
-    const checkedOut = await prisma.$transaction( async (prisma) => {
+    const checkedOut = await prisma.$transaction(async (prisma) => {
       const copyExists = await prisma.biblioCopy.findFirst({
         where: {
           barcode_nmbr: barcode_nmbr,
@@ -10,9 +10,13 @@ class CheckoutService {
       });
 
       if (!copyExists) throw new Error("Livro não encontrado!");
-      if(copyExists.status_cd === 'hld' && copyExists.mbrid !== mbrid) throw new Error('Outro membro fez a reserva desse livro. Entre na fila!')
-      
-      if (copyExists.status_cd !== 'in' && copyExists.status_cd !== 'hld' ) throw new Error("Livro não disponível!");
+      if (copyExists.status_cd === "hld" && copyExists.mbrid !== mbrid)
+        throw new Error(
+          "Outro membro fez a reserva desse livro. Entre na fila!"
+        );
+
+      if (copyExists.status_cd !== "in" && copyExists.status_cd !== "hld")
+        throw new Error("Livro não disponível!");
 
       const biblio = await prisma.biblio.findFirst({
         where: {
@@ -29,6 +33,15 @@ class CheckoutService {
       });
 
       if (!memberExistis) throw new Error("Esse membro não foi encontrado!");
+
+      const memberIsBlocked = await prisma.member.findFirst({
+        where: {
+          mbrid: mbrid,
+          isBlocked: true,
+        },
+      });
+
+      if (memberIsBlocked) throw new Error("O membro está bloquado!");
 
       const checkoutInfo = await prisma.checkoutPrivs.findFirst({
         where: {

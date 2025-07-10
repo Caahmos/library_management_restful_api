@@ -1763,7 +1763,7 @@
         }
       }
     },
-    "/biblioreports/balance": {
+    "/biblioreports/booksbalance": {
       "get": {
         "summary": "Responsável por buscar e retornar informações sobre a quantidade de cada status",
         "description": "Responsável por buscar e retornar informações sobre a quantidade de cada status",
@@ -1780,6 +1780,33 @@
               "application/json": {
                 "schema": {
                   "$ref": "#components/schemas/BalanceResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Erro ao realizar a busca!"
+          }
+        }
+      }
+    },
+    "/biblioreports/membersbalance": {
+      "get": {
+        "summary": "Responsável por buscar e retornar informações sobre a quantidade de membros ativos, bloqueados e ativos",
+        "description": "Responsável por buscar e retornar informações sobre a quantidade de membros ativos, bloqueados e ativos",
+        "tags": ["BiblioReports"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Busca realizada com sucesso!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#components/schemas/MembersBalanceResponse"
                 }
               }
             }
@@ -6151,7 +6178,46 @@
           }
         }
       },
-
+      "MembersBalanceResponse": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "example": "success",
+            "description": "Tipo de resposta (ex: success, error)"
+          },
+          "message": {
+            "type": "string",
+            "example": "Busca realizada com sucesso!",
+            "description": "Mensagem descritiva da resposta"
+          },
+          "balance": {
+            "type": "object",
+            "properties": {
+              "total": {
+                "type": "integer",
+                "example": 2688,
+                "description": "Número total de membros cadastrados"
+              },
+              "blocked": {
+                "type": "integer",
+                "example": 165,
+                "description": "Número de membros bloqueados"
+              },
+              "active": {
+                "type": "integer",
+                "example": 2523,
+                "description": "Número de membros não bloqueados (ativos)"
+              },
+              "recent": {
+                "type": "integer",
+                "example": 0,
+                "description": "Número de membros que pegaram livros nos últimos 3 meses"
+              }
+            }
+          }
+        }
+      },
       "ViewSubfieldsRequired": {
         "type": "object",
         "properties": {

@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
-import BooksBalanceService from "../../../services/BiblioReports/BooksBalanceService";
+import MemberBalanceService from "../../../services/BiblioReports/MemberBalanceService";
 
-class BooksBalanceController{
+class MemberBalanceController{
     static async handle(req: Request, res: Response){
         const userId = req.userid;
         const userroles = req.userroles;
@@ -10,7 +10,7 @@ class BooksBalanceController{
         if(!userroles.circ_mbr_flg) return res.status(422).json({ type: 'error', message: 'Usuário não tem permissão!'});
 
         try{
-            const balance = await BooksBalanceService.execute();
+            const balance = await MemberBalanceService.execute();
             res.status(200).json({ type: 'success', message: 'Busca realizada com sucesso!', balance});
         }catch(err: any){
             res.status(422).json({ type: 'error', message: 'Erro ao realizar a busca!'});
@@ -19,4 +19,4 @@ class BooksBalanceController{
     }
 }
 
-export default BooksBalanceController;
+export default MemberBalanceController;
