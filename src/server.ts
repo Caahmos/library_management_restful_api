@@ -66,4 +66,6 @@ class Server {
   }
 }
 
+import './utils/BlockOverdueMembers';
+
 export default Server;
