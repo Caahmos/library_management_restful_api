@@ -6,6 +6,8 @@ import DetailMemberController from '../controllers/Member/Member/DetailMemberCon
 import EditMemberController from '../controllers/Member/Member/EditMemberController';
 import DeleteMemberController from '../controllers/Member/Member/DeleteMemberController';
 import SearchMemberController from '../controllers/Member/Member/SearchMemberController';
+import UpdateMemberImageController from '../controllers/Member/Member/UpdateMemberImageController';
+import { upload } from '../helpers/imageUpload';
 
 class MemberRoutes{
     public router = express.Router();
@@ -29,6 +31,7 @@ class MemberRoutes{
 
     patchRoutes(){
         this.router.patch('/edit/:mbrid', isAuthenticated, EditMemberController.handle);
+        this.router.patch('/updateimage/:mbrid', isAuthenticated, upload.single('image_file'), UpdateMemberImageController.handle);
     }
 
     deleteRoutes(){

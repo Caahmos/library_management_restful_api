@@ -9,7 +9,7 @@ Você pode:
 
 **Desde que:**
 
-📌 **Atribuição** — Você deve dar crédito ao autor original (ex: seu nome).  
+📌 **Atribuição** — Você deve dar crédito ao autor original (Cauã Morales).  
 📌 **Não Comercial** — Você não pode usar o material para fins comerciais.
 
 Para uso comercial, entre em contato com o autor: **[dev.alexmorales@gmail.com]**
