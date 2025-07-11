@@ -20,7 +20,9 @@ class SearchMemberController {
         .status(422)
         .json({ type: "error", message: "Usuário não tem permissão!" });
 
-    const method = req.query.method as "name" | "barcode" | "email"; 
+    const limit = Number(req.query.limit);
+    const sort = req.query.sort  as "asc" | "desc";
+    const method = req.query.method as "name" | "barcode" | "email";
     const data = req.query.data as string;
 
     // if (!data)
@@ -31,13 +33,19 @@ class SearchMemberController {
     const searchMemberData: FindMemberRequest = {
       method: method || "name",
       data: data,
+      limit: limit || 10,
+      sort: sort || 'desc'
     };
 
     try {
       const foundMember = await SearchMemberService.execute(searchMemberData);
       res
         .status(200)
-        .json({ type: "success", message: "Membro encontrado com sucesso!", foundMember });
+        .json({
+          type: "success",
+          message: "Membro encontrado com sucesso!",
+          foundMember,
+        });
     } catch (err: any) {
       res.status(422).json({ type: "error", message: err.message });
     }
