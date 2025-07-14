@@ -3,38 +3,43 @@ import prisma from "../../../prisma/prisma";
 
 class SearchMemberService {
   static async execute(findMemberData: FindMemberRequest) {
-    const { method, data, limit, sort } = findMemberData;
+    const { method, data, limit, sort, isBlocked } = findMemberData;
     let foundMember;
+
+    const baseFilter = isBlocked !== undefined ? { isBlocked } : {};
 
     if (method === "name") {
       foundMember = await prisma.member.findMany({
         where: {
+          ...baseFilter,
           first_name: {
-            contains: data,            
+            contains: data,
           },
         },
         take: limit,
         orderBy: {
-        createdAt: sort, 
-      },
+          createdAt: sort,
+        },
       });
     } else if (method === "barcode") {
       foundMember = await prisma.member.findFirst({
         where: {
-          barcode_nmbr: data
+          ...baseFilter,
+          barcode_nmbr: data,
         },
       });
     } else if (method === "email") {
       foundMember = await prisma.member.findMany({
         where: {
+          ...baseFilter,
           email: {
-            contains: data
+            contains: data,
           },
         },
         take: limit,
         orderBy: {
-        createdAt: sort, 
-      },
+          createdAt: sort,
+        },
       });
     } else {
       throw new Error("Método de busca inválido!");

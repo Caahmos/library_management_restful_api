@@ -24,6 +24,7 @@ class SearchMemberController {
     const sort = req.query.sort  as "asc" | "desc";
     const method = req.query.method as "name" | "barcode" | "email";
     const data = req.query.data as string;
+    const isBlocked = Boolean(req.query.isBlocked);
 
     // if (!data)
     //   return res
@@ -34,7 +35,8 @@ class SearchMemberController {
       method: method || "name",
       data: data,
       limit: limit || 10,
-      sort: sort || 'desc'
+      sort: sort || 'desc',
+      isBlocked: isBlocked || false
     };
 
     try {

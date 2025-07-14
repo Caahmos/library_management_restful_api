@@ -2,5 +2,6 @@ export interface FindMemberRequest{
     data: string
     method: 'barcode' | 'name' | 'email'
     limit?: number;
-    sort?: 'asc' | 'desc'
+    sort?: 'asc' | 'desc';
+    isBlocked?: boolean;
 }
