@@ -1765,6 +1765,71 @@
         }
       }
     },
+    "/biblioreports/memberranks": {
+      "get": {
+        "summary": "Obter ranking de membros por empréstimos",
+        "description": "Retorna o ranking de membros ordenado pelo número de livros únicos emprestados. Em caso de empate, o membro que começou a emprestar primeiro aparece primeiro no ranking.",
+        "tags": ["BiblioReports"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "collection_cd",
+            "in": "query",
+            "description": "Filtrar por código de coleção específico",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "mbrid",
+            "in": "query",
+            "description": "Filtrar por ID de membro específico (retorna com a posição correta no ranking global)",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Limitar número de resultados (padrão: retorna todos)",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Ranking retornado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/MemberRankResponse"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Parâmetros inválidos"
+          },
+          "401": {
+            "description": "Não autorizado"
+          },
+          "500": {
+            "description": "Erro interno ao processar o ranking"
+          }
+        }
+      }
+    },
     "/biblioreports/rentals": {
       "get": {
         "summary": "Responsável por buscar e retornar informações sobre as estatísticas de empréstimos (rentals)",
