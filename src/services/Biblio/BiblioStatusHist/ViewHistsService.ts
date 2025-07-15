@@ -30,6 +30,12 @@ class ViewHistsService {
           select: {
             barcode_nmbr: true
           }
+        },
+        biblio: {
+          select: {
+            title: true,
+            title_remainder: true
+          }
         }
       },
     });
