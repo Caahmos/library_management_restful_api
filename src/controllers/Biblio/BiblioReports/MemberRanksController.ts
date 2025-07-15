@@ -15,8 +15,12 @@ class MemberRanksController {
       const limit = req.query.limit
         ? Number(req.query.limit)
         : undefined;
+      
+      const yearsAgo = req.query.yearsAgo
+        ? Number(req.query.yearsAgo)
+        : undefined;
 
-      const ranks = await MemberRanksService.execute(collection_cd, mbrid, limit);
+      const ranks = await MemberRanksService.execute(collection_cd, mbrid, limit, yearsAgo);
       return res.status(200).json({ type: 'success', message: 'Ranks encontrados com sucesso!', ranks });
     } catch (err) {
       console.error(err);
