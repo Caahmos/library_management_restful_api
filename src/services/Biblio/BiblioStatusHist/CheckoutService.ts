@@ -43,6 +43,24 @@ class CheckoutService {
 
       if (memberIsBlocked) throw new Error("O membro está bloquado!");
 
+      const checkoutLimit = await prisma.checkoutPrivs.findFirst({
+        where: {
+          material_cd: biblio.material_cd,
+          classification: memberExistis.classification
+        }
+      });
+
+      if(!checkoutLimit) throw new Error('Nenhum informação de limites encontrada.')
+
+      const qtdBooksOut = await prisma.biblioStatusHist.findMany({
+        where: {
+          mbrid: memberExistis.mbrid,
+          status_cd: 'out'
+        }
+      });
+
+      if(qtdBooksOut && qtdBooksOut.length >= checkoutLimit.checkout_limit) throw new Error('Quantidade máxima de empréstimos atingida!');
+
       const daysDueBack = await prisma.collectionDM.findFirst({
         where: {
           code: biblio.collection_cd
