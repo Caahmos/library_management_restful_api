@@ -43,21 +43,20 @@ class CheckoutService {
 
       if (memberIsBlocked) throw new Error("O membro está bloquado!");
 
-      const checkoutInfo = await prisma.checkoutPrivs.findFirst({
+      const daysDueBack = await prisma.collectionDM.findFirst({
         where: {
-          classification: memberExistis.classification,
-          material_cd: biblio.material_cd,
+          code: biblio.collection_cd
         },
       });
 
-      if (!checkoutInfo)
+      if (!daysDueBack)
         throw new Error(
           "Informações de permanência do livro com o usuário não foram encontradas!"
         );
 
       const currentDate = Date.now();
       const millisecondsInADay = 24 * 60 * 60 * 1000;
-      const daysToAdd = checkoutInfo.checkout_limit;
+      const daysToAdd = daysDueBack.days_due_back;
 
       const due_back_dt = new Date(
         currentDate + daysToAdd * millisecondsInADay
