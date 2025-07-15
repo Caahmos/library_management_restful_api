@@ -14,7 +14,10 @@ class EditMemberService {
 
     if (editMemberData.barcode_nmbr) {
       const barCodeExists = await prisma.member.findFirst({
-        where: { barcode_nmbr: editMemberData.barcode_nmbr },
+        where: {
+          barcode_nmbr: editMemberData.barcode_nmbr,
+          NOT: { mbrid: mbrid },
+        },
       });
       if (barCodeExists)
         throw new Error("Código do cartão já está registrado.");
@@ -22,7 +25,10 @@ class EditMemberService {
 
     if (editMemberData.email) {
       const emailExists = await prisma.member.findFirst({
-        where: { email: editMemberData.email },
+        where: {
+          email: editMemberData.email,
+          NOT: { mbrid: mbrid },
+        },
       });
       if (emailExists) throw new Error("Esse email já está registrado.");
     }
@@ -43,7 +49,9 @@ class EditMemberService {
         });
 
         if (existingCodes.length !== code.length) {
-          throw new Error("Um ou mais códigos não estão cadastrados em MemberFieldDM!");
+          throw new Error(
+            "Um ou mais códigos não estão cadastrados em MemberFieldDM!"
+          );
         }
 
         const foundCodes = existingCodes.map((fieldDM) => fieldDM.code);

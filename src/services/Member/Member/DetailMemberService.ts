@@ -6,6 +6,9 @@ class DetailMemberService{
             {
                 where: {
                     mbrid: mbrid
+                },
+                include: {
+                    member_fields: true
                 }
             }
         );
