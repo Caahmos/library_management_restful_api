@@ -8,9 +8,21 @@ class ViewHoldService {
         bibid: viewHoldData.bibid || undefined,
         mbrid: viewHoldData.mbrid || undefined,
       },
+      include: {
+        biblio_copy: {
+          select: {
+            barcode_nmbr: true
+          }
+        },
+        biblio: {
+          select: {
+            title: true
+          }
+        }
+      }
     });
 
-    if(foundHold.length <= 0) throw new Error('Nenhuma reserva encontrada encontrado!')
+    if(foundHold.length <= 0) throw new Error('Nenhuma reserva encontrada!')
 
     return foundHold;
   }
