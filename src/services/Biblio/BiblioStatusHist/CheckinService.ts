@@ -39,6 +39,21 @@ class CheckinService {
           },
         });
 
+        const lastHist = await prisma.biblioStatusHist.findFirst({
+          where: { copyid: copyExists.id },
+          orderBy: { status_begin_dt: "desc" },
+        });
+
+        if (lastHist) {
+          await prisma.biblioStatusHist.update({
+            where: { id: lastHist.id },
+            data: {
+              status_cd: "in",
+              returned_at: new Date(),
+            },
+          });
+        }
+
         await prisma.biblioStatusHist.create({
           data: {
             bibid: copyExists.bibid,
@@ -54,7 +69,8 @@ class CheckinService {
         });
 
         return {
-          message: "O livro foi colocado em espera, pois um membro fez a reserva!",
+          message:
+            "O livro foi colocado em espera, pois um membro fez a reserva!",
           checkedIn,
         };
       }

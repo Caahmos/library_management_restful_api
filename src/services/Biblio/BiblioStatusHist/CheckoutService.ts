@@ -46,24 +46,26 @@ class CheckoutService {
       const checkoutLimit = await prisma.checkoutPrivs.findFirst({
         where: {
           material_cd: biblio.material_cd,
-          classification: memberExistis.classification
-        }
+          classification: memberExistis.classification,
+        },
       });
 
-      if(!checkoutLimit) throw new Error('Nenhum informação de limites encontrada.')
+      if (!checkoutLimit)
+        throw new Error("Nenhum informação de limites encontrada.");
 
       const qtdBooksOut = await prisma.biblioStatusHist.findMany({
         where: {
           mbrid: memberExistis.mbrid,
-          status_cd: 'out'
-        }
+          status_cd: "out",
+        },
       });
 
-      if(qtdBooksOut && qtdBooksOut.length >= checkoutLimit.checkout_limit) throw new Error('Quantidade máxima de empréstimos atingida!');
+      if (qtdBooksOut && qtdBooksOut.length >= checkoutLimit.checkout_limit)
+        throw new Error("Quantidade máxima de empréstimos atingida!");
 
       const daysDueBack = await prisma.collectionDM.findFirst({
         where: {
-          code: biblio.collection_cd
+          code: biblio.collection_cd,
         },
       });
 
@@ -79,6 +81,41 @@ class CheckoutService {
       const due_back_dt = new Date(
         currentDate + daysToAdd * millisecondsInADay
       );
+
+      const myHold = await prisma.biblioStatusHist.findFirst({
+        where: {
+          status_cd: "hld",
+          copyid: copyExists.id,
+        },
+      });
+
+      if (myHold) {
+        const checkedOut = await prisma.biblioStatusHist.update({
+          where: {
+            id: myHold.id,
+          },
+          data: {
+            copyid: copyExists.id,
+            due_back_dt: due_back_dt,
+            mbrid: mbrid,
+            bibid: copyExists.bibid,
+            status_cd: "out",
+          },
+        });
+
+        const biblioCopyUpdate = await prisma.biblioCopy.update({
+          where: {
+            id: copyExists.id,
+          },
+          data: {
+            status_cd: "out",
+            mbrid: mbrid,
+            due_back_dt: due_back_dt,
+          },
+        });
+
+        return checkedOut;
+      }
 
       const checkedOut = await prisma.biblioStatusHist.create({
         data: {
