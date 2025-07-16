@@ -41,7 +41,7 @@ class CheckoutService {
         },
       });
 
-      if (memberIsBlocked) throw new Error("O membro está bloquado!");
+      if (memberIsBlocked) throw new Error("O membro está bloqueado!");
 
       const checkoutLimit = await prisma.checkoutPrivs.findFirst({
         where: {

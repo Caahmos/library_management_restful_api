@@ -37,7 +37,7 @@ class HoldService {
         }
       });
 
-      if(memberIsBlocked) throw new Error('O membro está bloquado!');
+      if(memberIsBlocked) throw new Error('O membro está bloqueado!');
 
       let holdid = 1;
 
