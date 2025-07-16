@@ -86,6 +86,7 @@ class CheckoutService {
         where: {
           status_cd: "hld",
           copyid: copyExists.id,
+          mbrid: mbrid
         },
       });
 
