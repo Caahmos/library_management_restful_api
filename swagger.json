@@ -2636,6 +2636,54 @@
         }
       }
     },
+    "/bibliohist/deletehold/{mbrid}": {
+      "delete": {
+        "summary": "Deletar a reserva de um livro.",
+        "description": "Deletar a reserva de um livro.",
+        "tags": ["BiblioHist"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "mbrid",
+            "in": "path",
+            "required": true,
+            "description": "Mbrid do membro.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Campos para realizar a remoção da reserva",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#components/schemas/RegisterBiblioHistRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Reserva do livro excluída com sucesso!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RegisterCheckoutResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Erro ao fazer o checkout"
+          }
+        }
+      }
+    },
     "/mbraccount/register/{mbrid}": {
       "post": {
         "summary": "Registrar uma transação.",

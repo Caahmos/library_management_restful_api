@@ -68,6 +68,18 @@ class CheckinService {
           where: { id: orderedHold.id },
         });
 
+        const remainingHolds = await prisma.biblioHold.findMany({
+          where: { copyid: orderedHold.copyid },
+          orderBy: { holdid: "asc" },
+        });
+
+        for (let i = 0; i < remainingHolds.length; i++) {
+          await prisma.biblioHold.update({
+            where: { id: remainingHolds[i].id },
+            data: { holdid: i + 1 },
+          });
+        };
+
         return {
           message:
             "O livro foi colocado em espera, pois um membro fez a reserva!",

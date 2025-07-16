@@ -8,6 +8,7 @@ import ViewHistController from '../controllers/Biblio/BiblioStatusHist/ViewHistC
 import ViewHoldsController from '../controllers/Biblio/BiblioStatusHist/ViewHoldsController';
 import ViewStatusController from '../controllers/Biblio/BiblioStatusHist/ViewStatusController';
 import ViewHistsController from '../controllers/Biblio/BiblioStatusHist/ViewHistsController';
+import DeleteHoldController from '../controllers/Biblio/BiblioStatusHist/DeleteHoldController';
 
 class BiblioHistRoutes{
     public router = express.Router();
@@ -37,6 +38,7 @@ class BiblioHistRoutes{
     }
 
     deleteRoutes(){
+        this.router.delete('/deletehold/:mbrid', isAuthenticated, DeleteHoldController.handle);
     }
 };
 
