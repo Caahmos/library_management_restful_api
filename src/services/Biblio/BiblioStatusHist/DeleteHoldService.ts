@@ -48,7 +48,7 @@ class DeleteHoldService {
       });
 
       if (!myHold) console.log("Reserva não encontrada!");
-      if (!holdHistExists) throw new Error("Nenhuma reserva feita!");
+      if (!holdHistExists && !holdsExists) throw new Error("Nenhuma reserva feita!");
       if (!myHoldHistExists) console.log("Usuário não é o primeiro da lista!");
 
       console.log(holdHistExists);
