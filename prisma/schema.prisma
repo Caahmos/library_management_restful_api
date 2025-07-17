@@ -30,10 +30,11 @@ model Staff {
   member_account     MemberAccount[]
   biblio             Biblio[]
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now())
-  Member    Member[]
-  Staff     Staff[]  @relation("updatedBy")
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @default(now())
+  Member      Member[]
+  Staff       Staff[]       @relation("updatedBy")
+  Observation Observation[]
 
   @@map("staff")
 }
@@ -58,10 +59,11 @@ model Member {
   biblio_status_hist BiblioStatusHist[]
   member_fields      MemberField[]
 
-  createdAt  DateTime     @default(now())
-  updatedAt  DateTime     @default(now())
-  BiblioHold BiblioHold[]
-  BiblioRank BiblioRank[]
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @default(now())
+  BiblioHold  BiblioHold[]
+  BiblioRank  BiblioRank[]
+  Observation Observation[]
 
   @@map("member")
 }
@@ -243,8 +245,26 @@ model BiblioCopy {
   biblio           Biblio             @relation(fields: [bibid], references: [bibid], onDelete: Cascade)
   BiblioStatusHist BiblioStatusHist[]
   BiblioHold       BiblioHold[]
+  Observation      Observation[]
 
   @@map("biblio_copy")
+}
+
+model Observation {
+  id        Int      @id @default(autoincrement())
+  content   String   @db.Text
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+
+  mbrid              Int?
+  copyid             Int?
+  last_change_userid Int
+
+  member      Member?     @relation(fields: [mbrid], references: [mbrid], onDelete: Cascade)
+  biblio_copy BiblioCopy? @relation(fields: [copyid], references: [id], onDelete: Cascade)
+  user        Staff       @relation(fields: [last_change_userid], references: [userid])
+
+  @@map("observation")
 }
 
 model BiblioStatusHist {
