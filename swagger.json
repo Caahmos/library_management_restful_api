@@ -2636,7 +2636,7 @@
         }
       }
     },
-    "/bibliohist/deletehold/{mbrid}": {
+    "/bibliohist/deletehold/{mbrid}/{barcode_nmbr}": {
       "delete": {
         "summary": "Deletar a reserva de um livro.",
         "description": "Deletar a reserva de um livro.",
@@ -2655,18 +2655,17 @@
             "schema": {
               "type": "string"
             }
-          }
-        ],
-        "requestBody": {
-          "description": "Campos para realizar a remoção da reserva",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#components/schemas/RegisterBiblioHistRequest"
-              }
+          },
+          {
+            "name": "barcode_nmbr",
+            "in": "path",
+            "required": true,
+            "description": "Código da cópia do livro.",
+            "schema": {
+              "type": "string"
             }
           }
-        },
+        ],
         "responses": {
           "201": {
             "description": "Reserva do livro excluída com sucesso!",

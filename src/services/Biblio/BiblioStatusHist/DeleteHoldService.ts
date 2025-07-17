@@ -135,14 +135,8 @@ class DeleteHoldService {
             },
           });
 
-          await prisma.biblioStatusHist.update({
-            where: { id: myHoldHistExists.id },
-            data: {
-              status_cd: "in",
-              mbrid: undefined,
-              status_begin_dt: new Date(),
-              returned_at: new Date(),
-            },
+          await prisma.biblioStatusHist.delete({
+            where: { id: myHoldHistExists.id }
           });
         }
       }

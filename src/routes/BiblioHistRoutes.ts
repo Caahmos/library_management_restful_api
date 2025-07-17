@@ -38,7 +38,7 @@ class BiblioHistRoutes{
     }
 
     deleteRoutes(){
-        this.router.delete('/deletehold/:mbrid', isAuthenticated, DeleteHoldController.handle);
+        this.router.delete('/deletehold/:mbrid/:barcode_nmbr', isAuthenticated, DeleteHoldController.handle);
     }
 };
 

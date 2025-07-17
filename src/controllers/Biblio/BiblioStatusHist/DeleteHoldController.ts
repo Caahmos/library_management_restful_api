@@ -11,7 +11,7 @@ class DeleteHoldController{
         if(!userroles.circ_flg) return res.status(422).json({ type: 'error', message: 'Usuário não tem permissão!'});
 
         const mbrid = Number(req.params.mbrid);
-        const barcode_nmbr: string = req.body.barcode_nmbr;
+        const barcode_nmbr = String(req.params.barcode_nmbr);
 
         if(!mbrid) return res.status(422).json({ type: 'error', message: 'Informe o mbrid!'});
         
