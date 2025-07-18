@@ -7,7 +7,6 @@ class ViewCollectionsController{
         const userroles = req.userroles;
         
         if(!userId) return res.status(422).json({ type: 'error', message: 'Usuário não autenticado!'});
-        if(!userroles.admin_flg) return res.status(422).json({ type: 'error', message: 'Usuário não tem permissão!'});
 
         try{
             const collections = await ViewCollectionsService.execute();
