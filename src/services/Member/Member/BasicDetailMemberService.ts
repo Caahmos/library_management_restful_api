@@ -10,7 +10,8 @@ class BasicDetailMemberService{
                 select: {
                     first_name: true,
                     last_name: true,
-                    barcode_nmbr: true
+                    barcode_nmbr: true,
+                    imageUrl: true
                 }
             }
         );
