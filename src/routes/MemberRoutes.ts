@@ -8,6 +8,7 @@ import DeleteMemberController from '../controllers/Member/Member/DeleteMemberCon
 import SearchMemberController from '../controllers/Member/Member/SearchMemberController';
 import UpdateMemberImageController from '../controllers/Member/Member/UpdateMemberImageController';
 import { upload } from '../helpers/imageUpload';
+import BasicDetailMemberController from '../controllers/Member/Member/BasicDetailMemberControlle';
 
 class MemberRoutes{
     public router = express.Router();
@@ -27,6 +28,7 @@ class MemberRoutes{
         this.router.get('/search', isAuthenticated, SearchMemberController.handle);
         this.router.get('/viewmembers', isAuthenticated, ViewMembersController.handle);
         this.router.get('/detail/:mbrid', isAuthenticated, DetailMemberController.handle);
+        this.router.get('/basicdetail/:mbrid', isAuthenticated, BasicDetailMemberController.handle);
     }
 
     patchRoutes(){
