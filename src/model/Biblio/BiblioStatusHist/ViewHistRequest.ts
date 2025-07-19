@@ -37,7 +37,7 @@ export interface DetailHistsRequest {
 
 export interface DetailHistsSearch {
   bibid?: number;
-  copy_barcode?: number;
+  copy_barcode?: string;
   member_barcode?: number;
   status_cd?: string;
   due?: string;

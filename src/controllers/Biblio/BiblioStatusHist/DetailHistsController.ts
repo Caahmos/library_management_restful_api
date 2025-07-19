@@ -26,7 +26,7 @@ class DetailHistsController {
     const viewHistsData: DetailHistsSearch = {};
 
     if (bibid) viewHistsData.bibid = Number(bibid);
-    if (copy_barcode) viewHistsData.copy_barcode = Number(copy_barcode);
+    if (copy_barcode) viewHistsData.copy_barcode = copy_barcode;
     if (member_barcode) viewHistsData.member_barcode = Number(member_barcode);
     if (due) viewHistsData.due = due;
     if (status_cd) viewHistsData.status_cd = status_cd;
