@@ -28,13 +28,13 @@ class DetailHistsService {
          barcode_nmbr: String(copy_barcode)
         },
         select: {
-          copyid: true
+          id: true
         }
       });
 
       if(!copyExists) throw new Error('A cópia não foi encontrada.');
 
-      copyid = copyExists?.copyid;
+      copyid = copyExists?.id;
     };
 
     const filters: any = {
