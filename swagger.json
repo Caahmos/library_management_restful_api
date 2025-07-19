@@ -897,6 +897,44 @@
         }
       }
     },
+    "/member/block/{mbrid}": {
+      "patch": {
+        "summary": "Bloquear ou Desbloquear de um membro.",
+        "description": "Bloquear ou Desbloquear de um membro.",
+        "tags": ["Member"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "mbrid",
+            "in": "path",
+            "required": true,
+            "description": "ID do membro.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Alteração de bloqueio realizada com sucesso!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#components/schemas/EditMemberResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Erro ao atualizar o membro"
+          }
+        }
+      }
+    },
     "/member/delete/{mbrid}": {
       "delete": {
         "summary": "Deletar um membro.",
