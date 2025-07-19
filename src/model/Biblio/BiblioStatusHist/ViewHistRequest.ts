@@ -25,3 +25,21 @@ export interface ViewHistsSearch {
   due?: string;
   limit?: number;
 }
+
+export interface DetailHistsRequest {
+  bibid?: string;
+  copy_barcode?: string;
+  member_barcode?: string;
+  status_cd?: string;
+  due?: string;
+  limit?: number;
+}
+
+export interface DetailHistsSearch {
+  bibid?: number;
+  copy_barcode?: number;
+  member_barcode?: number;
+  status_cd?: string;
+  due?: string;
+  limit?: number;
+}
