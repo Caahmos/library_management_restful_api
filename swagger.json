@@ -2453,6 +2453,47 @@
         }
       }
     },
+    "/bibliohist/sendemail": {
+      "post": {
+        "summary": "Enviar notificação de empréstimo em atraso.",
+        "description": "Envia um e-mail individual para o usuário informando sobre o atraso no empréstimo.",
+        "tags": ["BiblioHist"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "description": "Dados necessários para enviar a notificação por e-mail.",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NotifyLoanRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "E-mail enviado com sucesso!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotifyLoanResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Dados incompletos ou inválidos."
+          },
+          "500": {
+            "description": "Erro ao enviar o e-mail."
+          }
+        }
+      }
+    },
     "/bibliohist/viewhist": {
       "get": {
         "summary": "Mostrar o histórico de checkout.",
@@ -3506,6 +3547,47 @@
           }
         }
       },
+      "NotifyLoanRequest": {
+        "type": "object",
+        "properties": {
+          "first_name": {
+            "type": "string",
+            "example": "João"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "example": "joao.silva@email.com"
+          },
+          "barcode_nmbr": {
+            "type": "string",
+            "example": "1234567890"
+          },
+          "status_begin_dt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2025-07-01T00:00:00.000Z"
+          },
+          "due_back_dt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2025-07-15T00:00:00.000Z"
+          },
+          "daysLate": {
+            "type": "integer",
+            "example": 5
+          }
+        },
+        "required": [
+          "first_name",
+          "email",
+          "barcode_nmbr",
+          "status_begin_dt",
+          "due_back_dt",
+          "daysLate"
+        ]
+      },
+
       "RegisterMbrClassifyResponse": {
         "type": "object",
         "properties": {

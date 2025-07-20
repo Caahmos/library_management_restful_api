@@ -10,6 +10,7 @@ import ViewStatusController from '../controllers/Biblio/BiblioStatusHist/ViewSta
 import ViewHistsController from '../controllers/Biblio/BiblioStatusHist/ViewHistsController';
 import DeleteHoldController from '../controllers/Biblio/BiblioStatusHist/DeleteHoldController';
 import DetailHistsController from '../controllers/Biblio/BiblioStatusHist/DetailHistsController';
+import SendEmailController from '../controllers/Biblio/BiblioStatusHist/SendEmailController';
 
 class BiblioHistRoutes{
     public router = express.Router();
@@ -26,6 +27,7 @@ class BiblioHistRoutes{
         this.router.post('/checkin', isAuthenticated, CheckinController.handle);
         this.router.post('/checkout/:mbrid', isAuthenticated, CheckoutController.handle);
         this.router.post('/hold/:mbrid', isAuthenticated, HoldController.handle);
+        this.router.post('/sendemail', isAuthenticated, SendEmailController.handle);
     }
 
     getRoutes(){
