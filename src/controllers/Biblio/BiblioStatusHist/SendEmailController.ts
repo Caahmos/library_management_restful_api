@@ -13,6 +13,7 @@ interface NotifyLoanRequestBody {
   daysLate: number;
   title: string;
   bib_barcode: string;
+  hist_id: number;
 }
 
 class SendEmailController {
@@ -30,6 +31,7 @@ class SendEmailController {
       daysLate,
       title,
       bib_barcode,
+      hist_id
     } = req.body;
     const userId = req.userid;
     const userroles = req.userroles;
@@ -52,6 +54,7 @@ class SendEmailController {
       !barcode_nmbr ||
       !status_begin_dt ||
       !due_back_dt ||
+      !hist_id ||
       daysLate === undefined
     ) {
       return res.status(400).json({ message: "Dados incompletos" });
@@ -86,7 +89,7 @@ class SendEmailController {
   `;
 
     try {
-      await sendEmail(email, subject, html);
+      await sendEmail(email, subject, html, hist_id);
       return res.status(200).json({ message: "E-mail enviado com sucesso!", type: "success" });
     } catch (error) {
       console.error("Erro ao enviar e-mail:", error);

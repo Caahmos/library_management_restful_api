@@ -3583,6 +3583,10 @@
           "daysLate": {
             "type": "integer",
             "example": 5
+          },
+          "hist_id": {
+            "type": "integer",
+            "example": 25201
           }
         },
         "required": [

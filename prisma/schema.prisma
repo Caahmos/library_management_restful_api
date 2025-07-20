@@ -277,6 +277,7 @@ model BiblioStatusHist {
   returned_at     DateTime?
   mbrid           Int
   renewal_count   Int       @default(0)
+  emails_sent     Int       @default(0)
 
   biblio_copy      BiblioCopy     @relation(fields: [copyid], references: [id])
   member           Member         @relation(fields: [mbrid], references: [mbrid])
