@@ -3547,6 +3547,10 @@
             "type": "string",
             "example": "João"
           },
+          "last_name": {
+            "type": "string",
+            "example": "da Silva"
+          },
           "email": {
             "type": "string",
             "format": "email",
