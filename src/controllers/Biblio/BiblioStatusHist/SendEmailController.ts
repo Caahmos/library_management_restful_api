@@ -10,6 +10,8 @@ interface NotifyLoanRequestBody {
   status_begin_dt: string;
   due_back_dt: string;
   daysLate: number;
+  title: string;
+  bib_barcode: string;
 }
 
 class SendEmailController {
@@ -17,11 +19,13 @@ class SendEmailController {
     req: Request<{}, {}, NotifyLoanRequestBody>,
     res: Response
   ) {
-    const { first_name, email, barcode_nmbr, status_begin_dt, due_back_dt, daysLate } =
+    const { first_name, email, barcode_nmbr, status_begin_dt, due_back_dt, daysLate, title, bib_barcode } =
       req.body;
 
     if (
       !first_name ||
+      !title ||
+      !bib_barcode ||
       !email ||
       !barcode_nmbr ||
       !status_begin_dt ||
@@ -46,9 +50,10 @@ class SendEmailController {
 
     const html = `
     <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; background: #f9f9f9; border-radius: 8px;">
-      <h2 style="color: #d32f2f;">Olá, ${first_name}!</h2>
+      <h2 style="color: #d32f2f;">Olá, ${first_name} - RM ${barcode_nmbr}!</h2>
       <p>Identificamos que há um empréstimo em atraso em seu nome.</p>
-      <p><strong>📚 Código de barras:</strong> ${barcode_nmbr}</p>
+      <p><strong>📚 Título:</strong> ${title}</p>
+      <p><strong>📚 Código de barras:</strong> ${bib_barcode}</p>
       <p><strong>📆 Data do empréstimo:</strong> ${formattedstatus_begin_dt}</p>
       <p><strong>📅 Data de vencimento:</strong> ${formatteddue_back_dt}</p>
       <p><strong>🕒 Dias em atraso:</strong> ${daysLate} dia(s)</p>

@@ -2476,14 +2476,7 @@
         },
         "responses": {
           "200": {
-            "description": "E-mail enviado com sucesso!",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/NotifyLoanResponse"
-                }
-              }
-            }
+            "description": "E-mail enviado com sucesso!"
           },
           "400": {
             "description": "Dados incompletos ou inválidos."
@@ -3558,6 +3551,16 @@
             "type": "string",
             "format": "email",
             "example": "joao.silva@email.com"
+          },
+          "title": {
+            "type": "string",
+            "format": "email",
+            "example": "Moby Dick"
+          },
+          "bib_barcode": {
+            "type": "string",
+            "format": "email",
+            "example": "123456"
           },
           "barcode_nmbr": {
             "type": "string",
