@@ -5437,6 +5437,10 @@
           "renewal_limit": {
             "type": "number",
             "example": 5
+          },
+          "grace_period_days": {
+            "type": "number",
+            "example": 5
           }
         }
       },

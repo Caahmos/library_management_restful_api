@@ -362,6 +362,7 @@ model CheckoutPrivs {
   classification Int
   checkout_limit Int
   renewal_limit  Int
+  grace_period_days Int @default(1)
 
   material_type_dm MaterialTypeDM   @relation(fields: [material_cd], references: [code], onDelete: Cascade)
   mbr_classify_dm  MemberClassifyDM @relation(fields: [classification], references: [code], onDelete: Cascade)
