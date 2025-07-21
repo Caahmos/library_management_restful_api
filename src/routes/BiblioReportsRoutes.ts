@@ -5,6 +5,7 @@ import RentalStatisticsController from '../controllers/Biblio/BiblioReports/Rent
 import BooksBalanceController from '../controllers/Biblio/BiblioReports/BooksBalanceController';
 import MemberBalanceController from '../controllers/Biblio/BiblioReports/MemberBalanceController';
 import MemberRanksController from '../controllers/Biblio/BiblioReports/MemberRanksController';
+import DetailedBalanceController from '../controllers/Biblio/BiblioReports/DetailedBalanceController';
 
 class BiblioReportsRoutes{
     public router = express.Router();
@@ -21,6 +22,7 @@ class BiblioReportsRoutes{
         this.router.get('/rentals', isAuthenticated, RentalStatisticsController.handle);
         this.router.get('/booksbalance', isAuthenticated, BooksBalanceController.handle);
         this.router.get('/membersbalance', isAuthenticated, MemberBalanceController.handle);
+        this.router.get('/detailedbalance', isAuthenticated, DetailedBalanceController.handle);
         this.router.get('/memberranks', isAuthenticated, MemberRanksController.handle);
     }
 

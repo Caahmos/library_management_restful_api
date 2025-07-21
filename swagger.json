@@ -1922,6 +1922,53 @@
         }
       }
     },
+    "/biblioreports/detailedbalance": {
+      "get": {
+        "summary": "Responsável por buscar e retornar informações detalhadas sobre a quantidade de livros disponíveis e perdidos",
+        "description": "Responsável por buscar e retornar informações sobre a quantidade de livros disponíveis e perdidos",
+        "tags": ["BiblioReports"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "status_cd",
+            "in": "query",
+            "description": "Filtrar por status de disponibilidade",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Limitar número de resultados (padrão: retorna todos)",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Busca realizada com sucesso!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#components/schemas/BalanceResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Erro ao realizar a busca!"
+          }
+        }
+      }
+    },
     "/biblioreports/membersbalance": {
       "get": {
         "summary": "Responsável por buscar e retornar informações sobre a quantidade de membros ativos, bloqueados e ativos",
