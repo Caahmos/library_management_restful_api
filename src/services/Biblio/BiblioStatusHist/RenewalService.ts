@@ -36,7 +36,7 @@ class RenewalService {
         },
       });
 
-      // if(memberIsBlocked) throw new Error('O membro está bloqueado!');
+      if(memberIsBlocked) throw new Error('O membro está bloqueado!');
 
       const checkoutInfo = await prisma.checkoutPrivs.findFirst({
         where: {
