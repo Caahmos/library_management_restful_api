@@ -26,7 +26,12 @@ class DetailedBalanceService {
         biblio: {
           select: {
             title: true,
-            title_remainder: true
+            title_remainder: true,
+            collection: {
+              select: {
+                description: true
+              }
+            }
           }
         }
       }
