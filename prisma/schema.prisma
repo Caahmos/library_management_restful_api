@@ -142,7 +142,7 @@ model MaterialTypeDM {
 model Biblio {
   bibid               Int                @id @default(autoincrement())
   title               String
-  title_remainder     String?
+  title_remainder     String?            @db.Text
   author              String
   responsibility_stmt String?            @db.Text
   material_cd         Int
@@ -208,7 +208,7 @@ model BiblioField {
   ind1_cd       String      @default("N")
   ind2_cd       String      @default("N")
   subfield_cd   String
-  field_data    String
+  field_data    String      @db.Text
   usmarc_tag_dm UsmarcTagDM @relation(fields: [tag], references: [tag])
 
   createdAt DateTime @default(now())
