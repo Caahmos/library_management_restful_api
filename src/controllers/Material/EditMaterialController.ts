@@ -9,7 +9,7 @@ class EditMaterialController{
         const code = Number(req.params.code);
             
         if(!userId) return res.status(422).json({ type: 'error', message: 'Usuário não autenticado!'});
-        if(!userroles.admin_flg) return res.status(422).json({ type: 'error', message: 'Usuário não tem permissão!'});
+        if(!userroles.catalog_flg) return res.status(422).json({ type: 'error', message: 'Usuário não tem permissão!'});
             
         const editMaterialData: EditMaterialRequest = req.body;
 

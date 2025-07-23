@@ -7,7 +7,6 @@ class CheckinController{
         const userroles = req.userroles;
             
         if(!userId) return res.status(422).json({ type: 'error', message: 'Usuário não autenticado!'});
-        if(!userroles.admin_flg) return res.status(422).json({ type: 'error', message: 'Usuário não tem permissão!'});
         if(!userroles.circ_flg) return res.status(422).json({ type: 'error', message: 'Usuário não tem permissão!'});
 
         const barcode_nmbr: string = req.body.barcode_nmbr;

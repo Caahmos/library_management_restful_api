@@ -8,7 +8,7 @@ class DetailClassifyController{
         const code = Number(req.params.code);
         
         if(!userId) return res.status(422).json({ type: 'error', message: 'Usuário não autenticado!'});
-        if(!userroles.admin_flg) return res.status(422).json({ type: 'error', message: 'Usuário não tem permissão!'});
+        if(!userroles.circ_mbr_flg) return res.status(422).json({ type: 'error', message: 'Usuário não tem permissão!'});
 
         try{
             const classify = await DetailClassifyService.execute(code);

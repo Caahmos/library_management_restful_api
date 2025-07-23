@@ -10,7 +10,7 @@ class RegisterBiblioController {
     if (!userId) {
       return res.status(422).json({ type: "error", message: "Usuário não autenticado!" });
     }
-    if (!userroles?.admin_flg || !userroles?.catalog_flg) {
+    if (!userroles?.catalog_flg) {
       return res.status(422).json({ type: "error", message: "Usuário não tem permissão!" });
     }
 

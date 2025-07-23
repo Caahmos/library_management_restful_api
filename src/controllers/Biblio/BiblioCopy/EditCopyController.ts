@@ -9,7 +9,7 @@ class EditCopyController{
         const id = Number(req.params.id);
             
         if(!userId) return res.status(422).json({ type: 'error', message: 'Usuário não autenticado!'});
-        if(!userroles.admin_flg) return res.status(422).json({ type: 'error', message: 'Usuário não tem permissão!'});
+        if(!userroles.catalog_flg) return res.status(422).json({ type: 'error', message: 'Usuário não tem permissão!'});
             
         const editCopyData: EditCopyRequest = req.body;
 
