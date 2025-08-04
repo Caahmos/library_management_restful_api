@@ -9,27 +9,39 @@ class SearchBibiosService {
     if (!method && !data) {
       foundBiblio = await prisma.biblio.findMany({
         orderBy: {
-          createdAt: 'desc',
+          createdAt: "desc",
         },
         include: {
           biblio_copy: true,
           BiblioMedia: true,
+          collection: {
+            select: {
+              description: true,
+              colors: true,
+            },
+          },
         },
-        take: limit || 10,  
+        take: limit || 10,
       });
     } else if (method === "title") {
       foundBiblio = await prisma.biblio.findMany({
         where: {
           title: {
-            contains: data,            
+            contains: data,
           },
         },
         include: {
           biblio_copy: true,
           BiblioMedia: true,
+          collection: {
+            select: {
+              description: true,
+              colors: true,
+            },
+          },
         },
         orderBy: {
-          createdAt: 'desc',
+          createdAt: "desc",
         },
         take: limit || 10,
       });
@@ -37,20 +49,26 @@ class SearchBibiosService {
       foundBiblio = await prisma.biblio.findMany({
         where: {
           author: {
-            contains: data
+            contains: data,
           },
         },
         include: {
           biblio_copy: true,
           BiblioMedia: true,
+          collection: {
+            select: {
+              description: true,
+              colors: true,
+            },
+          },
         },
         orderBy: {
-          createdAt: 'desc',
+          createdAt: "desc",
         },
         take: limit || 10,
       });
     } else if (method === "collection") {
-      const collectionExists = await prisma.collectionDM.findFirst({ 
+      const collectionExists = await prisma.collectionDM.findFirst({
         where: {
           description: data,
         },
@@ -65,37 +83,47 @@ class SearchBibiosService {
         include: {
           biblio_copy: true,
           BiblioMedia: true,
+          collection: {
+            select: {
+              description: true,
+              colors: true,
+            },
+          },
         },
         orderBy: {
-          createdAt: 'desc',
+          createdAt: "desc",
         },
         take: limit || 10,
       });
-    } 
-    else if (method === "barcode") {
+    } else if (method === "barcode") {
       const barcodeExists = await prisma.biblioCopy.findFirst({
         where: {
-          barcode_nmbr: (data)
-        }
-      })
+          barcode_nmbr: data,
+        },
+      });
 
       if (!barcodeExists) throw new Error("Coleção não encontrada!");
 
       foundBiblio = await prisma.biblio.findMany({
         where: {
-          bibid: barcodeExists.bibid
+          bibid: barcodeExists.bibid,
         },
         include: {
           biblio_copy: true,
           BiblioMedia: true,
+          collection: {
+            select: {
+              description: true,
+              colors: true,
+            },
+          },
         },
         orderBy: {
-          createdAt: 'desc',
+          createdAt: "desc",
         },
         take: limit || 10,
       });
-    }
-    else {
+    } else {
       throw new Error("Método de busca inválido!");
     }
 
