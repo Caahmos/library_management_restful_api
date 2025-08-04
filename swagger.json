@@ -4591,6 +4591,14 @@
           "daily_late_fee": {
             "type": "number",
             "example": 0
+          },
+          "color1": {
+            "type": "string",
+            "example": "#FFFFFF"
+          },
+          "color2": {
+            "type": "string",
+            "example": "#FFFFFF"
           }
         }
       },
@@ -4627,6 +4635,10 @@
               "daily_late_fee": {
                 "type": "number",
                 "example": 0
+              },
+              "colors": {
+                "type": "string",
+                "example": "#FFFFFF, #FFFFFF"
               }
             }
           }
@@ -4667,6 +4679,10 @@
                 "daily_late_fee": {
                   "type": "number",
                   "example": 0
+                },
+                "colors": {
+                  "type": "string",
+                  "example": "#FFFFFF, #FFFFFF"
                 }
               }
             }
@@ -4706,6 +4722,10 @@
               "daily_late_fee": {
                 "type": "number",
                 "example": 0
+              },
+              "colors": {
+                "type": "string",
+                "example": "#FFFFFF, #FFFFFF"
               }
             }
           }
@@ -4725,6 +4745,14 @@
           "daily_late_fee": {
             "type": "number",
             "example": 0
+          },
+          "color1": {
+            "type": "string",
+            "example": "#FFFFFF"
+          },
+          "color2": {
+            "type": "string",
+            "example": "#FFFFFF"
           }
         }
       },
@@ -4761,6 +4789,10 @@
               "daily_late_fee": {
                 "type": "number",
                 "example": 0
+              },
+              "colors": {
+                "type": "string",
+                "example": "#FFFFFF, #FFFFFF"
               }
             }
           }
