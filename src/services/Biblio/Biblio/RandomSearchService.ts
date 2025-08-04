@@ -17,6 +17,14 @@ class RandomSearchService {
             where: {
               collection_cd: randomCollection.code
             },
+            include: {
+              collection: {
+                select: {
+                  description: true,
+                  colors: true
+                }
+              }
+            },
             take: 100
           });
 
