@@ -50,6 +50,7 @@ model Member {
   work_phone         String?
   email              String?
   imageUrl           String?
+  blocked_until      DateTime?
   isBlocked          Boolean            @default(false)
   code               MemberClassifyDM   @relation(fields: [classification], references: [code])
   staff              Staff              @relation(fields: [last_change_userid], references: [userid])

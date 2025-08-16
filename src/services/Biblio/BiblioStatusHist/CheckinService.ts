@@ -1,13 +1,17 @@
 import prisma from "../../../prisma/prisma";
+import { differenceInDays, addDays } from "date-fns";
 
 class CheckinService {
   static async execute(barcode_nmbr: string) {
     const checkedIn = await prisma.$transaction(async (prisma) => {
+      let mbrid = 0;
+
       const copyExists = await prisma.biblioCopy.findFirst({
         where: { barcode_nmbr },
       });
 
       if (!copyExists) throw new Error("Livro não encontrado!");
+      if (copyExists.mbrid) mbrid = copyExists.mbrid;
       if (copyExists.status_cd === "in")
         throw new Error("Livro já está disponível!");
       if (copyExists.status_cd === "hld" && copyExists.mbrid)
@@ -78,7 +82,7 @@ class CheckinService {
             where: { id: remainingHolds[i].id },
             data: { holdid: i + 1 },
           });
-        };
+        }
 
         return {
           message:
@@ -110,6 +114,57 @@ class CheckinService {
             returned_at: new Date(),
           },
         });
+      }
+
+      const updatedLastHist = await prisma.biblioStatusHist.findFirst({
+        where: { copyid: copyExists.id },
+        orderBy: { status_begin_dt: "desc" },
+      });
+
+      const moreHists = await prisma.biblioStatusHist.findMany({
+        where: {
+          mbrid: mbrid,
+          status_cd: "out",
+          returned_at: null,
+        },
+      });
+
+      const isBlocked = await prisma.member.findFirst({
+        where: {
+          mbrid: mbrid,
+        },
+        select: {
+          isBlocked: true,
+        },
+      });
+
+      console.log(isBlocked?.isBlocked);
+      console.log(moreHists.length);
+
+      if (isBlocked?.isBlocked && moreHists.length === 0) {
+        console.log("Entrou no bloqueio");
+
+        const dueBack = copyExists.due_back_dt;
+        const returnedAt = updatedLastHist?.returned_at;
+
+        if (dueBack && returnedAt) {
+          const diffDays = differenceInDays(returnedAt, dueBack);
+
+          const blockedDays = diffDays > 0 ? diffDays * 2 + 1 : 0;
+
+          const blockedUntil = addDays(new Date(), blockedDays);
+
+          console.log(
+            `O usuário permanecerá bloqueado até: ${blockedUntil.toLocaleDateString()}`
+          );
+
+          await prisma.member.update({
+            where: { mbrid },
+            data: { blocked_until: blockedUntil },
+          });
+        } else {
+          console.log("Datas inválidas para calcular atraso.");
+        }
       }
 
       return { message: "Livro devolvido com sucesso!", checkedIn };

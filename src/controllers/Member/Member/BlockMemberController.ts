@@ -1,5 +1,4 @@
 import { Request, Response } from "express";
-import DetailMemberService from "../../../services/Member/Member/DetailMemberService";
 import BlockMemberService from "../../../services/Member/Member/BlockMemberService";
 
 class BlockMemberController{
