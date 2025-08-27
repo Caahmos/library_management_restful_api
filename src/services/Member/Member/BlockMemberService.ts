@@ -2,7 +2,7 @@ import prisma from "../../../prisma/prisma";
 import { isAfter } from "date-fns";
 
 class BlockMemberService {
-  static async execute(mbrid: number) {
+  static async execute(mbrid: number, force: string) {
     const memberExists = await prisma.member.findFirst({
       where: { mbrid },
       include: { member_fields: true },
@@ -17,7 +17,20 @@ class BlockMemberService {
       },
     });
 
-    if (verifyCheckOut) throw new Error("Realize a devolução do livro primeiro!");
+    if (verifyCheckOut)
+      throw new Error("Realize a devolução do livro primeiro!");
+
+    if (force === "true") {
+      const changeMemberBlock = await prisma.member.update({
+        where: { mbrid: memberExists.mbrid },
+        data: {
+          isBlocked: false,
+          blocked_until: null,
+        },
+      });
+
+      return changeMemberBlock;
+    }
 
     if (memberExists.isBlocked && memberExists.blocked_until) {
       const now = new Date();

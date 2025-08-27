@@ -10,8 +10,12 @@ class BlockMemberController{
         if(!userId) return res.status(422).json({ type: 'error', message: 'Usuário não autenticado!'});
         if(!userroles.circ_mbr_flg) return res.status(422).json({ type: 'error', message: 'Usuário não tem permissão!'});
 
+        const force = req.query.force as string;
+
+        console.log(force)
+
         try{
-            const member = await BlockMemberService.execute(mbrid);
+            const member = await BlockMemberService.execute(mbrid, force);
             res.status(200).json({ type: 'success', message: 'Alteração de bloqueio realizada com sucesso!', member});
         }catch(err: any){
             res.status(422).json({ type: 'error', message: err.message});
