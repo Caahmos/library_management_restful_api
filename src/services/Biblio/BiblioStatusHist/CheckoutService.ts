@@ -1,4 +1,5 @@
 import prisma from "../../../prisma/prisma";
+import { adjustDateToWeekday } from "../../../utils/adjustDateToWeekday";
 
 class CheckoutService {
   static async execute(barcode_nmbr: string, mbrid: number) {
@@ -78,15 +79,14 @@ class CheckoutService {
       const millisecondsInADay = 24 * 60 * 60 * 1000;
       const daysToAdd = daysDueBack.days_due_back;
 
-      const due_back_dt = new Date(
-        currentDate + daysToAdd * millisecondsInADay
-      );
+      let due_back_dt = new Date(currentDate + daysToAdd * millisecondsInADay);
+      due_back_dt = adjustDateToWeekday(due_back_dt);
 
       const myHold = await prisma.biblioStatusHist.findFirst({
         where: {
           status_cd: "hld",
           copyid: copyExists.id,
-          mbrid: mbrid
+          mbrid: mbrid,
         },
       });
 

@@ -1,4 +1,5 @@
 import prisma from "../../../prisma/prisma";
+import { adjustDateToWeekday } from "../../../utils/adjustDateToWeekday";
 
 class RenewalService {
   static async execute(barcode_nmbr: string, mbrid: number) {
@@ -10,7 +11,7 @@ class RenewalService {
       });
 
       if (!copyExists) throw new Error("Livro não encontrado!");
-      
+
       if (copyExists.status_cd !== "out")
         throw new Error("Livro não está emprestado no momento!");
 
@@ -37,7 +38,7 @@ class RenewalService {
         },
       });
 
-      if(memberIsBlocked) throw new Error('O membro está bloqueado!');
+      if (memberIsBlocked) throw new Error("O membro está bloqueado!");
 
       const checkoutInfo = await prisma.checkoutPrivs.findFirst({
         where: {
@@ -68,15 +69,15 @@ class RenewalService {
         },
       });
 
-      if (isInHold) throw new Error("O livro está reservado por outro usuário!");
+      if (isInHold)
+        throw new Error("O livro está reservado por outro usuário!");
 
       const currentDate = Date.now();
       const millisecondsInADay = 24 * 60 * 60 * 1000;
       const daysToAdd = daysDueBack.days_due_back;
 
-      const due_back_dt = new Date(
-        currentDate + daysToAdd * millisecondsInADay
-      );
+      let due_back_dt = new Date(currentDate + daysToAdd * millisecondsInADay);
+      due_back_dt = adjustDateToWeekday(due_back_dt);
 
       const renewal_count = copyExists.renewal_count + 1;
 
