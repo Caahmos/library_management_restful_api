@@ -10,6 +10,7 @@ class RenewalService {
       });
 
       if (!copyExists) throw new Error("Livro não encontrado!");
+      
       if (copyExists.status_cd !== "out")
         throw new Error("Livro não está emprestado no momento!");
 
@@ -60,6 +61,14 @@ class RenewalService {
         throw new Error(
           "Informações de permanência do livro com o usuário não foram encontradas!"
         );
+
+      const isInHold = await prisma.biblioHold.findFirst({
+        where: {
+          copyid: copyExists.id,
+        },
+      });
+
+      if (isInHold) throw new Error("O livro está reservado por outro usuário!");
 
       const currentDate = Date.now();
       const millisecondsInADay = 24 * 60 * 60 * 1000;
