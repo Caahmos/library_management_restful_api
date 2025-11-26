@@ -11,6 +11,7 @@ import ViewHistsController from '../controllers/Biblio/BiblioStatusHist/ViewHist
 import DeleteHoldController from '../controllers/Biblio/BiblioStatusHist/DeleteHoldController';
 import DetailHistsController from '../controllers/Biblio/BiblioStatusHist/DetailHistsController';
 import SendEmailController from '../controllers/Biblio/BiblioStatusHist/SendEmailController';
+import OverdueHistsController from '../controllers/Biblio/BiblioStatusHist/OverdueHistsController';
 
 class BiblioHistRoutes{
     public router = express.Router();
@@ -34,6 +35,7 @@ class BiblioHistRoutes{
         this.router.get('/viewhist', isAuthenticated, ViewHistController.handle);
         this.router.get('/viewhists', isAuthenticated, ViewHistsController.handle);
         this.router.get('/detailhists', isAuthenticated, DetailHistsController.handle);
+        this.router.get('/overduehists', isAuthenticated, OverdueHistsController.handle);
         this.router.get('/viewholds', isAuthenticated, ViewHoldsController.handle);
         this.router.get('/viewstatus', isAuthenticated, ViewStatusController.handle);
     }
