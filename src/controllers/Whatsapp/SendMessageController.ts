@@ -100,8 +100,10 @@ Obrigado,
     let client;
     try {
       client = getClient();
+      console.log("CLIENTTTT === " + client)
     } catch (err) {
       console.warn("Nenhuma sessão ativa do WhatsApp encontrada.");
+      console.log("CLIENTTTT === " + client)
       return res.status(400).json({
         type: "error",
         message: "Não existe sessão ativa do WhatsApp.",
