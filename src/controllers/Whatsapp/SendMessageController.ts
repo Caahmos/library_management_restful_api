@@ -20,7 +20,7 @@ class SendMessageController {
     req: Request<{ phonenumber: string }, {}, NotifyLoanRequestBody>,
     res: Response
   ) {
-    const phone = req.params.phonenumber; // 👈 AGORA PEGA DO PARAMETRO
+    const phone = req.params.phonenumber;
 
     const {
       first_name,
@@ -61,7 +61,7 @@ class SendMessageController {
       !hist_id ||
       daysLate === undefined
     ) {
-      return res.status(400).json({ message: "Dados incompletos" });
+      return res.status(400).json({ message: "Dados incompletos", type: "error" });
     }
 
     const formattedLoan = format(
@@ -97,10 +97,19 @@ Obrigado,
 *Equipe da Biblioteca*
     `.trim();
 
+    let client;
     try {
-      const client = getClient();
-      const jid = `${phone}@c.us`;
+      client = getClient();
+    } catch (err) {
+      console.warn("Nenhuma sessão ativa do WhatsApp encontrada.");
+      return res.status(400).json({
+        type: "error",
+        message: "Não existe sessão ativa do WhatsApp.",
+      });
+    }
 
+    try {
+      const jid = `${phone}@c.us`;
       await client.sendText(jid, message);
 
       return res.status(200).json({
