@@ -26,6 +26,7 @@ class Server {
   constructor() {
     this.configServer();
     this.configRoutes();
+    startWhatsapp();
   }
 
   configServer() {
@@ -54,6 +55,7 @@ class Server {
     this.app.use("/mbraccount", new MemberAccountRoutes().router);
     this.app.use("/biblioreports", new BiblioReportsRoutes().router);
     this.app.use("/marc", new MarcRoutes().router);
+    this.app.use("/whatsapp", new WhatsappRoutes().router);
     this.documentation();
   }
 
@@ -67,5 +69,7 @@ class Server {
 }
 
 import './utils/BlockOverdueMembers';
+import { startWhatsapp } from "./whatsappClient";
+import WhatsappRoutes from "./routes/WhatsappRoutes";
 
 export default Server;
