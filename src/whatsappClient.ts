@@ -1,51 +1,70 @@
 import * as wppconnect from "@wppconnect-team/wppconnect";
+import { io } from ".";
 
 let client: any = null;
-let lastStatus: string | null = null; // guarda o último status do statusFind
-let lastQr: string | null = null; // guarda o último QR gerado
+let lastStatus: string | null = null;
+let lastQr: string | null = null;
 
-export async function startWhatsapp(callback?: (data: any) => void) {
+export async function startWhatsapp() {
   try {
     const wpp = await wppconnect.create({
       session: "biblioteca",
       autoClose: 0,
+
+      // --- QR CODE GERADO ---
       catchQR: (qr) => {
-        lastQr = qr; // salva o último QR
+        lastQr = qr;
+
         const msg = "📱 QR Code gerado! Escaneie no app";
-        console.log(msg, qr);
-        if (callback) callback({ type: "qr", qrCode: qr, message: msg });
+        console.log(msg);
+
+        // Envia para TODOS os sockets
+        io.emit("whatsapp-qr", {
+          qrCode: qr,
+          message: msg
+        });
       },
+
+      // --- STATUS DO WHATSAPP ---
       statusFind: (status) => {
-        lastStatus = status; // salva o status atual
+        lastStatus = status;
+
         let message = "";
 
         switch (status) {
           case "inChat":
           case "isLogged":
-            message = "✅ WhatsApp conectado e pronto para enviar mensagens " + status;
+            message = "✅ WhatsApp conectado";
             break;
           case "notLogged":
-            message = "📲 Aguardando login... " + status;
+            message = "📲 Aguardando login...";
             break;
           case "qrReadSuccess":
-            message = "📱 QR Code lido com sucesso! " + status;
+            message = "📱 QR Code lido!";
             break;
           case "qrReadFail":
-            message = "❌ Falha ao ler QR Code! " + status;
+            message = "❌ Falha ao ler QR Code!";
             break;
           case "disconnectedMobile":
-            message = "❌ Dispositivo desconectado do WhatsApp! " + status;
+            message = "❌ Dispositivo desconectado!";
             break;
           case "serverClose":
-            message = "⚠️ Servidor do WhatsApp fechado " + status;
+            message = "⚠️ Servidor encerrado";
             break;
           default:
             message = `ℹ️ Status WhatsApp: ${status}`;
         }
 
         console.log(message);
-        if (callback) callback({ type: "status", status, message });
+
+        // Envia pra todos
+        io.emit("whatsapp-status", {
+          status,
+          message,
+          connected: status === "inChat" || status === "isLogged"
+        });
       },
+
       headless: true,
       puppeteerOptions: {
         args: ["--no-sandbox", "--disable-setuid-sandbox"],
@@ -53,25 +72,37 @@ export async function startWhatsapp(callback?: (data: any) => void) {
     });
 
     client = wpp;
-    console.log("🎉 Sessão do WhatsApp criada com sucesso!");
-    if (callback)
-      callback({
-        type: "status",
-        status: "CONNECTED",
-        message: "🎉 WhatsApp conectado",
-      });
+
+    console.log("🎉 Sessão criada com sucesso!");
+
+    // Envia conexão inicial
+    io.emit("whatsapp-status", {
+      status: "CONNECTED",
+      message: "🎉 WhatsApp conectado",
+      connected: true
+    });
 
     return wpp;
+
   } catch (e: any) {
     console.error("❌ Erro ao iniciar WhatsApp:", e);
-    if (callback) callback({ type: "error", message: e.message });
+
+    io.emit("whatsapp-error", {
+      message: e.message
+    });
   }
 }
 
-// Retorna o status atual + último QR
+
+// --- STATUS GLOBAL PARA QUANDO UM CLIENTE ENTRA ---
 export function getWhatsappStatus() {
   if (!client) {
-    return { connected: false, status: null, message: "⚠️ Sem cliente ativo", qr: lastQr };
+    return {
+      connected: false,
+      status: lastStatus,
+      message: "⚠️ Sem cliente ativo",
+      qr: lastQr
+    };
   }
 
   const isConnected = client.isConnected ? client.isConnected() : false;
@@ -79,11 +110,11 @@ export function getWhatsappStatus() {
   return {
     connected: isConnected,
     status: lastStatus,
-    qr: lastQr, // último QR disponível
+    qr: lastQr,
     message: isConnected
       ? "✅ WhatsApp conectado"
       : lastStatus === "disconnectedMobile"
-      ? "❌ Dispositivo desconectado do WhatsApp"
+      ? "❌ Dispositivo desconectado"
       : "⚠️ Cliente iniciado, mas não conectado",
   };
 }
