@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { getClient } from "../../whatsappClient";
+import { getWhatsappStatus } from "../../whatsappClient";
 
 interface NotifyLoanRequestBody {
   first_name: string;
@@ -36,6 +37,9 @@ class SendMessageController {
 
     const userId = req.userid;
     const userroles = req.userroles;
+    const { status } = getWhatsappStatus();
+
+    if(status !== "inChat") return res.status(522).json({ type: "error", message: "Conecte-se primeiro no painel de Admin"})
 
     if (!userId)
       return res.status(422).json({
