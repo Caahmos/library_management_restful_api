@@ -2,7 +2,11 @@ import dotenv from "dotenv";
 import Server from "./server";
 import http from "http";
 import { Server as SocketServer } from "socket.io";
-import { getWhatsappStatus, startWhatsapp } from "./whatsappClient";
+import {
+  getWhatsappStatus,
+  startWhatsapp,
+  hasWhatsappClient,
+} from "./whatsappClient";
 
 dotenv.config();
 
@@ -17,40 +21,66 @@ const io = new SocketServer(server, {
   },
 });
 
-// --- EXPORTA IO para o whatsappClient usar ---
+// --- EXPORTA IO para o whatsappClient ---
 export { io };
 
-
-// --- QUANDO CLIENTE CONECTA ---
+// --- CONEXÃO DO SOCKET ---
 io.on("connection", (socket) => {
   console.log("Cliente conectado:", socket.id);
 
-  const status = getWhatsappStatus();
+  // --- LISTENERS PRIMEIRO ---
+  socket.on("request-whatsapp-state", () => {
+    console.log("🔁 Cliente pediu estado atual do WhatsApp");
 
-  socket.emit("whatsapp-status", {
-    status: status.status,
-    message: status.message,
-    connected: status.connected,
+    const status = getWhatsappStatus();
+
+    socket.emit("whatsapp-status", {
+      status: status.status,
+      message: status.message,
+      connected: status.connected,
+    });
+
+    if (!status.connected && status.qr) {
+      socket.emit("whatsapp-qr", {
+        qrCode: status.qr,
+        message: "📱 QR Code atual",
+      });
+    }
   });
 
-  if (status.qr) {
-    socket.emit("whatsapp-qr", {
-      qrCode: status.qr,
-      message: "📱 QR Code atual",
-    });
-  }
-
-  // CLIENTE PEDE PARA INICIAR O WHATSAPP
   socket.on("start-whatsapp", async () => {
     console.log("⚡ Cliente solicitou início do WhatsApp");
-    await startWhatsapp(); // Agora não usa callback
+
+    if (hasWhatsappClient()) {
+      console.log("⚠️ WhatsApp já está rodando. Não vou criar outro.");
+      return;
+    }
+
+    await startWhatsapp();
   });
 
   socket.on("disconnect", () => {
     console.log("Cliente desconectado:", socket.id);
   });
-});
 
+  // --- SÓ DEPOIS DISSO MANDA O ESTADO ---
+  setTimeout(() => {
+    const status = getWhatsappStatus();
+
+    socket.emit("whatsapp-status", {
+      status: status.status,
+      message: status.message,
+      connected: status.connected,
+    });
+
+    if (!status.connected && status.qr) {
+      socket.emit("whatsapp-qr", {
+        qrCode: status.qr,
+        message: "📱 QR Code atual",
+      });
+    }
+  }, 300);
+});
 
 // --- START SERVER ---
 server.listen(process.env.PORT, () => {

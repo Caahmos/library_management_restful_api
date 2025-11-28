@@ -18,10 +18,16 @@ export async function startWhatsapp() {
         const msg = "📱 QR Code gerado! Escaneie no app";
         console.log(msg);
 
-        // Envia para TODOS os sockets
         io.emit("whatsapp-qr", {
           qrCode: qr,
           message: msg
+        });
+
+        // Status correto
+        io.emit("whatsapp-status", {
+          status: "notLogged",
+          message: "📲 Aguardando login...",
+          connected: false
         });
       },
 
@@ -36,28 +42,29 @@ export async function startWhatsapp() {
           case "isLogged":
             message = "✅ WhatsApp conectado";
             break;
+
           case "notLogged":
             message = "📲 Aguardando login...";
             break;
+
           case "qrReadSuccess":
             message = "📱 QR Code lido!";
             break;
+
           case "qrReadFail":
             message = "❌ Falha ao ler QR Code!";
             break;
+
           case "disconnectedMobile":
             message = "❌ Dispositivo desconectado!";
             break;
-          case "serverClose":
-            message = "⚠️ Servidor encerrado";
-            break;
+
           default:
             message = `ℹ️ Status WhatsApp: ${status}`;
         }
 
-        console.log(message);
+        console.log("STATUS:", status, message);
 
-        // Envia pra todos
         io.emit("whatsapp-status", {
           status,
           message,
@@ -75,13 +82,6 @@ export async function startWhatsapp() {
 
     console.log("🎉 Sessão criada com sucesso!");
 
-    // Envia conexão inicial
-    io.emit("whatsapp-status", {
-      status: "CONNECTED",
-      message: "🎉 WhatsApp conectado",
-      connected: true
-    });
-
     return wpp;
 
   } catch (e: any) {
@@ -94,18 +94,10 @@ export async function startWhatsapp() {
 }
 
 
-// --- STATUS GLOBAL PARA QUANDO UM CLIENTE ENTRA ---
+// --- STATUS PARA NOVAS CONEXÕES ---
 export function getWhatsappStatus() {
-  if (!client) {
-    return {
-      connected: false,
-      status: lastStatus,
-      message: "⚠️ Sem cliente ativo",
-      qr: lastQr
-    };
-  }
-
-  const isConnected = client.isConnected ? client.isConnected() : false;
+  const isConnected =
+    client && client.isConnected ? client.isConnected() : false;
 
   return {
     connected: isConnected,
@@ -113,15 +105,17 @@ export function getWhatsappStatus() {
     qr: lastQr,
     message: isConnected
       ? "✅ WhatsApp conectado"
-      : lastStatus === "disconnectedMobile"
-      ? "❌ Dispositivo desconectado"
-      : "⚠️ Cliente iniciado, mas não conectado",
+      : lastStatus === "notLogged"
+      ? "📲 Aguardando login..."
+      : "⚠️ Aguardando status..."
   };
 }
 
+export function hasWhatsappClient() {
+  return client !== null;
+}
+
 export function getClient() {
-  if (!client) {
-    throw new Error("WhatsApp não está pronto ainda!");
-  }
+  if (!client) throw new Error("WhatsApp não está pronto ainda!");
   return client;
 }
