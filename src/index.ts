@@ -28,10 +28,24 @@ export { io };
 io.on("connection", (socket) => {
   console.log("Cliente conectado:", socket.id);
 
-  // --- LISTENERS PRIMEIRO ---
+  // --- ENVIA O ESTADO ATUAL IMEDIATAMENTE ---
+  const status = getWhatsappStatus();
+  socket.emit("whatsapp-status", {
+    status: status.status,
+    message: status.message,
+    connected: status.connected,
+  });
+
+  if (status.qr) {
+    socket.emit("whatsapp-qr", {
+      qrCode: status.qr,
+      message: status.message,
+    });
+  }
+
+  // --- LISTENERS ---
   socket.on("request-whatsapp-state", () => {
     console.log("🔁 Cliente pediu estado atual do WhatsApp");
-
     const status = getWhatsappStatus();
 
     socket.emit("whatsapp-status", {
@@ -40,10 +54,10 @@ io.on("connection", (socket) => {
       connected: status.connected,
     });
 
-    if (!status.connected && status.qr) {
+    if (status.qr) {
       socket.emit("whatsapp-qr", {
         qrCode: status.qr,
-        message: "📱 QR Code atual",
+        message: status.message,
       });
     }
   });
@@ -53,33 +67,17 @@ io.on("connection", (socket) => {
 
     if (hasWhatsappClient()) {
       console.log("⚠️ WhatsApp já está rodando. Não vou criar outro.");
+      socket.emit("whatsapp-info", { message: "⚠️ WhatsApp já está rodando" });
       return;
     }
 
+    socket.emit("whatsapp-info", { message: "⚡ Iniciando WhatsApp..." });
     await startWhatsapp();
   });
 
   socket.on("disconnect", () => {
     console.log("Cliente desconectado:", socket.id);
   });
-
-  // --- SÓ DEPOIS DISSO MANDA O ESTADO ---
-  setTimeout(() => {
-    const status = getWhatsappStatus();
-
-    socket.emit("whatsapp-status", {
-      status: status.status,
-      message: status.message,
-      connected: status.connected,
-    });
-
-    if (!status.connected && status.qr) {
-      socket.emit("whatsapp-qr", {
-        qrCode: status.qr,
-        message: "📱 QR Code atual",
-      });
-    }
-  }, 300);
 });
 
 // --- START SERVER ---
