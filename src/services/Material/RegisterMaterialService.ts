@@ -54,6 +54,7 @@ class RegisterMaterialService {
               material_cd: registeredMaterial.code,
               classification: classify.code,
               checkout_limit: 10,
+              days_due_back: 14,
               renewal_limit: 0,
             },
           });

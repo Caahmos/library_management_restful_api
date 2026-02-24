@@ -13,7 +13,6 @@ class RegisterCollectionController{
         const collectionData: RegisterCollectionRequest = req.body;
 
         if(!collectionData.description) return res.status(422).json({ type: 'error', message: 'Informe a descrição!'});
-        if(!collectionData.days_due_back) return res.status(422).json({ type: 'error', message: 'Informe a quantidade de dias para a devolução!'});
 
         try{
             const registeredCollection = await RegisterCollectionService.execute(collectionData);

@@ -122,7 +122,6 @@ model CollectionDM {
   code           Int      @id @default(autoincrement())
   description    String
   default_flg    Boolean  @default(false)
-  days_due_back  Int
   colors         String?  @db.VarChar(50)
   daily_late_fee Decimal  @default(0)
   biblio         Biblio[]
@@ -364,6 +363,7 @@ model CheckoutPrivs {
   classification    Int
   checkout_limit    Int
   renewal_limit     Int
+  days_due_back     Int @default(14)
   grace_period_days Int @default(1)
 
   material_type_dm MaterialTypeDM   @relation(fields: [material_cd], references: [code], onDelete: Cascade)

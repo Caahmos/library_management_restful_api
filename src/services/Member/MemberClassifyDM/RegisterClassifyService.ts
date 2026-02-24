@@ -30,6 +30,7 @@ class RegisterClassifyService {
               material_cd: material.code,
               classification: registeredClassify.code,
               checkout_limit: 10,
+              days_due_back: 14,
               renewal_limit: 0,
             },
           });

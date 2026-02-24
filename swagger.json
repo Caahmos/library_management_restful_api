@@ -4584,10 +4584,6 @@
             "type": "string",
             "example": "Engenharia de Software"
           },
-          "days_due_back": {
-            "type": "number",
-            "example": 15
-          },
           "daily_late_fee": {
             "type": "number",
             "example": 0
@@ -4627,10 +4623,6 @@
               "default_flg": {
                 "type": "boolean",
                 "example": false
-              },
-              "days_due_back": {
-                "type": "number",
-                "example": 15
               },
               "daily_late_fee": {
                 "type": "number",
@@ -4672,10 +4664,6 @@
                   "type": "boolean",
                   "example": false
                 },
-                "days_due_back": {
-                  "type": "number",
-                  "example": 15
-                },
                 "daily_late_fee": {
                   "type": "number",
                   "example": 0
@@ -4715,10 +4703,6 @@
                 "type": "boolean",
                 "example": false
               },
-              "days_due_back": {
-                "type": "number",
-                "example": 15
-              },
               "daily_late_fee": {
                 "type": "number",
                 "example": 0
@@ -4737,10 +4721,6 @@
           "description": {
             "type": "string",
             "example": "Engenharia de Dados"
-          },
-          "days_due_back": {
-            "type": "number",
-            "example": 15
           },
           "daily_late_fee": {
             "type": "number",
@@ -4781,10 +4761,6 @@
               "default_flg": {
                 "type": "boolean",
                 "example": false
-              },
-              "days_due_back": {
-                "type": "number",
-                "example": 15
               },
               "daily_late_fee": {
                 "type": "number",
@@ -5520,6 +5496,11 @@
           "grace_period_days": {
             "type": "number",
             "example": 5
+          },
+
+          "days_due_back": {
+            "type": "number",
+            "example": 15
           }
         }
       },
@@ -5596,6 +5577,11 @@
                 "renewal_limit": {
                   "type": "number",
                   "example": 5
+                },
+
+                "days_due_back": {
+                  "type": "number",
+                  "example": 15
                 }
               }
             }
@@ -5635,6 +5621,11 @@
               "renewal_limit": {
                 "type": "number",
                 "example": 5
+              },
+
+              "days_due_back": {
+                "type": "number",
+                "example": 15
               }
             }
           }

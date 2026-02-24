@@ -49,19 +49,17 @@ class RenewalService {
 
       if (!checkoutInfo)
         throw new Error(
-          "Informações de permanência do livro com o usuário não foram encontradas!"
+          "Informações de permanência do livro com o usuário não foram encontradas!",
         );
 
-      const daysDueBack = await prisma.collectionDM.findFirst({
-        where: {
-          code: biblio.collection_cd,
-        },
-      });
+      const daysDueBack = checkoutInfo.days_due_back;
 
       if (!daysDueBack)
         throw new Error(
-          "Informações de permanência do livro com o usuário não foram encontradas!"
+          "Informações de permanência do livro com o usuário não foram encontradas!",
         );
+
+      console.log("Days due back:", daysDueBack);
 
       const isInHold = await prisma.biblioHold.findFirst({
         where: {
@@ -74,7 +72,7 @@ class RenewalService {
 
       const currentDate = Date.now();
       const millisecondsInADay = 24 * 60 * 60 * 1000;
-      const daysToAdd = daysDueBack.days_due_back;
+      const daysToAdd = daysDueBack;
 
       let due_back_dt = new Date(currentDate + daysToAdd * millisecondsInADay);
       due_back_dt = adjustDateToWeekday(due_back_dt);
